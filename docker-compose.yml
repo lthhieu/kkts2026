@@ -1,0 +1,39 @@
+services:
+  mongo:
+    image: mongo:latest
+    restart: always
+    container_name: mongo-kkts
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-data-kkts:/data/db-kkts
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: backend-kkts
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    environment:
+      - MONGO_URI=mongodb://root:123456@mongo-kkts:27017/kkts?authSource=admin
+      - NODE_ENV=production
+    depends_on:
+      - mongo
+  frontend:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    container_name: frontend-kkts
+    restart: unless-stopped
+    ports:
+      - 3001:3000
+    environment:
+      - NEXT_PUBLIC_BACKEND_URI=http://backend-kkts:3000
+    depends_on:
+      - backend
+volumes:
+  mongo-data-kkts:
