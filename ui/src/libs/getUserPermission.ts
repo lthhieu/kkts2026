@@ -26,8 +26,8 @@ export function getUserPermission(user: IUser) {
         can(Action.Read, UnitSubject);
         can(Action.Read, RoomSubject);
     } else if (user.role === 'gv') {
-        can(Action.Delete, DeviceSubject, { unit: { $eq: user.unit } });
-        can(Action.Update, DeviceSubject, { unit: { $eq: user.unit } });
+        can(Action.Delete, DeviceSubject, { unit: { $eq: user.unit?._id } });
+        can(Action.Update, DeviceSubject, { unit: { $eq: user.unit?._id } });
         can(Action.Read, DeviceSubject);
         can(Action.Create, DeviceSubject);
         can(Action.Read, UnitSubject);
