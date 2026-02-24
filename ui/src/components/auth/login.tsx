@@ -5,7 +5,7 @@ import { Button, Form, Grid, Input, notification, theme, Typography } from "antd
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { authenticate } from "@/app/(auth)/dang-nhap/actions";
 import React, { useMemo } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
@@ -15,6 +15,7 @@ const Context = React.createContext({ name: 'Default' });
 
 export default function LoginComponent() {
     const { token } = useToken();
+    const router = useRouter();
     const screens = useBreakpoint();
     const [api, contextHolder] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
@@ -22,7 +23,7 @@ export default function LoginComponent() {
     const onFinish = async (values: any) => {
         const res = await authenticate(values.username, values.password);
         if (!res?.error) {
-            redirect('/quan-tri/trang-chu')
+            router.push('/quan-tri/trang-chu')
         } else {
             api.error({
                 title: `Có lỗi xảy ra`,

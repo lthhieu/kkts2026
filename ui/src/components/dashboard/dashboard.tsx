@@ -15,7 +15,7 @@ import {
 import { Button, Layout, Menu, Space, theme, Dropdown, MenuProps, Typography } from 'antd';
 import Link from 'next/link';
 import { handleSignOut } from '@/app/(auth)/dang-nhap/actions';
-import { redirect, usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { getUserPermission } from '@/libs/getUserPermission';
 import { Action, DeviceSubject, RoomSubject, UnitSubject, UserSubject } from '@/libs/enum';
 
@@ -30,6 +30,7 @@ const Dashboard = ({
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
+    const router = useRouter();
 
     const items: MenuProps['items'] = [
         {
@@ -42,7 +43,7 @@ const Dashboard = ({
             key: '2',
             label: 'Trang người dùng',
             icon: <HomeOutlined />,
-            onClick: () => { redirect('/') }
+            onClick: () => { router.push('/') }
         },
         {
             key: '3',
