@@ -1,7 +1,7 @@
 services:
   mongo:
     image: mongo:latest
-    restart: always
+    restart: unless-stopped
     container_name: mongo-kkts
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
@@ -9,7 +9,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - mongo-data-kkts:/data/db-kkts
+      - mongo-data-kkts:/data/db
   backend:
     build:
       context: ./server

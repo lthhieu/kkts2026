@@ -97,7 +97,10 @@ const Dashboard = ({
     const pathname = usePathname()
     return (
         <Layout style={{ height: '100%', minHeight: '100vh' }}>
-            <Sider trigger={null} collapsible collapsed={collapsed}>
+            <Sider
+                breakpoint="lg"
+                collapsedWidth="0"
+                trigger={null} collapsible collapsed={collapsed}>
                 <div className="demo-logo-vertical" />
                 <Menu
                     style={{ marginTop: 60 }}

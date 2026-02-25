@@ -180,7 +180,6 @@ const TableDevices = (props: IProps) => {
     };
 
     const handleFilter = () => {
-        console.log(selectedRoom, selectedType, selectedUnit)
         const params = new URLSearchParams()
 
         if (selectedRoom) params.set('currentRoom', selectedRoom)
@@ -217,7 +216,6 @@ const TableDevices = (props: IProps) => {
         }, 1000);
     };
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
         setSelectedRowKeys(newSelectedRowKeys);
     };
     const hasSelected = selectedRowKeys.length > 0;

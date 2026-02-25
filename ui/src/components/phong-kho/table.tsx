@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Popconfirm, Space, Table, Typography, message, notification } from 'antd';
+import { Button, Flex, Grid, Popconfirm, Space, Table, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
 import { CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
@@ -11,6 +11,7 @@ import ModalImport from '@/components/phong-kho/modal.import';
 import { CSVLink } from 'react-csv';
 
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
+const { useBreakpoint } = Grid;
 
 interface IProps {
     rooms: IRoom[],
@@ -35,6 +36,8 @@ const TableRooms = (props: IProps) => {
     const [api, contextHolderNotification] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
     const [dataExport, setDataExport] = useState<any[]>([])
+    const screens = useBreakpoint();
+    const isMobile = !screens.md;  // < 768px
 
     useEffect(() => {
         const filteredData = rooms.map(({ _id, name, currentDescription, currentUnit, currentYear }) => ({ _id, name, currentDescription, currentUnit: currentUnit.name || "", currentYear }));
@@ -49,13 +52,13 @@ const TableRooms = (props: IProps) => {
         SetIsModalImportOpen(true);
     }
     const confirm = (_id: string) => {
-        deleteUnit(_id)
+        deleteRoom(_id)
     };
     const cancel: PopconfirmProps['onCancel'] = (e) => {
         // console.log(e);
     };
 
-    const deleteUnit = async (_id: string) => {
+    const deleteRoom = async (_id: string) => {
         const res = await handleDeleteRoom(_id, access_token)
         if (!res.data) {
             api.error({
@@ -68,7 +71,7 @@ const TableRooms = (props: IProps) => {
             messageApi.success(res.message);
         }
     }
-    const deleteUnitMany = async (ids: string[]) => {
+    const deleteRoomMany = async (ids: string[]) => {
         const res = await handleDeleteRoomMany(ids, access_token)
         if (!res.data) {
             api.error({
@@ -137,7 +140,7 @@ const TableRooms = (props: IProps) => {
         setLoading(true);
         // ajax request after empty completing
         setTimeout(() => {
-            deleteUnitMany(selectedRowKeys as string[])
+            deleteRoomMany(selectedRowKeys as string[])
             setLoading(false);
         }, 1000);
     };
@@ -160,10 +163,12 @@ const TableRooms = (props: IProps) => {
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
-            <Flex style={{ marginBottom: 16 }} justify='space-between' align='center'>
+            <Flex style={{ marginBottom: 16 }} justify='space-between'
+                align={isMobile ? 'stretch' : 'center'}
+                vertical={isMobile} gap={16}>
                 <h2>Danh sách phòng - kho</h2>
 
-                <div style={{ display: 'flex', gap: 8 }}>
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {canDeleteRoom(user ?? {} as IUser) && <Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa</Button>}
                     {canCreateRoom(user ?? {} as IUser) && <Button onClick={showModalImport} type='primary' icon={<CloudUploadOutlined />}>Import</Button>}
                     {canReadRoom(user ?? {} as IUser) && <Button type='primary' icon={<CloudDownloadOutlined />}>

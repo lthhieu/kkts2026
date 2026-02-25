@@ -40,7 +40,6 @@ const PhongKho = async ({ searchParams }: { searchParams: Params }) => {
             next: { tags: ['units'] }
         }
     })
-    console.log(res.data?.result)
     return (
         <div>
             <TableRooms
