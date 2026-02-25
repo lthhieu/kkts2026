@@ -34,6 +34,40 @@ export class UsersService {
     })
   }
 
+  async createMany(createUserDto: CreateUserDto[]) {
+    // 1. Loại bỏ các bản ghi trùng lặp ngay trong chính file Excel/Mảng đầu vào (nếu có)
+    const uniqueInput = Array.from(new Map(createUserDto.map(item => [item.email, item])).values());
+
+    // 2. Lấy danh sách tất cả email từ mảng đã lọc
+    const emails = uniqueInput.map(u => u.email);
+
+    // 3. Tìm các email đã tồn tại trong Database
+    const existingUsers = await this.userModel.find(
+      { email: { $in: emails } },
+      { email: 1 } // Chỉ lấy field email để tối ưu tốc độ
+    ).lean();
+
+    const existingEmails = existingUsers.map(u => u.email);
+
+    // 4. Lọc ra những user chưa tồn tại trong DB
+    const dataFilter = uniqueInput.filter(dto => !existingEmails.includes(dto.email));
+
+    if (dataFilter.length === 0) {
+      throw new BadRequestException('Không có tài khoản nào được thêm mới vì tất cả đều trùng email với dữ liệu hiện có!');
+    }
+
+    // 5. Hash password cho danh sách hợp lệ
+    const payload = dataFilter.map((dto) => {
+      return {
+        ...dto,
+        password: this.hashPassword(dto.password.toString())
+      };
+    });
+
+    // 6. Insert hàng loạt
+    return await this.userModel.insertMany(payload);
+  }
+
   async findAll(current: number, pageSize: number, queryString: string) {
     let { filter, population } = aqp(queryString)
     let { sort }: { sort: any } = aqp(queryString)
@@ -97,5 +131,8 @@ export class UsersService {
 
   async findOneByToken(refreshToken: string) {
     return await this.userModel.findOne({ refreshToken })
+  }
+  removeMany(ids: any[]) {
+    return this.userModel.deleteMany({ _id: { $in: ids } });
   }
 }

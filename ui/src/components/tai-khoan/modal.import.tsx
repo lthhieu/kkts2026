@@ -1,10 +1,10 @@
 "use client"
-import { Modal, message, notification, Upload, UploadProps, Table } from 'antd';
+import { Modal, message, notification, Upload, UploadProps, Table, Tag } from 'antd';
 import React, { useMemo, useState } from 'react';
-import { handleCreateMany } from '@/app/(main)/quan-tri/phong-kho/actions';
+import { handleCreateMany } from '@/app/(main)/quan-tri/tai-khoan/actions';
 import { InboxOutlined } from '@ant-design/icons';
-// import sampleFile from '@public/sample/sample-unit.xlsx'
 import * as Excel from 'exceljs';
+import { ROLE_COLOR_MAP, ROLE_LABEL_MAP } from '@/components/tai-khoan/table';
 
 
 interface IProps {
@@ -14,15 +14,7 @@ interface IProps {
 }
 
 interface IUpload {
-    name: string,
-    "info": [{
-        "description": string,
-        "year": number,
-        "unit": string | null
-    }],
-    currentDescription: string,
-    currentUnit: string | null,
-    currentYear: number
+    name: string
 }
 
 const { Dragger } = Upload;
@@ -47,7 +39,7 @@ const ModalImport = (props: IProps) => {
             const typeCheck = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/csv']
             const isValidate = typeCheck.some((element) => element === file.type);
             if (!isValidate) {
-                message.error(`${file.name} không phải file excel hoăc csv`);
+                message.error(`${file.name} không phải file xlsx hoăc csv`);
             }
             return isValidate || Upload.LIST_IGNORE;
         },
@@ -78,30 +70,47 @@ const ModalImport = (props: IProps) => {
 
                     let jsonData: any[] = [];
 
-                    // Duyệt từ dòng 2
                     worksheet.eachRow((row, rowNumber) => {
                         if (rowNumber <= 1) return;
 
                         // Hàm hỗ trợ lấy giá trị đơn thuần (loại bỏ object nếu ô đó là link/formula)
-                        const getVal = (colIndex: any) => {
+                        // Hàm helper để lấy giá trị từ cell (xử lý cả hyperlink)
+                        const getVal = (colIndex: number) => {
                             const cell = row.getCell(colIndex);
-                            // Nếu là ô merge hoặc công thức, cell.value có thể là object {result: ...}
-                            return cell.value;
+                            const value = cell.value;
+
+                            // Nếu là null/undefined
+                            if (!value) return "";
+
+                            // Nếu là object (hyperlink, formula, rich text...)
+                            if (typeof value === 'object') {
+                                // Hyperlink: { text: "email@example.com", hyperlink: "mailto:..." }
+                                if ('text' in value) {
+                                    return value.text;
+                                }
+                                // Formula: { result: "...", formula: "..." }
+                                if ('result' in value) {
+                                    return value.result;
+                                }
+                                // Rich text: { richText: [...] }
+                                if ('richText' in value && Array.isArray(value.richText)) {
+                                    return value.richText.map((rt: any) => rt.text).join('');
+                                }
+                                return "";
+                            }
+
+                            // Nếu là string, number, boolean
+                            return value;
                         };
 
                         // Build object theo cấu trúc bạn yêu cầu
                         const obj = {
-                            name: getVal(1),
-                            "info": [{
-                                "description": getVal(2) || "",
-                                "year": getVal(3) || 2026,
-                                "unit": getVal(4) || null
-                            }],
-                            currentDescription: getVal(2) || "",
-                            currentUnit: getVal(4) || null,
-                            currentYear: getVal(3) || 2026,
+                            name: getVal(1),         // Cột A
+                            email: getVal(2) || "",  // Cột B
+                            password: getVal(3) || "",  // Cột C
+                            unit: getVal(4) || "",  // Cột D
+                            role: getVal(5) || ""  // Cột E
                         };
-
                         jsonData.push(obj);
                     });
 
@@ -120,7 +129,7 @@ const ModalImport = (props: IProps) => {
             }
         },
         onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
+            // console.log('Dropped files', e.dataTransfer.files);
         },
     };
 
@@ -179,18 +188,26 @@ const ModalImport = (props: IProps) => {
                     <p className="ant-upload-text">Chọn hoặc kéo thẻ file để tải dữ liệu</p>
                     <p className="ant-upload-hint">
                         Chỉ hỗ trợ file excel và csv
-                        &nbsp;<a onClick={(e) => e.stopPropagation()} href={`${process.env.NEXT_PUBLIC_FRONTEND_URI}sample/sample-room.xlsx`} download>Tải file mẫu</a>
+                        &nbsp;<a onClick={(e) => e.stopPropagation()} href={`${process.env.NEXT_PUBLIC_FRONTEND_URI}sample/sample-user.xlsx`} download>Tải file mẫu</a>
                     </p>
                 </Dragger>
                 <div>
-                    <Table<IUpload>
+                    <Table<any>
                         scroll={{ x: "max-content" }}
                         title={() => <span>Dữ liệu:</span>}
-                        dataSource={dataImport} rowKey={'name'}
+                        dataSource={dataImport} rowKey={(_) => crypto.randomUUID()}
                         columns={[
-                            { dataIndex: 'name', title: 'Tên phòng - kho' },
-                            { dataIndex: 'currentDescription', title: 'Mô tả' },
-                            { dataIndex: 'currentYear', title: 'Năm' }
+                            { dataIndex: 'name', title: 'Tên thiết bị' },
+                            { dataIndex: 'email', title: 'Email' },
+                            {
+                                dataIndex: 'role', title: 'Quyền hạn',
+                                render: (_, record) => (
+                                    <Tag color={ROLE_COLOR_MAP[record.role] || 'default'} variant='outlined'>
+                                        {ROLE_LABEL_MAP[record.role] || record.role}
+                                    </Tag>
+                                )
+                            },
+                            { dataIndex: 'unit', title: 'Đơn vị' },
                         ]} />
                 </div>
             </Modal>

@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Popconfirm, Select, Space, Table, message, notification } from 'antd';
+import { Button, Flex, Grid, Popconfirm, Select, Space, Table, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
@@ -11,6 +11,7 @@ import ModalImport from '@/components/thiet-bi/modal.import';
 import { CSVLink } from 'react-csv';
 
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
+const { useBreakpoint } = Grid;
 
 interface IProps {
     devices: IDevice[],
@@ -41,6 +42,8 @@ const TableDevices = (props: IProps) => {
     const [selectedType, setSelectedType] = useState<string | undefined>(undefined);
 
     const [dataExport, setDataExport] = useState<any[]>([])
+    const screens = useBreakpoint();
+    const isMobile = !screens.md;  // < 768px
 
     useEffect(() => {
         const filteredData = devices.map(({ _id, name, description, currentRoom, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note, type }) =>
@@ -247,11 +250,13 @@ const TableDevices = (props: IProps) => {
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
-            <Flex style={{ marginBottom: 16 }} justify='space-between' align='center'>
+            <Flex style={{ marginBottom: 16 }} justify='space-between'
+                align={isMobile ? 'stretch' : 'center'}
+                vertical={isMobile} gap={16}>
                 <h2>Danh sách thiết bị</h2>
 
                 {canCreateDevice(user ?? {} as IUser) && (
-                    <div style={{ display: 'flex', gap: 8 }}>
+                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                         {canDeleteDevice(user ?? {} as IUser, selectedUnit || '') && <Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa</Button>}
                         {canCreateDevice(user ?? {} as IUser) && <Button onClick={showModalImport} type='primary' icon={<CloudUploadOutlined />}>Import</Button>}
                         {canReadDevice(user ?? {} as IUser) && <Button type='primary' icon={<CloudDownloadOutlined />}>
@@ -268,7 +273,7 @@ const TableDevices = (props: IProps) => {
                     </div>
                 )}
             </Flex>
-            <Space style={{ marginBottom: 16 }}>
+            <Space style={{ marginBottom: 16, flexWrap: 'wrap' }}>
                 <Select
                     style={{ width: '100%' }}
                     showSearch={{ optionFilterProp: 'label' }}
@@ -319,6 +324,7 @@ const TableDevices = (props: IProps) => {
                 <Button icon={<SearchOutlined />} type='primary' onClick={handleFilter}>Lọc</Button>
             </Space>
             <Table<IDevice>
+                scroll={{ x: "max-content" }}
                 pagination={{
                     current: meta.current,
                     pageSize: meta.pageSize,

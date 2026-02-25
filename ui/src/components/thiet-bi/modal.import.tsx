@@ -29,7 +29,6 @@ const ModalImport = (props: IProps) => {
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
     const [dataImport, setDataImport] = useState<IUpload[]>([])
     const [confirmLoading, setConfirmLoading] = useState(false);
-    console.log(dataImport)
 
     const uploadProps: UploadProps = {
         name: 'file',
@@ -197,8 +196,9 @@ const ModalImport = (props: IProps) => {
                 </Dragger>
                 <div>
                     <Table<any>
+                        scroll={{ x: "max-content" }}
                         title={() => <span>Dữ liệu:</span>}
-                        dataSource={dataImport} rowKey={(_, index) => index!}
+                        dataSource={dataImport} rowKey={(_) => crypto.randomUUID()}
                         columns={[
                             { dataIndex: 'name', title: 'Tên thiết bị' },
                             { dataIndex: 'description', title: 'Mô tả/Mã số' },

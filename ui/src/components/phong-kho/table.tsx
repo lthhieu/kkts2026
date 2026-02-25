@@ -141,6 +141,7 @@ const TableRooms = (props: IProps) => {
         // ajax request after empty completing
         setTimeout(() => {
             deleteRoomMany(selectedRowKeys as string[])
+            setSelectedRowKeys([])
             setLoading(false);
         }, 1000);
     };
@@ -185,6 +186,7 @@ const TableRooms = (props: IProps) => {
                 </div>
             </Flex>
             <Table<IRoom>
+                scroll={{ x: "max-content" }}
                 pagination={{
                     current: meta.current,
                     pageSize: meta.pageSize,
@@ -197,6 +199,7 @@ const TableRooms = (props: IProps) => {
                 }}
                 rowSelection={{ type: 'checkbox', ...rowSelection }}
                 columns={columns} dataSource={rooms} rowKey={"_id"} />
+
             <RoomModal
                 setStatus={setStatus}
                 status={status}

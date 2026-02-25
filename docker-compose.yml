@@ -1,15 +1,20 @@
 services:
   mongo:
     image: mongo:latest
-    restart: unless-stopped
-    container_name: mongo-kkts
+    restart: always
+    container_name: mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: 123456
     ports:
       - 27017:27017
     volumes:
-      - mongo-data-kkts:/data/db
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   backend:
     build:
       context: ./server
@@ -19,7 +24,7 @@ services:
     ports:
       - 3000:3000
     environment:
-      - MONGO_URI=mongodb://root:123456@mongo-kkts:27017/kkts?authSource=admin
+      - MONGO_URI=mongodb://root:123456@mongo:27017/kkts?authSource=admin
       - NODE_ENV=production
     depends_on:
       - mongo
@@ -36,4 +41,4 @@ services:
     depends_on:
       - backend
 volumes:
-  mongo-data-kkts:
+  mongo-data:

@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Popconfirm, Space, Table, Typography, message, notification } from 'antd';
+import { Button, Flex, Grid, Popconfirm, Space, Table, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
 import { CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
@@ -11,7 +11,7 @@ import { canCreateUnit, canDeleteUnit, canReadUnit, canUpdateUnit } from '@/libs
 import { CSVLink } from 'react-csv';
 
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
-
+const { useBreakpoint } = Grid;
 
 interface IProps {
     units: IUnit[],
@@ -35,6 +35,8 @@ const TableUnits = (props: IProps) => {
     const [api, contextHolderNotification] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
     const [dataExport, setDataExport] = useState<any[]>([])
+    const screens = useBreakpoint();
+    const isMobile = !screens.md;  // < 768px
 
     useEffect(() => {
         const filteredData = units.map(({ _id, name }) => ({ _id, name }));
@@ -129,6 +131,7 @@ const TableUnits = (props: IProps) => {
         // ajax request after empty completing
         setTimeout(() => {
             deleteUnitMany(selectedRowKeys as string[])
+            setSelectedRowKeys([])
             setLoading(false);
         }, 1000);
     };
@@ -149,9 +152,11 @@ const TableUnits = (props: IProps) => {
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
-            <Flex style={{ marginBottom: 16 }} justify='space-between' align='center'>
+            <Flex style={{ marginBottom: 16 }} justify='space-between'
+                align={isMobile ? 'stretch' : 'center'}
+                vertical={isMobile} gap={16}>
                 <h2>Danh sách đơn vị</h2>
-                <div style={{ display: 'flex', gap: 8 }}>
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {canDeleteUnit(user ?? {} as IUser) && (<Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa</Button>)}
                     {canCreateUnit(user ?? {} as IUser) && (<Button onClick={showModalImport} type='primary' icon={<CloudUploadOutlined />}>Import</Button>)}
                     {canReadUnit(user ?? {} as IUser) && (<Button type='primary' icon={<CloudDownloadOutlined />}>
@@ -168,6 +173,7 @@ const TableUnits = (props: IProps) => {
                 </div>
             </Flex>
             <Table<IUnit>
+                scroll={{ x: "max-content" }}
                 pagination={{
                     current: meta.current,
                     pageSize: meta.pageSize,

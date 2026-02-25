@@ -1,13 +1,16 @@
 'use client'
-import React, { useMemo, useState } from 'react';
-import { Button, Flex, Popconfirm, Space, Table, Tag, message, notification } from 'antd';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Button, Flex, Grid, Popconfirm, Space, Table, Tag, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
-import { DeleteOutlined, EditOutlined, FolderAddOutlined } from '@ant-design/icons';
+import { CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
-import { handleDeleteUser } from '@/app/(main)/quan-tri/tai-khoan/actions';
+import { handleDeleteUser, handleDeleteUserMany } from '@/app/(main)/quan-tri/tai-khoan/actions';
 import UserModal from '@/components/tai-khoan/modal';
-import { canCreateUser, canDeleteUser, canUpdateUser } from '@/libs/users';
+import { canCreateUser, canDeleteUser, canReadUser, canUpdateUser } from '@/libs/users';
+import { CSVLink } from 'react-csv';
+import ModalImport from '@/components/tai-khoan/modal.import';
 
+type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
 
 interface IProps {
     users: IUser[],
@@ -17,15 +20,16 @@ interface IProps {
     user: IUser | null
 }
 const Context = React.createContext({ name: 'Default' });
+const { useBreakpoint } = Grid;
 
-const ROLE_COLOR_MAP: Record<string, string> = {
+export const ROLE_COLOR_MAP: Record<string, string> = {
     superadmin: 'red',
     admin: 'gold',
     thukho: 'purple',
     truongdv: 'blue',
     gv: 'green',
 };
-const ROLE_LABEL_MAP: Record<string, string> = {
+export const ROLE_LABEL_MAP: Record<string, string> = {
     superadmin: 'Quản trị hệ thống',
     admin: 'Quản trị',
     thukho: 'Thủ kho',
@@ -39,14 +43,32 @@ const TableUsers = (props: IProps) => {
     const [isModalOpen, SetIsModalOpen] = useState(false)
     const [status, setStatus] = useState('')
     const [dataUpdate, setDataUpdate] = useState<null | IUser>(null)
+    const [isModalImportOpen, SetIsModalImportOpen] = useState(false)
+
     const router = useRouter()
     const [messageApi, contextHolder] = message.useMessage();
     const [api, contextHolderNotification] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
+    const screens = useBreakpoint();
+    const isMobile = !screens.md;  // < 768px
+    const [loading, setLoading] = useState(false);
+    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+    const [dataExport, setDataExport] = useState<any[]>([])
+
+    useEffect(() => {
+        const filteredData = users.map(({ _id, name, email, role, unit }) =>
+        ({
+            _id, name, email, role: ROLE_LABEL_MAP[role] || role, unit: unit?.name || ""
+        }));
+        setDataExport(filteredData);
+    }, [users])
 
     const showModal = () => {
         setStatus("CREATE")
         SetIsModalOpen(true);
+    }
+    const showModalImport = () => {
+        SetIsModalImportOpen(true);
     }
     const confirm = (_id: string) => {
         deleteUser(_id)
@@ -79,13 +101,11 @@ const TableUsers = (props: IProps) => {
             title: 'Email',
             dataIndex: 'email',
             key: 'email',
-            responsive: ['md'],
         },
         {
             title: 'Quyền hạn',
             dataIndex: 'role',
             key: 'role',
-            responsive: ['md'],
             render: (_, record) => (
                 <Tag color={ROLE_COLOR_MAP[record.role] || 'default'} variant='outlined'>
                     {ROLE_LABEL_MAP[record.role] || record.role}
@@ -96,7 +116,6 @@ const TableUsers = (props: IProps) => {
             title: 'Đơn vị',
             dataIndex: ['unit', 'name'],
             key: 'unit',
-            responsive: ['md'],
         },
         {
             title: '',
@@ -132,17 +151,74 @@ const TableUsers = (props: IProps) => {
     const handleOnChangePage = (current: number, pageSize: number) => {
         router.push(`/quan-tri/tai-khoan?current=${current}&pageSize=${pageSize}`);
     };
+    const deleteUserMany = async (ids: string[]) => {
+        const res = await handleDeleteUserMany(ids, access_token)
+        if (!res.data) {
+            api.error({
+                title: `Có lỗi xảy ra`,
+                description: res.message,
+                placement: 'topRight',
+            });
+        }
+        else {
+            messageApi.success(res.message);
+        }
+    }
+
+    const start = () => {
+        setLoading(true);
+        // ajax request after empty completing
+        setTimeout(() => {
+            deleteUserMany(selectedRowKeys as string[])
+            setSelectedRowKeys([])
+            setLoading(false);
+        }, 1000);
+    };
+    const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+        setSelectedRowKeys(newSelectedRowKeys);
+    };
+    const hasSelected = selectedRowKeys.length > 0;
+    const rowSelection: TableRowSelection<IUser> = {
+        selectedRowKeys,
+        onChange: onSelectChange,
+    };
+    const headers = [
+        { label: "Mã tài khoản", key: "_id" },
+        { label: "Tên tài khoản", key: "name" },
+        { label: "Email", key: "email" },
+        { label: "Quyền hạn", key: "role" },
+        { label: "Đơn vị", key: "unit" },
+    ];
 
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
-            <Flex style={{ marginBottom: 16 }} justify='space-between' align='center'>
+            <Flex style={{ marginBottom: 16 }} justify='space-between'
+                align={isMobile ? 'stretch' : 'center'}
+                vertical={isMobile} gap={16}>
                 <h2>Danh sách tài khoản</h2>
-                {canCreateUser(user ?? {} as IUser) && (
-                    <Button onClick={showModal} type='primary' icon={<FolderAddOutlined />}>Thêm mới</Button>
-                )}
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                    {canDeleteUser(user ?? {} as IUser) && (<Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa</Button>)}
+                    {canCreateUser(user ?? {} as IUser) && <Button onClick={showModalImport} type='primary' icon={<CloudUploadOutlined />}>Import</Button>}
+                    {canReadUser(user ?? {} as IUser) && (<Button type='primary' icon={<CloudDownloadOutlined />}>
+                        <CSVLink
+                            data={dataExport}
+                            filename={"tai-khoan.csv"}
+                            headers={headers}
+                            separator={";"}
+                        >
+                            Export
+                        </CSVLink>
+                    </Button>)}
+                    {canCreateUser(user ?? {} as IUser) && (
+                        <Button onClick={showModal} type='primary' icon={<FolderAddOutlined />}>Thêm mới</Button>
+                    )}
+                </div>
+
             </Flex>
             <Table<IUser>
+                scroll={{ x: "max-content" }}
                 pagination={{
                     current: meta.current,
                     pageSize: meta.pageSize,
@@ -152,6 +228,7 @@ const TableUsers = (props: IProps) => {
                     pageSizeOptions: [5, 10, 20],
                     showSizeChanger: true,
                 }}
+                rowSelection={{ type: 'checkbox', ...rowSelection }}
                 columns={columns} dataSource={users} rowKey={"_id"} />
             <UserModal
                 setStatus={setStatus}
@@ -163,6 +240,11 @@ const TableUsers = (props: IProps) => {
                 setDataUpdate={setDataUpdate}
                 dataUpdate={dataUpdate}
                 units={units}
+            />
+            <ModalImport
+                access_token={access_token}
+                isModalImportOpen={isModalImportOpen}
+                setIsModalImportOpen={SetIsModalImportOpen}
             />
         </Context.Provider>
     )

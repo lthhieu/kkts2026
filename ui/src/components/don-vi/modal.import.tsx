@@ -154,6 +154,7 @@ const ModalImport = (props: IProps) => {
                 </Dragger>
                 <div>
                     <Table<IUpload>
+                        scroll={{ x: "max-content" }}
                         title={() => <span>Dữ liệu:</span>}
                         dataSource={dataImport} rowKey={'name'}
                         columns={[

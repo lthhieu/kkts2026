@@ -20,6 +20,13 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @Post('/create-many')
+  @ResponseMessage('Tạo người dùng thành công')
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Create, UserSubject))
+  createMany(@Body() createUserDto: CreateUserDto[]) {
+    return this.usersService.createMany(createUserDto);
+  }
+
   @Get()
   @ResponseMessage('Lấy danh sách người dùng thành công')
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Read, UserSubject))
@@ -39,6 +46,13 @@ export class UsersController {
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Update, UserSubject))
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
+  }
+
+  @Delete('/delete-many')
+  @ResponseMessage('Xóa người dùng thành công')
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Delete, UserSubject))
+  removeMany(@Body() ids: any[]) {
+    return this.usersService.removeMany(ids);
   }
 
   @Delete(':id')

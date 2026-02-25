@@ -31,3 +31,28 @@ export const handleDeleteUser = async (_id: string, access_token: string) => {
     updateTag('users')
     return res
 }
+export const handleCreateMany = async (data: any, access_token: string) => {
+
+    const res = await sendRequest<IBackendResponse<IUser>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/users/create-many`,
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+        body: data
+    })
+    updateTag('users')
+    return res
+}
+export const handleDeleteUserMany = async (ids: string[], access_token: string) => {
+    const res = await sendRequest<IBackendResponse<any>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/users/delete-many`,
+        method: 'DELETE',
+        headers: {
+            Authorization: `Bearer ${access_token!}`,
+        },
+        body: ids
+    })
+    updateTag('users')
+    return res
+}
