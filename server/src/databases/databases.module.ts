@@ -12,7 +12,7 @@ import { UsersService } from 'src/users/users.service';
   providers: [DatabasesService, UsersService],
   imports: [MongooseModule.forFeature([
     { name: User.name, schema: UserSchema },
-    // { name: Room.name, schema: RoomSchema },
+    { name: Room.name, schema: RoomSchema },
     { name: Unit.name, schema: UnitSchema },
   ])],
 })

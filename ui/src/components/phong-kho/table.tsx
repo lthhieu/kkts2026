@@ -1,8 +1,8 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Grid, Popconfirm, Space, Table, Typography, message, notification } from 'antd';
+import { Button, Flex, Grid, Input, Popconfirm, Select, Space, Table, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
-import { CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined } from '@ant-design/icons';
+import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { handleDeleteRoom, handleDeleteRoomMany } from '@/app/(main)/quan-tri/phong-kho/actions';
 import RoomModal from '@/components/phong-kho/modal';
@@ -38,6 +38,10 @@ const TableRooms = (props: IProps) => {
     const [dataExport, setDataExport] = useState<any[]>([])
     const screens = useBreakpoint();
     const isMobile = !screens.md;  // < 768px
+
+    const [selectedUnit, setSelectedUnit] = useState<string | undefined>(undefined);
+    const [selectedName, setSelectedName] = useState<string | undefined>(undefined);
+
 
     useEffect(() => {
         const filteredData = rooms.map(({ _id, name, currentDescription, currentUnit, currentYear }) => ({ _id, name, currentDescription, currentUnit: currentUnit.name || "", currentYear }));
@@ -161,6 +165,26 @@ const TableRooms = (props: IProps) => {
         { label: "Đơn vị", key: "currentUnit" },
         { label: "Năm", key: "currentYear" }
     ];
+    // Hàm xử lý khi chọn unit
+    const onChangeUnit = (value: string) => {
+        setSelectedUnit(value);
+    };
+
+    // Hàm xóa bộ lọc
+    const handleClear = () => {
+        setSelectedUnit(undefined);
+        setSelectedName(undefined)
+    };
+    const handleFilter = () => {
+        const params = new URLSearchParams()
+        if (selectedUnit) params.set('unit', selectedUnit)
+        if (selectedName) params.set('name', selectedName)
+
+        params.set('current', '1')
+        params.set('pageSize', meta.pageSize.toString())
+
+        router.push(`/quan-tri/phong-kho?${params.toString()}`)
+    }
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
@@ -185,6 +209,29 @@ const TableRooms = (props: IProps) => {
                     {canCreateRoom(user ?? {} as IUser) && <Button onClick={showModal} type='primary' icon={<FolderAddOutlined />}>Thêm mới</Button>}
                 </div>
             </Flex>
+            <Space style={{ marginBottom: 16, flexWrap: 'wrap' }}>
+                <Input allowClear placeholder="Tìm theo tên phòng - kho"
+                    onChange={(e) => setSelectedName(e.target.value)} value={selectedName} />
+                <Select
+                    style={{ width: '100%' }}
+                    showSearch={{ optionFilterProp: 'label' }}
+                    placeholder="Vui lòng chọn đơn vị"
+                    // 🔥 Gán value từ state vào đây
+                    value={selectedUnit}
+                    onChange={onChangeUnit}
+                    allowClear
+                    options={
+                        units && units.length > 0
+                            ? units.map(({ _id, name }) => ({
+                                value: _id,
+                                label: name
+                            }))
+                            : []
+                    }
+                />
+                <Button icon={<ClearOutlined />} onClick={handleClear}>Xóa bộ lọc</Button>
+                <Button icon={<SearchOutlined />} type='primary' onClick={handleFilter}>Lọc</Button>
+            </Space>
             <Table<IRoom>
                 scroll={{ x: "max-content" }}
                 pagination={{

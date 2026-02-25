@@ -10,8 +10,7 @@ export async function handleSignOut(access_token: string) {
             Authorization: `Bearer ${access_token}`,
         },
     })
-    console.log(res.message)
-    await signOut()
+    await signOut({ redirectTo: "/dang-nhap" })
 
 }
 

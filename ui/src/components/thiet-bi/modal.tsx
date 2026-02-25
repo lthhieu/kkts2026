@@ -227,7 +227,7 @@ const DeviceModal = (props: IProps) => {
                                     placeholder="Vui lòng chọn loại thiết bị"
                                     onChange={onChange}
                                     options={[
-                                        { value: 'Công cụ, dụng cụ', label: 'Công cụ, dụng cụ' },
+                                        { value: 'Công cụ dụng cụ', label: 'Công cụ, dụng cụ' },
                                         { value: 'Tài sản cố định', label: 'Tài sản cố định' }
                                     ]}
                                 />
