@@ -1,8 +1,8 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Grid, Popconfirm, Space, Table, Typography, message, notification } from 'antd';
+import { Button, Flex, Grid, Input, Popconfirm, Space, Table, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
-import { CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined } from '@ant-design/icons';
+import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { handleDeleteUnit, handleDeleteUnitMany } from '@/app/(main)/quan-tri/don-vi/actions';
 import UnitModal from '@/components/don-vi/modal';
@@ -37,6 +37,8 @@ const TableUnits = (props: IProps) => {
     const [dataExport, setDataExport] = useState<any[]>([])
     const screens = useBreakpoint();
     const isMobile = !screens.md;  // < 768px
+    const [selectedName, setSelectedName] = useState<string | undefined>(undefined);
+
 
     useEffect(() => {
         const filteredData = units.map(({ _id, name }) => ({ _id, name }));
@@ -149,6 +151,19 @@ const TableUnits = (props: IProps) => {
         { label: "Tên đơn vị", key: "name" }
     ];
 
+    // Hàm xóa bộ lọc
+    const handleClear = () => {
+        setSelectedName(undefined)
+    };
+    const handleFilter = () => {
+        const params = new URLSearchParams()
+        if (selectedName) params.set('name', selectedName)
+
+        params.set('current', '1')
+        params.set('pageSize', meta.pageSize.toString())
+
+        router.push(`/quan-tri/don-vi?${params.toString()}`)
+    }
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
@@ -172,6 +187,13 @@ const TableUnits = (props: IProps) => {
                     {canCreateUnit(user ?? {} as IUser) && (<Button onClick={showModal} type='primary' icon={<FolderAddOutlined />}>Thêm mới</Button>)}
                 </div>
             </Flex>
+            {canReadUnit(user ?? {} as IUser) && (<Space style={{ marginBottom: 16, flexWrap: 'wrap' }}>
+                <Input allowClear placeholder="Tìm theo tên đơn vị"
+                    onChange={(e) => setSelectedName(e.target.value)} value={selectedName} />
+
+                <Button icon={<ClearOutlined />} onClick={handleClear}>Xóa bộ lọc</Button>
+                <Button icon={<SearchOutlined />} type='primary' onClick={handleFilter}>Lọc</Button>
+            </Space>)}
             <Table<IUnit>
                 scroll={{ x: "max-content" }}
                 pagination={{

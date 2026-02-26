@@ -209,7 +209,7 @@ const TableRooms = (props: IProps) => {
                     {canCreateRoom(user ?? {} as IUser) && <Button onClick={showModal} type='primary' icon={<FolderAddOutlined />}>Thêm mới</Button>}
                 </div>
             </Flex>
-            <Space style={{ marginBottom: 16, flexWrap: 'wrap' }}>
+            {canReadRoom(user ?? {} as IUser) && (<Space style={{ marginBottom: 16, flexWrap: 'wrap' }}>
                 <Input allowClear placeholder="Tìm theo tên phòng - kho"
                     onChange={(e) => setSelectedName(e.target.value)} value={selectedName} />
                 <Select
@@ -231,7 +231,7 @@ const TableRooms = (props: IProps) => {
                 />
                 <Button icon={<ClearOutlined />} onClick={handleClear}>Xóa bộ lọc</Button>
                 <Button icon={<SearchOutlined />} type='primary' onClick={handleFilter}>Lọc</Button>
-            </Space>
+            </Space>)}
             <Table<IRoom>
                 scroll={{ x: "max-content" }}
                 pagination={{

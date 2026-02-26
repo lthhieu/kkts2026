@@ -148,6 +148,23 @@ export const INIT_ROOMS = [
         "updatedAt": "2026-02-25T08:14:03.152Z"
     },
     {
+        "_id": "699eaf4bf3baa0e9c8f2f8e4",
+        "name": "A105",
+        "info": [
+            {
+                "description": "A105",
+                "year": 2026,
+                "unit": "69707c5eca8fa40cbe19ec9b"
+            }
+        ],
+        "currentDescription": "A105",
+        "currentYear": 2026,
+        "currentUnit": "69707c5eca8fa40cbe19ec9b",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.154Z",
+        "updatedAt": "2026-02-25T08:14:03.154Z"
+    },
+    {
         "_id": "699eaf4bf3baa0e9c8f2f8b2",
         "name": "A106",
         "info": [
@@ -402,7 +419,23 @@ export const INIT_ROOMS = [
         "createdAt": "2026-02-25T08:14:03.146Z",
         "updatedAt": "2026-02-25T08:14:03.146Z"
     },
-
+    {
+        "_id": "699eaf4bf3baa0e9c8f2f8c3",
+        "name": "B, C",
+        "info": [
+            {
+                "description": "B, C",
+                "year": 2026,
+                "unit": "69707cf0ca8fa40cbe19eca5"
+            }
+        ],
+        "currentDescription": "B, C",
+        "currentYear": 2026,
+        "currentUnit": "69707cf0ca8fa40cbe19eca5",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.153Z",
+        "updatedAt": "2026-02-25T08:14:03.153Z"
+    },
     {
         "_id": "699eaf4bf3baa0e9c8f2f8cb",
         "name": "B101",
@@ -450,6 +483,23 @@ export const INIT_ROOMS = [
         "currentDescription": "B103",
         "currentYear": 2026,
         "currentUnit": "69707c9bca8fa40cbe19ec9f",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.154Z",
+        "updatedAt": "2026-02-25T08:14:03.154Z"
+    },
+    {
+        "_id": "699eaf4bf3baa0e9c8f2f8d3",
+        "name": "B106",
+        "info": [
+            {
+                "description": "B106",
+                "year": 2026,
+                "unit": "69707c5eca8fa40cbe19ec9b"
+            }
+        ],
+        "currentDescription": "B106",
+        "currentYear": 2026,
+        "currentUnit": "69707c5eca8fa40cbe19ec9b",
         "__v": 0,
         "createdAt": "2026-02-25T08:14:03.154Z",
         "updatedAt": "2026-02-25T08:14:03.154Z"
@@ -796,17 +846,17 @@ export const INIT_ROOMS = [
     },
     {
         "_id": "699eaf4bf3baa0e9c8f2f8c5",
-        "name": "Khu C",
+        "name": "C",
         "info": [
             {
-                "description": "Khu C",
+                "description": "C",
                 "year": 2026,
-                "unit": "69707c5eca8fa40cbe19ec9b"
+                "unit": "69707cf0ca8fa40cbe19eca5"
             }
         ],
-        "currentDescription": "Khu C",
+        "currentDescription": "C",
         "currentYear": 2026,
-        "currentUnit": "69707c5eca8fa40cbe19ec9b",
+        "currentUnit": "69707cf0ca8fa40cbe19eca5",
         "__v": 0,
         "createdAt": "2026-02-25T08:14:03.153Z",
         "updatedAt": "2026-02-25T08:14:03.153Z"
@@ -844,6 +894,23 @@ export const INIT_ROOMS = [
         "__v": 0,
         "createdAt": "2026-02-25T08:14:03.156Z",
         "updatedAt": "2026-02-25T08:14:03.156Z"
+    },
+    {
+        "_id": "699eaf4bf3baa0e9c8f2f8e2",
+        "name": "C102",
+        "info": [
+            {
+                "description": "C102",
+                "year": 2026,
+                "unit": "69707c5eca8fa40cbe19ec9b"
+            }
+        ],
+        "currentDescription": "C102",
+        "currentYear": 2026,
+        "currentUnit": "69707c5eca8fa40cbe19ec9b",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.154Z",
+        "updatedAt": "2026-02-25T08:14:03.154Z"
     },
     {
         "_id": "699eaf4bf3baa0e9c8f2f8fe",
@@ -914,6 +981,23 @@ export const INIT_ROOMS = [
         "updatedAt": "2026-02-25T08:14:03.154Z"
     },
     {
+        "_id": "699eaf4bf3baa0e9c8f2f8e7",
+        "name": "C106",
+        "info": [
+            {
+                "description": "C106",
+                "year": 2026,
+                "unit": "69707c5eca8fa40cbe19ec9b"
+            }
+        ],
+        "currentDescription": "C106",
+        "currentYear": 2026,
+        "currentUnit": "69707c5eca8fa40cbe19ec9b",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.154Z",
+        "updatedAt": "2026-02-25T08:14:03.154Z"
+    },
+    {
         "_id": "699eaf4bf3baa0e9c8f2f8e8",
         "name": "C1101",
         "info": [
@@ -931,6 +1015,23 @@ export const INIT_ROOMS = [
         "updatedAt": "2026-02-25T08:14:03.154Z"
     },
     {
+        "_id": "699eaf4bf3baa0e9c8f2f908",
+        "name": "C1101",
+        "info": [
+            {
+                "description": "C1101",
+                "year": 2026,
+                "unit": "69707c5eca8fa40cbe19ec9b"
+            }
+        ],
+        "currentDescription": "C1101",
+        "currentYear": 2026,
+        "currentUnit": "69707c5eca8fa40cbe19ec9b",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.156Z",
+        "updatedAt": "2026-02-25T08:14:03.156Z"
+    },
+    {
         "_id": "699eaf4bf3baa0e9c8f2f8e9",
         "name": "C1102",
         "info": [
@@ -946,6 +1047,23 @@ export const INIT_ROOMS = [
         "__v": 0,
         "createdAt": "2026-02-25T08:14:03.154Z",
         "updatedAt": "2026-02-25T08:14:03.154Z"
+    },
+    {
+        "_id": "699eaf4bf3baa0e9c8f2f909",
+        "name": "C1102",
+        "info": [
+            {
+                "description": "C1102",
+                "year": 2026,
+                "unit": "69707c5eca8fa40cbe19ec9b"
+            }
+        ],
+        "currentDescription": "C1102",
+        "currentYear": 2026,
+        "currentUnit": "69707c5eca8fa40cbe19ec9b",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.156Z",
+        "updatedAt": "2026-02-25T08:14:03.156Z"
     },
     {
         "_id": "699eaf4bf3baa0e9c8f2f8ea",
@@ -982,6 +1100,23 @@ export const INIT_ROOMS = [
         "updatedAt": "2026-02-25T08:14:03.156Z"
     },
     {
+        "_id": "699eaf4bf3baa0e9c8f2f90b",
+        "name": "C1201",
+        "info": [
+            {
+                "description": "C1201",
+                "year": 2026,
+                "unit": "69707c5eca8fa40cbe19ec9b"
+            }
+        ],
+        "currentDescription": "C1201",
+        "currentYear": 2026,
+        "currentUnit": "69707c5eca8fa40cbe19ec9b",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.156Z",
+        "updatedAt": "2026-02-25T08:14:03.156Z"
+    },
+    {
         "_id": "699eaf4bf3baa0e9c8f2f8bc",
         "name": "C1201",
         "info": [
@@ -997,6 +1132,23 @@ export const INIT_ROOMS = [
         "__v": 0,
         "createdAt": "2026-02-25T08:14:03.153Z",
         "updatedAt": "2026-02-25T08:14:03.153Z"
+    },
+    {
+        "_id": "699eaf4bf3baa0e9c8f2f901",
+        "name": "C202",
+        "info": [
+            {
+                "description": "C202",
+                "year": 2026,
+                "unit": "69707c5eca8fa40cbe19ec9b"
+            }
+        ],
+        "currentDescription": "C202",
+        "currentYear": 2026,
+        "currentUnit": "69707c5eca8fa40cbe19ec9b",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.155Z",
+        "updatedAt": "2026-02-25T08:14:03.155Z"
     },
     {
         "_id": "699eaf4bf3baa0e9c8f2f882",
@@ -1391,15 +1543,15 @@ export const INIT_ROOMS = [
     },
     {
         "_id": "699eaf4bf3baa0e9c8f2f927",
-        "name": "Căn tin (KTX)",
+        "name": "Căn tin",
         "info": [
             {
-                "description": "Căn tin (KTX)",
+                "description": "Căn tin",
                 "year": 2026,
                 "unit": "699ead81f3baa0e9c8f2f84a"
             }
         ],
-        "currentDescription": "Căn tin (KTX)",
+        "currentDescription": "Căn tin",
         "currentYear": 2026,
         "currentUnit": "699ead81f3baa0e9c8f2f84a",
         "__v": 0,
@@ -1422,6 +1574,23 @@ export const INIT_ROOMS = [
         "__v": 0,
         "createdAt": "2026-02-25T08:14:03.153Z",
         "updatedAt": "2026-02-25T08:14:03.153Z"
+    },
+    {
+        "_id": "699eaf4bf3baa0e9c8f2f90c",
+        "name": "Căn tin C5",
+        "info": [
+            {
+                "description": "Căn tin C5",
+                "year": 2026,
+                "unit": "69707c5eca8fa40cbe19ec9b"
+            }
+        ],
+        "currentDescription": "Căn tin C5",
+        "currentYear": 2026,
+        "currentUnit": "69707c5eca8fa40cbe19ec9b",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.156Z",
+        "updatedAt": "2026-02-25T08:14:03.156Z"
     },
     {
         "_id": "699eaf4bf3baa0e9c8f2f8eb",
@@ -2002,6 +2171,23 @@ export const INIT_ROOMS = [
         "updatedAt": "2026-02-25T08:14:03.157Z"
     },
     {
+        "_id": "699eaf4bf3baa0e9c8f2f8cf",
+        "name": "KTX",
+        "info": [
+            {
+                "description": "KTX",
+                "year": 2026,
+                "unit": "69707c9bca8fa40cbe19ec9f"
+            }
+        ],
+        "currentDescription": "KTX",
+        "currentYear": 2026,
+        "currentUnit": "69707c9bca8fa40cbe19ec9f",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.154Z",
+        "updatedAt": "2026-02-25T08:14:03.154Z"
+    },
+    {
         "_id": "699eaf4bf3baa0e9c8f2f877",
         "name": "Kho E",
         "info": [
@@ -2274,6 +2460,23 @@ export const INIT_ROOMS = [
         "updatedAt": "2026-02-25T08:14:03.154Z"
     },
     {
+        "_id": "699eaf4bf3baa0e9c8f2f90d",
+        "name": "Khu C",
+        "info": [
+            {
+                "description": "Khu C",
+                "year": 2026,
+                "unit": "69707c5eca8fa40cbe19ec9b"
+            }
+        ],
+        "currentDescription": "Khu C",
+        "currentYear": 2026,
+        "currentUnit": "69707c5eca8fa40cbe19ec9b",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.156Z",
+        "updatedAt": "2026-02-25T08:14:03.156Z"
+    },
+    {
         "_id": "699eaf4bf3baa0e9c8f2f8ef",
         "name": "Khu D",
         "info": [
@@ -2496,15 +2699,15 @@ export const INIT_ROOMS = [
     },
     {
         "_id": "699eaf4bf3baa0e9c8f2f924",
-        "name": "Nhà A (KTX)",
+        "name": "Nhà A",
         "info": [
             {
-                "description": "Nhà A (KTX)",
+                "description": "Nhà A",
                 "year": 2026,
                 "unit": "699ead81f3baa0e9c8f2f84a"
             }
         ],
-        "currentDescription": "Nhà A (KTX)",
+        "currentDescription": "Nhà A",
         "currentYear": 2026,
         "currentUnit": "699ead81f3baa0e9c8f2f84a",
         "__v": 0,
@@ -2513,15 +2716,15 @@ export const INIT_ROOMS = [
     },
     {
         "_id": "699eaf4bf3baa0e9c8f2f92a",
-        "name": "Nhà A & B (KTX)",
+        "name": "Nhà A & B",
         "info": [
             {
-                "description": "Nhà A & B (KTX)",
+                "description": "Nhà A & B",
                 "year": 2026,
                 "unit": "699ead81f3baa0e9c8f2f84a"
             }
         ],
-        "currentDescription": "Nhà A & B (KTX)",
+        "currentDescription": "Nhà A & B",
         "currentYear": 2026,
         "currentUnit": "699ead81f3baa0e9c8f2f84a",
         "__v": 0,
@@ -2530,15 +2733,32 @@ export const INIT_ROOMS = [
     },
     {
         "_id": "699eaf4bf3baa0e9c8f2f925",
-        "name": "Nhà B (KTX)",
+        "name": "Nhà B",
         "info": [
             {
-                "description": "Nhà B (KTX)",
+                "description": "Nhà B",
                 "year": 2026,
                 "unit": "699ead81f3baa0e9c8f2f84a"
             }
         ],
-        "currentDescription": "Nhà B (KTX)",
+        "currentDescription": "Nhà B",
+        "currentYear": 2026,
+        "currentUnit": "699ead81f3baa0e9c8f2f84a",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.157Z",
+        "updatedAt": "2026-02-25T08:14:03.157Z"
+    },
+    {
+        "_id": "699eaf4bf3baa0e9c8f2f926",
+        "name": "Nhà B ",
+        "info": [
+            {
+                "description": "Nhà B ",
+                "year": 2026,
+                "unit": "699ead81f3baa0e9c8f2f84a"
+            }
+        ],
+        "currentDescription": "Nhà B ",
         "currentYear": 2026,
         "currentUnit": "699ead81f3baa0e9c8f2f84a",
         "__v": 0,
@@ -2614,6 +2834,23 @@ export const INIT_ROOMS = [
         "updatedAt": "2026-02-25T08:14:03.154Z"
     },
     {
+        "_id": "699eaf4bf3baa0e9c8f2f918",
+        "name": "Nhà máy nước",
+        "info": [
+            {
+                "description": "Nhà máy nước",
+                "year": 2026,
+                "unit": "69707c5eca8fa40cbe19ec9b"
+            }
+        ],
+        "currentDescription": "Nhà máy nước",
+        "currentYear": 2026,
+        "currentUnit": "69707c5eca8fa40cbe19ec9b",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.156Z",
+        "updatedAt": "2026-02-25T08:14:03.156Z"
+    },
+    {
         "_id": "699eaf4bf3baa0e9c8f2f8a2",
         "name": "Nhà nấm",
         "info": [
@@ -2629,6 +2866,23 @@ export const INIT_ROOMS = [
         "__v": 0,
         "createdAt": "2026-02-25T08:14:03.152Z",
         "updatedAt": "2026-02-25T08:14:03.152Z"
+    },
+    {
+        "_id": "699eaf4bf3baa0e9c8f2f921",
+        "name": "Nhà thi đấu",
+        "info": [
+            {
+                "description": "Nhà thi đấu",
+                "year": 2026,
+                "unit": "699eada2f3baa0e9c8f2f84e"
+            }
+        ],
+        "currentDescription": "Nhà thi đấu",
+        "currentYear": 2026,
+        "currentUnit": "699eada2f3baa0e9c8f2f84e",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.157Z",
+        "updatedAt": "2026-02-25T08:14:03.157Z"
     },
     {
         "_id": "699eaf4bf3baa0e9c8f2f873",
@@ -2784,6 +3038,23 @@ export const INIT_ROOMS = [
         "updatedAt": "2026-02-25T08:14:03.148Z"
     },
     {
+        "_id": "699eaf4bf3baa0e9c8f2f8d7",
+        "name": "Phòng Thầy Cang",
+        "info": [
+            {
+                "description": "Phòng Thầy Cang",
+                "year": 2026,
+                "unit": "69707c5eca8fa40cbe19ec9b"
+            }
+        ],
+        "currentDescription": "Phòng Thầy Cang",
+        "currentYear": 2026,
+        "currentUnit": "69707c5eca8fa40cbe19ec9b",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.154Z",
+        "updatedAt": "2026-02-25T08:14:03.154Z"
+    },
+    {
         "_id": "699eaf4bf3baa0e9c8f2f914",
         "name": "Phòng Thầy Cang",
         "info": [
@@ -2818,6 +3089,23 @@ export const INIT_ROOMS = [
         "updatedAt": "2026-02-25T08:14:03.154Z"
     },
     {
+        "_id": "699eaf4bf3baa0e9c8f2f913",
+        "name": "Phòng Thầy Kỳ",
+        "info": [
+            {
+                "description": "Phòng Thầy Kỳ",
+                "year": 2026,
+                "unit": "69707c5eca8fa40cbe19ec9b"
+            }
+        ],
+        "currentDescription": "Phòng Thầy Kỳ",
+        "currentYear": 2026,
+        "currentUnit": "69707c5eca8fa40cbe19ec9b",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.156Z",
+        "updatedAt": "2026-02-25T08:14:03.156Z"
+    },
+    {
         "_id": "699eaf4bf3baa0e9c8f2f8da",
         "name": "Phòng Thầy Phi",
         "info": [
@@ -2833,6 +3121,40 @@ export const INIT_ROOMS = [
         "__v": 0,
         "createdAt": "2026-02-25T08:14:03.154Z",
         "updatedAt": "2026-02-25T08:14:03.154Z"
+    },
+    {
+        "_id": "699eaf4bf3baa0e9c8f2f911",
+        "name": "Phòng Thầy Phi",
+        "info": [
+            {
+                "description": "Phòng Thầy Phi",
+                "year": 2026,
+                "unit": "69707c5eca8fa40cbe19ec9b"
+            }
+        ],
+        "currentDescription": "Phòng Thầy Phi",
+        "currentYear": 2026,
+        "currentUnit": "69707c5eca8fa40cbe19ec9b",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.156Z",
+        "updatedAt": "2026-02-25T08:14:03.156Z"
+    },
+    {
+        "_id": "699eaf4bf3baa0e9c8f2f910",
+        "name": "Phòng Thầy Phi ",
+        "info": [
+            {
+                "description": "Phòng Thầy Phi ",
+                "year": 2026,
+                "unit": "69707c5eca8fa40cbe19ec9b"
+            }
+        ],
+        "currentDescription": "Phòng Thầy Phi ",
+        "currentYear": 2026,
+        "currentUnit": "69707c5eca8fa40cbe19ec9b",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.156Z",
+        "updatedAt": "2026-02-25T08:14:03.156Z"
     },
     {
         "_id": "699eaf4bf3baa0e9c8f2f912",
@@ -2852,6 +3174,23 @@ export const INIT_ROOMS = [
         "updatedAt": "2026-02-25T08:14:03.156Z"
     },
     {
+        "_id": "699eaf4bf3baa0e9c8f2f8d9",
+        "name": "Phòng Thầy Sang",
+        "info": [
+            {
+                "description": "Phòng Thầy Sang",
+                "year": 2026,
+                "unit": "69707c5eca8fa40cbe19ec9b"
+            }
+        ],
+        "currentDescription": "Phòng Thầy Sang",
+        "currentYear": 2026,
+        "currentUnit": "69707c5eca8fa40cbe19ec9b",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.154Z",
+        "updatedAt": "2026-02-25T08:14:03.154Z"
+    },
+    {
         "_id": "699eaf4bf3baa0e9c8f2f915",
         "name": "Phòng Thầy Tuấn",
         "info": [
@@ -2869,6 +3208,23 @@ export const INIT_ROOMS = [
         "updatedAt": "2026-02-25T08:14:03.156Z"
     },
     {
+        "_id": "699eaf4bf3baa0e9c8f2f8d8",
+        "name": "Phòng Thầy Tuấn ",
+        "info": [
+            {
+                "description": "Phòng Thầy Tuấn ",
+                "year": 2026,
+                "unit": "69707c5eca8fa40cbe19ec9b"
+            }
+        ],
+        "currentDescription": "Phòng Thầy Tuấn ",
+        "currentYear": 2026,
+        "currentUnit": "69707c5eca8fa40cbe19ec9b",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.154Z",
+        "updatedAt": "2026-02-25T08:14:03.154Z"
+    },
+    {
         "_id": "699eaf4bf3baa0e9c8f2f90e",
         "name": "Phòng Thầy Tùng",
         "info": [
@@ -2879,6 +3235,40 @@ export const INIT_ROOMS = [
             }
         ],
         "currentDescription": "Phòng Thầy Tùng",
+        "currentYear": 2026,
+        "currentUnit": "69707c5eca8fa40cbe19ec9b",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.156Z",
+        "updatedAt": "2026-02-25T08:14:03.156Z"
+    },
+    {
+        "_id": "699eaf4bf3baa0e9c8f2f8d6",
+        "name": "Phòng Thầy Tùng ",
+        "info": [
+            {
+                "description": "Phòng Thầy Tùng ",
+                "year": 2026,
+                "unit": "69707c5eca8fa40cbe19ec9b"
+            }
+        ],
+        "currentDescription": "Phòng Thầy Tùng ",
+        "currentYear": 2026,
+        "currentUnit": "69707c5eca8fa40cbe19ec9b",
+        "__v": 0,
+        "createdAt": "2026-02-25T08:14:03.154Z",
+        "updatedAt": "2026-02-25T08:14:03.154Z"
+    },
+    {
+        "_id": "699eaf4bf3baa0e9c8f2f90f",
+        "name": "Phòng Thầy Tùng ",
+        "info": [
+            {
+                "description": "Phòng Thầy Tùng ",
+                "year": 2026,
+                "unit": "69707c5eca8fa40cbe19ec9b"
+            }
+        ],
+        "currentDescription": "Phòng Thầy Tùng ",
         "currentYear": 2026,
         "currentUnit": "69707c5eca8fa40cbe19ec9b",
         "__v": 0,
@@ -2938,15 +3328,15 @@ export const INIT_ROOMS = [
     },
     {
         "_id": "699eaf4bf3baa0e9c8f2f8cd",
-        "name": "Phòng khách CB-GV",
+        "name": "Phòng khách \nCB-GV",
         "info": [
             {
-                "description": "Phòng khách CB-GV",
+                "description": "Phòng khách \nCB-GV",
                 "year": 2026,
                 "unit": "69707c9bca8fa40cbe19ec9f"
             }
         ],
-        "currentDescription": "Phòng khách CB-GV",
+        "currentDescription": "Phòng khách \nCB-GV",
         "currentYear": 2026,
         "currentUnit": "69707c9bca8fa40cbe19ec9f",
         "__v": 0,

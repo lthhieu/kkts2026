@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Grid, Popconfirm, Select, Space, Table, message, notification } from 'antd';
+import { Button, Flex, Grid, Input, Popconfirm, Select, Space, Table, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
@@ -44,6 +44,9 @@ const TableDevices = (props: IProps) => {
     const [dataExport, setDataExport] = useState<any[]>([])
     const screens = useBreakpoint();
     const isMobile = !screens.md;  // < 768px
+
+    const [selectedName, setSelectedName] = useState<string | undefined>(undefined);
+
 
     useEffect(() => {
         const filteredData = devices.map(({ _id, name, description, currentRoom, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note, type }) =>
@@ -188,6 +191,7 @@ const TableDevices = (props: IProps) => {
         if (selectedRoom) params.set('currentRoom', selectedRoom)
         if (selectedUnit) params.set('unit', selectedUnit)
         if (selectedType) params.set('type', selectedType)
+        if (selectedName) params.set('name', selectedName)
 
         params.set('current', '1')
         params.set('pageSize', meta.pageSize.toString())
@@ -273,7 +277,9 @@ const TableDevices = (props: IProps) => {
                     </div>
                 )}
             </Flex>
-            <Space style={{ marginBottom: 16, flexWrap: 'wrap' }}>
+            {canReadDevice(user ?? {} as IUser) && (<Space style={{ marginBottom: 16, flexWrap: 'wrap' }}>
+                <Input allowClear placeholder="Tìm theo tên thiết bị"
+                    onChange={(e) => setSelectedName(e.target.value)} value={selectedName} />
                 <Select
                     style={{ width: '100%' }}
                     showSearch={{ optionFilterProp: 'label' }}
@@ -322,7 +328,7 @@ const TableDevices = (props: IProps) => {
                 />
                 <Button icon={<ClearOutlined />} onClick={handleClear}>Xóa bộ lọc</Button>
                 <Button icon={<SearchOutlined />} type='primary' onClick={handleFilter}>Lọc</Button>
-            </Space>
+            </Space>)}
             <Table<IDevice>
                 scroll={{ x: "max-content" }}
                 pagination={{

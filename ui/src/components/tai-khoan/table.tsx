@@ -1,8 +1,8 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Grid, Popconfirm, Space, Table, Tag, message, notification } from 'antd';
+import { Button, Flex, Grid, Input, Popconfirm, Select, Space, Table, Tag, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
-import { CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined } from '@ant-design/icons';
+import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { handleDeleteUser, handleDeleteUserMany } from '@/app/(main)/quan-tri/tai-khoan/actions';
 import UserModal from '@/components/tai-khoan/modal';
@@ -54,6 +54,11 @@ const TableUsers = (props: IProps) => {
     const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [dataExport, setDataExport] = useState<any[]>([])
+
+    const [selectedUnit, setSelectedUnit] = useState<string | undefined>(undefined);
+    const [selectedRole, setSelectedRole] = useState<string | undefined>(undefined);
+
+    const [selectedEmail, setSelectedEmail] = useState<string | undefined>(undefined);
 
     useEffect(() => {
         const filteredData = users.map(({ _id, name, email, role, unit }) =>
@@ -191,6 +196,34 @@ const TableUsers = (props: IProps) => {
         { label: "Đơn vị", key: "unit" },
     ];
 
+    // Hàm xử lý khi chọn unit
+    const onChangeUnit = (value: string) => {
+        setSelectedUnit(value);
+    };
+
+    // Hàm xử lý khi chọn role
+    const onChangeRole = (value: string) => {
+        setSelectedRole(value);
+    };
+
+    // Hàm xóa bộ lọc
+    const handleClear = () => {
+        setSelectedUnit(undefined);
+        setSelectedRole(undefined);
+        setSelectedEmail(undefined);
+    };
+    const handleFilter = () => {
+        const params = new URLSearchParams()
+        if (selectedUnit) params.set('unit', selectedUnit)
+        if (selectedRole) params.set('role', selectedRole)
+        if (selectedEmail) params.set('email', selectedEmail)
+
+        params.set('current', '1')
+        params.set('pageSize', meta.pageSize.toString())
+
+        router.push(`/quan-tri/tai-khoan?${params.toString()}`)
+    }
+
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
@@ -217,6 +250,45 @@ const TableUsers = (props: IProps) => {
                 </div>
 
             </Flex>
+            {canReadUser(user ?? {} as IUser) && (<Space style={{ marginBottom: 16, flexWrap: 'wrap' }}>
+                <Input allowClear placeholder="Tìm theo địa chỉ email"
+                    onChange={(e) => setSelectedEmail(e.target.value)} value={selectedEmail} />
+                <Select
+                    style={{ width: '100%' }}
+                    showSearch={{ optionFilterProp: 'label' }}
+                    placeholder="Vui lòng chọn đơn vị"
+                    // 🔥 Gán value từ state vào đây
+                    value={selectedUnit}
+                    onChange={onChangeUnit}
+                    allowClear
+                    options={
+                        units && units.length > 0
+                            ? units.map(({ _id, name }) => ({
+                                value: _id,
+                                label: name
+                            }))
+                            : []
+                    }
+                />
+                <Select
+                    style={{ width: '100%' }}
+                    showSearch={{ optionFilterProp: 'label' }}
+                    placeholder="Vui lòng chọn quyền hạn"
+                    // 🔥 Gán value từ state vào đây
+                    value={selectedRole}
+                    onChange={onChangeRole}
+                    allowClear
+                    options={[
+                        { value: 'superadmin', label: 'Quản trị hệ thống' },
+                        { value: 'admin', label: 'Quản trị' },
+                        { value: 'thukho', label: 'Thủ kho' },
+                        { value: 'truongdv', label: 'Trưởng đơn vị' },
+                        { value: 'gv', label: 'Giáo viên' }
+                    ]}
+                />
+                <Button icon={<ClearOutlined />} onClick={handleClear}>Xóa bộ lọc</Button>
+                <Button icon={<SearchOutlined />} type='primary' onClick={handleFilter}>Lọc</Button>
+            </Space>)}
             <Table<IUser>
                 scroll={{ x: "max-content" }}
                 pagination={{
