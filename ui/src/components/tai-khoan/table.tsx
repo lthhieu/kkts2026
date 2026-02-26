@@ -154,7 +154,15 @@ const TableUsers = (props: IProps) => {
         },
     ];
     const handleOnChangePage = (current: number, pageSize: number) => {
-        router.push(`/quan-tri/tai-khoan?current=${current}&pageSize=${pageSize}`);
+        const params = new URLSearchParams()
+
+        if (selectedEmail) params.set('email', selectedEmail)
+        if (selectedUnit) params.set('unit', selectedUnit)
+        if (selectedRole) params.set('role', selectedRole)
+
+        params.set('current', current.toString())
+        params.set('pageSize', pageSize.toString())
+        router.push(`/quan-tri/tai-khoan?${params.toString()}`);
     };
     const deleteUserMany = async (ids: string[]) => {
         const res = await handleDeleteUserMany(ids, access_token)

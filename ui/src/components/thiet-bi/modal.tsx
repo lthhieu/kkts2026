@@ -417,9 +417,9 @@ const DeviceModal = (props: IProps) => {
                                                         onChange={onChange}
                                                         options={
                                                             rooms && rooms.length > 0
-                                                                ? rooms.map(({ _id, name }) => ({
+                                                                ? rooms.map(({ _id, name, currentUnit }) => ({
                                                                     value: _id,
-                                                                    label: name
+                                                                    label: `${name} - ${currentUnit?.name || 'N/A'}`
                                                                 }))
                                                                 : []
                                                         }

@@ -126,7 +126,13 @@ const TableUnits = (props: IProps) => {
         },
     ];
     const handleOnChangePage = (current: number, pageSize: number) => {
-        router.push(`/quan-tri/don-vi?current=${current}&pageSize=${pageSize}`);
+        const params = new URLSearchParams()
+
+        if (selectedName) params.set('name', selectedName)
+
+        params.set('current', current.toString())
+        params.set('pageSize', pageSize.toString())
+        router.push(`/quan-tri/don-vi?${params.toString()}`);
     };
     const start = () => {
         setLoading(true);

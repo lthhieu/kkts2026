@@ -6,6 +6,7 @@ import { User, UserSchema } from 'src/users/schemas/user.schema';
 import { Unit, UnitSchema } from 'src/units/schemas/unit.schema';
 import { Room, RoomSchema } from 'src/rooms/schemas/room.schema';
 import { UsersService } from 'src/users/users.service';
+import { Device, DeviceSchema } from 'src/devices/schemas/device.schema';
 
 @Module({
   controllers: [DatabasesController],
@@ -14,6 +15,7 @@ import { UsersService } from 'src/users/users.service';
     { name: User.name, schema: UserSchema },
     { name: Room.name, schema: RoomSchema },
     { name: Unit.name, schema: UnitSchema },
+    { name: Device.name, schema: DeviceSchema },
   ])],
 })
 export class DatabasesModule { }

@@ -137,7 +137,14 @@ const TableRooms = (props: IProps) => {
         },
     ];
     const handleOnChangePage = (current: number, pageSize: number) => {
-        router.push(`/quan-tri/phong-kho?current=${current}&pageSize=${pageSize}`);
+        const params = new URLSearchParams()
+
+        if (selectedName) params.set('name', selectedName)
+        if (selectedUnit) params.set('unit', selectedUnit)
+
+        params.set('current', current.toString())
+        params.set('pageSize', pageSize.toString())
+        router.push(`/quan-tri/phong-kho?${params.toString()}`);
     };
 
     const start = () => {

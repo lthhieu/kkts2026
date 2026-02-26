@@ -2,7 +2,8 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { INIT_ROOMS, INIT_UNITS } from 'src/databases/sample';
+import { INIT_DEVICES, INIT_ROOMS, INIT_UNITS } from 'src/databases/sample';
+import { Device } from 'src/devices/schemas/device.schema';
 import { Room } from 'src/rooms/schemas/room.schema';
 import { Unit } from 'src/units/schemas/unit.schema';
 import { User } from 'src/users/schemas/user.schema';
@@ -14,6 +15,7 @@ export class DatabasesService implements OnModuleInit {
     constructor(@InjectModel(User.name) private userModel: Model<User>,
         @InjectModel(Unit.name) private unitModel: Model<Unit>,
         @InjectModel(Room.name) private roomModel: Model<Room>,
+        @InjectModel(Device.name) private deviceModel: Model<Device>,
         private usersService: UsersService,
         private configService: ConfigService) { }
     async onModuleInit() {
@@ -22,6 +24,7 @@ export class DatabasesService implements OnModuleInit {
             const countUser = await this.userModel.countDocuments({})
             const countUnit = await this.unitModel.countDocuments({})
             const countRoom = await this.roomModel.countDocuments({})
+            const countDevice = await this.deviceModel.countDocuments({})
 
             //create units
             if (countUnit === 0) {
@@ -30,6 +33,10 @@ export class DatabasesService implements OnModuleInit {
 
             if (countRoom === 0) {
                 await this.roomModel.insertMany(INIT_ROOMS);
+            }
+
+            if (countDevice === 0) {
+                await this.deviceModel.insertMany(INIT_DEVICES);
             }
 
             // create users

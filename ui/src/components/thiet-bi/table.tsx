@@ -114,7 +114,7 @@ const TableDevices = (props: IProps) => {
             dataIndex: 'name',
             key: 'name',
             ellipsis: true,
-            width: 300,
+            width: 200,
         },
         {
             title: 'Nơi sử dụng',
@@ -175,6 +175,7 @@ const TableDevices = (props: IProps) => {
     const handleOnChangePage = (current: number, pageSize: number) => {
         const params = new URLSearchParams()
 
+        if (selectedName) params.set('name', selectedName)
         if (selectedRoom) params.set('currentRoom', selectedRoom)
         if (selectedUnit) params.set('unit', selectedUnit)
         if (selectedType) params.set('type', selectedType)
