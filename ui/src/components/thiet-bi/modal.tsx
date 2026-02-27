@@ -419,7 +419,7 @@ const DeviceModal = (props: IProps) => {
                                                             rooms && rooms.length > 0
                                                                 ? rooms.map(({ _id, name, currentUnit }) => ({
                                                                     value: _id,
-                                                                    label: `${name} - ${currentUnit?.name || 'N/A'}`
+                                                                    label: `${name} (${currentUnit?.name || 'N/A'})`
                                                                 }))
                                                                 : []
                                                         }

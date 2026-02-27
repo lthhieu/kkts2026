@@ -25,7 +25,7 @@ const RoomModal = (props: IProps) => {
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
 
     useEffect(() => {
-        if (dataUpdate && units?.length) {
+        if (dataUpdate) {
             form.setFieldsValue({
                 name: dataUpdate.name,
                 _id: dataUpdate._id,
@@ -35,7 +35,7 @@ const RoomModal = (props: IProps) => {
                 }))
             })
         }
-    }, [dataUpdate, units])
+    }, [dataUpdate])
 
     const handleOk = () => {
         form.submit();

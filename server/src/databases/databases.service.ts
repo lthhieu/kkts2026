@@ -27,17 +27,18 @@ export class DatabasesService implements OnModuleInit {
             const countDevice = await this.deviceModel.countDocuments({})
 
             //create units
-            if (countUnit === 0) {
-                await this.unitModel.insertMany(INIT_UNITS);
-            }
+            // if (countUnit === 0) {
+            //     await this.unitModel.insertMany(INIT_UNITS);
+            // }
 
-            if (countRoom === 0) {
-                await this.roomModel.insertMany(INIT_ROOMS);
-            }
+            // if (countRoom === 0) {
+            //     await this.roomModel.insertMany(INIT_ROOMS);
+            // }
 
-            if (countDevice === 0) {
-                await this.deviceModel.insertMany(INIT_DEVICES);
-            }
+            // if (countDevice === 0) {
+            //     await this.deviceModel.insertMany(INIT_DEVICES);
+            // }
+
 
             // create users
             if (countUser === 0) {
@@ -80,7 +81,7 @@ export class DatabasesService implements OnModuleInit {
                 ])
             }
 
-            if (countUser > 0 && countUnit > 0) {
+            if (countUser > 0 && countUnit > 0 && countRoom > 0) {
                 this.logger.log('Already initial sample data');
             }
         }

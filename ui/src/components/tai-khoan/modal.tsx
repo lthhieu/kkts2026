@@ -33,7 +33,7 @@ const UserModal = (props: IProps) => {
                 email: dataUpdate.email,
                 _id: dataUpdate._id,
                 password: dataUpdate.password,
-                unit: dataUpdate.unit,
+                unit: dataUpdate.unit?._id,
                 role: dataUpdate.role
             })
         }

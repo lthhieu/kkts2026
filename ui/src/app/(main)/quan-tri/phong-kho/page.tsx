@@ -36,7 +36,7 @@ const PhongKho = async ({ searchParams }: { searchParams: Params }) => {
     })
     const res1 = await sendRequest<IBackendResponse<IModelPaginate<IUnit>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/units`,
-        queryParams: { current, pageSize: 1000 },
+        queryParams: { current: 1, pageSize: 1000 },
         headers: {
             Authorization: `Bearer ${session?.access_token}`,
         },
