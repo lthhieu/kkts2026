@@ -28,6 +28,7 @@ export const ROLE_COLOR_MAP: Record<string, string> = {
     thukho: 'purple',
     truongdv: 'blue',
     gv: 'green',
+    guest: 'default'
 };
 export const ROLE_LABEL_MAP: Record<string, string> = {
     superadmin: 'Quản trị hệ thống',
@@ -35,6 +36,7 @@ export const ROLE_LABEL_MAP: Record<string, string> = {
     thukho: 'Thủ kho',
     truongdv: 'Trưởng đơn vị',
     gv: 'Giáo viên',
+    guest: 'Khách'
 };
 
 

@@ -167,7 +167,8 @@ const UserModal = (props: IProps) => {
                                 { value: 'admin', label: 'Quản trị' },
                                 { value: 'thukho', label: 'Thủ kho' },
                                 { value: 'truongdv', label: 'Trưởng đơn vị' },
-                                { value: 'gv', label: 'Giáo viên' }
+                                { value: 'gv', label: 'Giáo viên' },
+                                { value: 'guest', label: 'Khách' }
                             ]
                             }
                         />
