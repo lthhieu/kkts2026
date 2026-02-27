@@ -18,6 +18,7 @@ import { handleSignOut } from '@/app/(auth)/dang-nhap/actions';
 import { usePathname, useRouter } from 'next/navigation';
 import { getUserPermission } from '@/libs/getUserPermission';
 import { Action, DeviceSubject, RoomSubject, UnitSubject, UserSubject } from '@/libs/enum';
+import ChangePasswordModal from '@/components/dashboard/change-password-modal';
 
 const { Header, Sider, Content } = Layout;
 
@@ -27,6 +28,7 @@ const Dashboard = ({
     children: React.ReactNode; email: string, access_token: string, user: IUser
 }>) => {
     const [collapsed, setCollapsed] = useState(false);
+    const [isModalOpen, SetIsModalOpen] = useState(false)
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
@@ -37,7 +39,7 @@ const Dashboard = ({
             key: '1',
             label: 'Đổi mật khẩu',
             icon: <LockOutlined />,
-            disabled: true,
+            onClick: () => { showModal() }
         },
         {
             key: '2',
@@ -93,8 +95,11 @@ const Dashboard = ({
         return ability.can(action, subject);
     });
 
-
     const pathname = usePathname()
+
+    const showModal = () => {
+        SetIsModalOpen(true);
+    }
     return (
         <Layout style={{ height: '100%', minHeight: '100vh' }}>
             <Sider
@@ -150,6 +155,11 @@ const Dashboard = ({
                     {children}
                 </Content>
             </Layout>
+            <ChangePasswordModal
+                isModalOpen={isModalOpen}
+                setIsModalOpen={SetIsModalOpen}
+                access_token={access_token}
+            />
         </Layout>
     );
 };

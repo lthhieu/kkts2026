@@ -6,7 +6,7 @@ type Subjects = InferSubjects<typeof DeviceSubject | typeof UserSubject | typeof
 
 export type AppAbility = MongoAbility<[Action, Subjects]>;
 
-export function getUserPermission(user: IUser) {
+export function getUserPermission(user: any) {
     const { can, cannot, build } = new AbilityBuilder(createMongoAbility)
     if (user.role === 'superadmin') {
         can(Action.Manage, 'all'); // read-write access to everything
@@ -26,13 +26,18 @@ export function getUserPermission(user: IUser) {
         can(Action.Read, UnitSubject);
         can(Action.Read, RoomSubject);
     } else if (user.role === 'gv') {
-        can(Action.Delete, DeviceSubject, undefined, { unit: { $eq: user.unit?._id } });
-        can(Action.Update, DeviceSubject, undefined, { unit: { $eq: user.unit?._id } });
+        cannot(Action.Delete, DeviceSubject);
+        can(Action.Update, DeviceSubject, undefined, { unit: { $eq: user.unit } });
         can(Action.Read, DeviceSubject);
         can(Action.Create, DeviceSubject);
         can(Action.Read, UnitSubject);
         can(Action.Read, RoomSubject);
         cannot(Action.Manage, UserSubject);
+    } else if (user.role === 'guest') {
+        cannot(Action.Manage, UserSubject);
+        cannot(Action.Manage, DeviceSubject);
+        cannot(Action.Manage, RoomSubject);
+        can(Action.Read, UnitSubject);
     }
     return build()
 }

@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
 import { AuthService } from 'src/auth/auth.service';
 import { Public, ResponseMessage } from 'src/configs/my.decorator';
 import type { Response, Request } from 'express';
+import { LoginBySocial } from 'src/auth/auth.dto';
 
 @Controller()
 export class AppController {
@@ -22,6 +23,13 @@ export class AppController {
   @Post('auth/login')
   async login(@Req() req: any, @Res({ passthrough: true }) res: Response) {
     return this.authService.login(req.user, res);
+  }
+
+  @Public()
+  @Post('auth/google')
+  @ResponseMessage('Đăng nhập thành công!')
+  loginByGoogle(@Body() loginBySocial: LoginBySocial, @Res({ passthrough: true }) res: Response) {
+    return this.authService.loginWithGoogle(loginBySocial, res);
   }
 
   @ResponseMessage('Đăng xuất thành công')

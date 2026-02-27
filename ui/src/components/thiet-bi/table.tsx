@@ -156,7 +156,7 @@ const TableDevices = (props: IProps) => {
                         ></Button>
                     )}
 
-                    {canDeleteDevice(user ?? {} as IUser, record.unit._id) && (
+                    {canDeleteDevice(user ?? {} as IUser) && (
                         <Popconfirm
                             title="Xóa thiết bị này?"
                             description={`Bạn thực sự muốn xóa thiết bị ${record.name}`}
@@ -260,23 +260,22 @@ const TableDevices = (props: IProps) => {
                 vertical={isMobile} gap={16}>
                 <h2>Danh sách thiết bị</h2>
 
-                {canCreateDevice(user ?? {} as IUser) && (
-                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                        {canDeleteDevice(user ?? {} as IUser, selectedUnit || '') && <Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa</Button>}
-                        {canCreateDevice(user ?? {} as IUser) && <Button onClick={showModalImport} type='primary' icon={<CloudUploadOutlined />}>Import</Button>}
-                        {canReadDevice(user ?? {} as IUser) && <Button type='primary' icon={<CloudDownloadOutlined />}>
-                            <CSVLink
-                                data={dataExport}
-                                filename={"thiet-bi.csv"}
-                                headers={headers}
-                                separator={";"}
-                            >
-                                Export
-                            </CSVLink>
-                        </Button>}
-                        {canCreateDevice(user ?? {} as IUser) && <Button onClick={showModal} type='primary' icon={<FolderAddOutlined />}>Thêm mới</Button>}
-                    </div>
-                )}
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                    {canDeleteDevice(user ?? {} as IUser) && <Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa</Button>}
+                    {canCreateDevice(user ?? {} as IUser) && <Button onClick={showModalImport} type='primary' icon={<CloudUploadOutlined />}>Import</Button>}
+                    {canReadDevice(user ?? {} as IUser) && <Button type='primary' icon={<CloudDownloadOutlined />}>
+                        <CSVLink
+                            data={dataExport}
+                            filename={"thiet-bi.csv"}
+                            headers={headers}
+                            separator={";"}
+                        >
+                            Export
+                        </CSVLink>
+                    </Button>}
+                    {canCreateDevice(user ?? {} as IUser) && <Button onClick={showModal} type='primary' icon={<FolderAddOutlined />}>Thêm mới</Button>}
+                </div>
+
             </Flex>
             {canReadDevice(user ?? {} as IUser) && (<Space style={{ marginBottom: 16, flexWrap: 'wrap' }}>
                 <Input allowClear placeholder="Tìm theo tên thiết bị"

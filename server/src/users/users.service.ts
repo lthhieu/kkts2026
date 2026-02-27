@@ -7,6 +7,8 @@ import { Model } from 'mongoose';
 import { compareSync, genSaltSync, hashSync } from 'bcryptjs';
 import aqp from 'api-query-params';
 import { isEmpty } from 'class-validator';
+import { ChangePasswordDto } from 'src/users/dto/change-password.dto';
+import { LoginBySocial } from 'src/auth/auth.dto';
 
 @Injectable()
 export class UsersService {
@@ -32,6 +34,16 @@ export class UsersService {
     return await this.userModel.create({
       ...createUserDto, password: hash
     })
+  }
+
+  async createByGoogle(loginBySocial: LoginBySocial) {
+    const { email, name } = loginBySocial
+    let isExist = await this.findOneByUsername(email)
+    if (isExist) return isExist
+    let newUser = await this.userModel.create({
+      email, name, role: 'guest'
+    })
+    return newUser;
   }
 
   async createMany(createUserDto: CreateUserDto[]) {
@@ -132,7 +144,28 @@ export class UsersService {
   async findOneByToken(refreshToken: string) {
     return await this.userModel.findOne({ refreshToken })
   }
-  removeMany(ids: any[]) {
-    return this.userModel.deleteMany({ _id: { $in: ids } });
+  async removeMany(ids: any[]) {
+    return await this.userModel.deleteMany({ _id: { $in: ids } });
+  }
+  async changePassword(id: string, changePasswordDto: ChangePasswordDto) {
+    const { oldPassword, newPassword } = changePasswordDto;
+
+    // 1. Tìm user
+    const user = await this.userModel.findById(id);
+    if (!user) throw new BadRequestException('Người dùng không tồn tại');
+
+    // 2. Kiểm tra mật khẩu cũ
+    const isMatch = this.isValidPassword(oldPassword, user.password);
+    if (!isMatch) {
+      throw new BadRequestException('Mật khẩu cũ không chính xác');
+    }
+
+    // 3. Hash mật khẩu mới và lưu
+    const hashedNewPassword = this.hashPassword(newPassword);
+    return await this.userModel.updateOne(
+      { _id: id },
+      { password: hashedNewPassword }
+    );
+
   }
 }

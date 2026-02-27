@@ -29,14 +29,18 @@ export class CaslAbilityFactory {
             can(Action.Read, UnitSubject);
             can(Action.Read, RoomSubject);
         } else if (user.role === 'gv') {
-            can(Action.Delete, DeviceSubject, { unit: { $eq: user.unit } });
+            can(Action.Delete, DeviceSubject);
             can(Action.Update, DeviceSubject, { unit: { $eq: user.unit } });
             can(Action.Read, DeviceSubject);
             can(Action.Create, DeviceSubject);
             can(Action.Read, UnitSubject);
             can(Action.Read, RoomSubject);
             cannot(Action.Manage, UserSubject);
-
+        } else if (user.role === 'guest') {
+            cannot(Action.Manage, UserSubject);
+            cannot(Action.Manage, DeviceSubject);
+            cannot(Action.Manage, RoomSubject);
+            can(Action.Read, UnitSubject);
         }
 
         return build({

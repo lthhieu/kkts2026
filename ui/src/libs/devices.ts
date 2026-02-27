@@ -9,10 +9,8 @@ export function canUpdateDevice(user: IUser, unit: string) {
     deviceSubject.unit = unit
     return getUserPermission(user ?? {} as IUser).can(Action.Update, deviceSubject)
 }
-export function canDeleteDevice(user: IUser, unit: string) {
-    const deviceSubject = new DeviceSubject()
-    deviceSubject.unit = unit
-    return getUserPermission(user ?? {} as IUser).can(Action.Delete, deviceSubject)
+export function canDeleteDevice(user: IUser) {
+    return getUserPermission(user ?? {} as IUser).can(Action.Delete, new DeviceSubject())
 }
 export function canReadDevice(user: IUser) {
     return getUserPermission(user ?? {} as IUser).can(Action.Read, new DeviceSubject())

@@ -1,11 +1,12 @@
 'use client'
 
-import { Button, Form, Grid, Input, notification, theme, Typography } from "antd";
+import { Button, Divider, Form, Grid, Input, notification, theme, Typography } from "antd";
 
-import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import { authenticate } from "@/app/(auth)/dang-nhap/actions";
+import { GoogleOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
+import { authenticate, } from "@/app/(auth)/dang-nhap/actions";
 import React, { useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
@@ -124,6 +125,10 @@ export default function LoginComponent() {
                             </Button>
                         </Form.Item>
                     </Form>
+                    <Divider plain>Hoặc</Divider>
+                    <Button icon={<GoogleOutlined />} block={true} type="default" onClick={() => signIn("google")}>
+                        Đăng nhập với tài khoản Google
+                    </Button>
                 </div>
             </section>
         </Context.Provider>

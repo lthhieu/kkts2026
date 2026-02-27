@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import type { Response } from 'express';
 import ms, { StringValue } from 'ms';
+import { LoginBySocial } from 'src/auth/auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -36,6 +37,16 @@ export class AuthService {
             refresh_token: refresh_token,
             user: { _id: user._id, email: user.email, name: user.name, role: user.role, unit: user.unit }
         };
+    }
+
+    async loginWithGoogle(data: LoginBySocial, response: Response) {
+        const user = await this.usersService.createByGoogle(data)
+        //login
+        const { _id, email, name, role, unit } = user;
+        return this.login({
+            _id: _id.toString(),
+            email, name, role, unit
+        }, response)
     }
 
     createRefreshToken = (payload: any) => {

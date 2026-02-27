@@ -6,6 +6,7 @@ import { CheckPolicies, ResponseMessage, User } from 'src/configs/my.decorator';
 import { Action, UserSubject } from 'src/configs/enum';
 import { AppAbility } from 'src/casl/casl-ability.factory/casl-ability.factory';
 import { PoliciesGuard } from 'src/configs/casl.policies.guard';
+import { ChangePasswordDto } from 'src/users/dto/change-password.dto';
 
 @UseGuards(PoliciesGuard)
 @Controller('users')
@@ -60,5 +61,11 @@ export class UsersController {
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Delete, UserSubject))
   remove(@Param('id') id: string, @User() user: IUser) {
     return this.usersService.remove(id, user);
+  }
+
+  @Post('change-password')
+  @ResponseMessage('Đổi mật khẩu thành công')
+  async handleChangePassword(@User() user: IUser, @Body() dto: ChangePasswordDto) {
+    return this.usersService.changePassword(user._id, dto);
   }
 }

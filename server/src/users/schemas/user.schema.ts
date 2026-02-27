@@ -18,7 +18,7 @@ export class User {
     @Prop({ type: String, default: null })
     refreshToken: string | null;
 
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Unit.name })
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Unit.name, default: null })
     unit: Unit | null;
 
     @Prop()
