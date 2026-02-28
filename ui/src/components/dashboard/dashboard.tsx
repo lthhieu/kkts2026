@@ -12,7 +12,7 @@ import {
     MenuUnfoldOutlined,
     UserOutlined,
 } from '@ant-design/icons';
-import { Button, Layout, Menu, Space, theme, Dropdown, MenuProps, Typography } from 'antd';
+import { Button, Layout, Menu, Space, theme, Dropdown, MenuProps, Typography, Image } from 'antd';
 import Link from 'next/link';
 import { handleSignOut } from '@/app/(auth)/dang-nhap/actions';
 import { usePathname, useRouter } from 'next/navigation';
@@ -20,7 +20,7 @@ import { getUserPermission } from '@/libs/getUserPermission';
 import { Action, DeviceSubject, RoomSubject, UnitSubject, UserSubject } from '@/libs/enum';
 import ChangePasswordModal from '@/components/dashboard/change-password-modal';
 
-const { Header, Sider, Content } = Layout;
+const { Header, Sider, Content, Footer } = Layout;
 
 const Dashboard = ({
     children, email, access_token, user
@@ -106,9 +106,15 @@ const Dashboard = ({
                 breakpoint="lg"
                 collapsedWidth="0"
                 trigger={null} collapsible collapsed={collapsed}>
-                <div className="demo-logo-vertical" />
+                <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Image
+                        style={{ padding: 4 }}
+                        width={54}
+                        preview={false}
+                        src="/logo.png" />
+                </div>
                 <Menu
-                    style={{ marginTop: 60 }}
+                    style={{}}
                     theme="dark"
                     mode="inline"
                     selectedKeys={[pathname]}
@@ -154,6 +160,7 @@ const Dashboard = ({
                 >
                     {children}
                 </Content>
+                <Footer style={{ textAlign: 'center', background: colorBgContainer, padding: 12 }}>&copy; 2026 Trường Đại học Sư phạm Kỹ thuật Vĩnh Long</Footer>
             </Layout>
             <ChangePasswordModal
                 isModalOpen={isModalOpen}
