@@ -5,7 +5,7 @@ import { Button, Divider, Form, Grid, Input, notification, theme, Typography } f
 import { GoogleOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { authenticate, } from "@/app/(auth)/dang-nhap/actions";
 import React, { useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 
 const { useToken } = theme;
@@ -20,11 +20,13 @@ export default function LoginComponent() {
     const screens = useBreakpoint();
     const [api, contextHolder] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get('callbackUrl') || '/quan-tri/trang-chu';
 
     const onFinish = async (values: any) => {
         const res = await authenticate(values.username, values.password);
         if (!res?.error) {
-            router.push('/quan-tri/trang-chu')
+            router.push(callbackUrl)
         } else {
             api.error({
                 title: `Có lỗi xảy ra`,
