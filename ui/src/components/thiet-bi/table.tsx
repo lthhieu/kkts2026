@@ -1,14 +1,15 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Grid, Input, Popconfirm, Select, Space, Table, message, notification } from 'antd';
-import type { PopconfirmProps, TableProps } from 'antd';
-import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
+import { Button, Descriptions, Drawer, Flex, Grid, Input, Popconfirm, Select, Space, Table, Tooltip, Typography, message, notification } from 'antd';
+import type { DescriptionsProps, PopconfirmProps, TableProps } from 'antd';
+import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { handleDeleteDevice, handleDeleteDeviceMany } from '@/app/(main)/quan-tri/thiet-bi/actions';
 import DeviceModal from '@/components/thiet-bi/modal';
 import { canCreateDevice, canDeleteDevice, canReadDevice, canUpdateDevice } from '@/libs/devices';
 import ModalImport from '@/components/thiet-bi/modal.import';
 import { CSVLink } from 'react-csv';
+import DeviceDetail from '@/components/thiet-bi/device.detail';
 
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
 const { useBreakpoint } = Grid;
@@ -46,6 +47,19 @@ const TableDevices = (props: IProps) => {
     const isMobile = !screens.md;  // < 768px
 
     const [selectedName, setSelectedName] = useState<string | undefined>(undefined);
+
+    const [selectedDevice, setSelectedDevice] = useState<IDevice | null>(null)
+
+    const [open, setOpen] = useState(false);
+
+    const showDrawer = (data: IDevice) => {
+        setSelectedDevice(data)
+        setOpen(true);
+    };
+
+    const onClose = () => {
+        setOpen(false);
+    };
 
 
     useEffect(() => {
@@ -115,6 +129,23 @@ const TableDevices = (props: IProps) => {
             key: 'name',
             ellipsis: true,
             width: 200,
+            render: (_, record) => <Space>
+                <Typography.Text>
+                    {record.name}
+                </Typography.Text>
+
+                <Tooltip title="Xem chi tiết">
+                    <EyeOutlined
+                        style={{ color: '#1890ff', cursor: 'pointer' }}
+                        onClick={() => showDrawer(record)}
+                    />
+                </Tooltip>
+            </Space>
+        },
+        {
+            title: 'Số lượng',
+            dataIndex: ['kiemKe', 'soLuong'],
+            key: 'soLuong',
         },
         {
             title: 'Nơi sử dụng',
@@ -337,8 +368,8 @@ const TableDevices = (props: IProps) => {
                     total: meta.total,
                     showTotal: (total, range) => `${range[0]}-${range[1]} / ${total} kết quả`,
                     onChange: (page: number, pageSize: number) => handleOnChangePage(page, pageSize),
-                    pageSizeOptions: [50, 100, 200],
-                    defaultPageSize: 50,
+                    pageSizeOptions: [20, 50, 100],
+                    defaultPageSize: 20,
                     showSizeChanger: true,
                 }}
                 rowSelection={{ type: 'checkbox', ...rowSelection }}
@@ -360,6 +391,15 @@ const TableDevices = (props: IProps) => {
                 isModalImportOpen={isModalImportOpen}
                 setIsModalImportOpen={SetIsModalImportOpen}
             />
+            <Drawer
+                title="Xem chi tiết thiết bị"
+                closable={{ 'aria-label': 'Close Button' }}
+                onClose={onClose}
+                open={open}
+                size={'65%'}
+            >
+                <DeviceDetail device={selectedDevice} />
+            </Drawer>
         </Context.Provider>
     )
 }
