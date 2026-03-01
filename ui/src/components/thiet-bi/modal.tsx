@@ -28,6 +28,7 @@ const DeviceModal = (props: IProps) => {
     useEffect(() => {
         if (dataUpdate) {
             form.setFieldsValue({
+                "parent": dataUpdate?.parent || null,
                 "name": dataUpdate.name,
                 "_id": dataUpdate._id,
                 "description": dataUpdate.description,
@@ -93,8 +94,8 @@ const DeviceModal = (props: IProps) => {
 
     const onFinish = async (values: IDevice) => {
         // console.log('Received values of form: ', values);
-        const { name, description, usedLocation, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note, trongSoChatLuong, type, unit } = values
-        const data = { name, description, usedLocation, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note, trongSoChatLuong, type, unit }
+        const { name, description, usedLocation, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note, trongSoChatLuong, type, unit, parent } = values
+        const data = { name, description, usedLocation, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note, trongSoChatLuong, type, unit, parent }
 
         const response = await handleCreateOrUpdateDevice(data, access_token ?? '', status, dataUpdate)
 
@@ -157,6 +158,13 @@ const DeviceModal = (props: IProps) => {
                         }
                     }
                 >
+                    {status === 'UPDATE' && <Form.Item
+                        style={{ marginBottom: 8 }}
+                        label="Tên nhóm thiết bị"
+                        name="parent"
+                    >
+                        <Input />
+                    </Form.Item>}
                     <Form.Item
                         style={{ marginBottom: 8 }}
                         label="Tên Thiết bị"

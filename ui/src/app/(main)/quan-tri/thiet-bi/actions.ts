@@ -3,8 +3,8 @@ import { sendRequest } from '@/utils/api'
 import { updateTag } from 'next/cache'
 
 export const handleCreateOrUpdateDevice = async (data: any, access_token: string, status: string, dataUpdate?: null | IDevice) => {
-    const { name, description, usedLocation, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note, trongSoChatLuong, type, unit } = data
-    const body: any = { name, description, usedLocation, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note, trongSoChatLuong, type, unit }
+    const { name, description, usedLocation, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note, trongSoChatLuong, type, unit, parent } = data
+    const body: any = { name, description, usedLocation, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note, trongSoChatLuong, type, unit, parent }
 
     const res = await sendRequest<IBackendResponse<any>>({
         url: status === "CREATE" ? `${process.env.NEXT_PUBLIC_BACKEND_URI}/devices` : `${process.env.NEXT_PUBLIC_BACKEND_URI}/devices/${dataUpdate?._id}`,

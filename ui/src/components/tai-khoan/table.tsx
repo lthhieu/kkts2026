@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Grid, Input, Popconfirm, Select, Space, Table, Tag, message, notification } from 'antd';
+import { Button, Flex, Grid, Input, Popconfirm, Select, Space, Table, Tag, Tooltip, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
@@ -103,6 +103,42 @@ const TableUsers = (props: IProps) => {
             title: 'Tên tài khoản',
             dataIndex: 'name',
             key: 'name',
+            render: (_, record) => <Space>
+                <Typography.Text>
+                    {record.name}
+                </Typography.Text>
+                {canUpdateUser(user as IUser) && (
+                    <Tooltip title="Cập nhật">
+                        <EditOutlined
+                            style={{ color: '#1cc03d', cursor: 'pointer' }}
+                            onClick={() => {
+                                setDataUpdate(record)
+                                setStatus("UPDATE")
+                                SetIsModalOpen(true)
+                            }}
+                        />
+                    </Tooltip>
+                )}
+
+                {canDeleteUser(user as IUser) && (
+                    <Popconfirm
+                        title="Xóa tài khoản này?"
+                        description={`Bạn thực sự muốn xóa tài khoản ${record.email}`}
+                        onConfirm={() => confirm(record._id)}
+                        onCancel={cancel}
+                        okText="Đồng ý"
+                        cancelText="Hủy"
+                        placement='rightBottom'
+                    >
+                        <Tooltip title="Xóa">
+                            <DeleteOutlined
+                                style={{ color: '#f12929', cursor: 'pointer' }} />
+                        </Tooltip>
+                    </Popconfirm>
+
+
+                )}
+            </Space>
         },
         {
             title: 'Email',
@@ -123,36 +159,6 @@ const TableUsers = (props: IProps) => {
             title: 'Đơn vị',
             dataIndex: ['unit', 'name'],
             key: 'unit',
-        },
-        {
-            title: '',
-            key: 'action',
-            render: (_, record) => (
-                <Space size="middle">
-                    {canUpdateUser(user as IUser) && (
-                        <Button color="green" variant="outlined" icon={<EditOutlined />}
-                            onClick={() => {
-                                setDataUpdate(record)
-                                setStatus("UPDATE")
-                                SetIsModalOpen(true)
-                            }}
-                        ></Button>
-                    )}
-
-                    {canDeleteUser(user as IUser) && (
-                        <Popconfirm
-                            title="Xóa tài khoản này?"
-                            description={`Bạn thực sự muốn xóa tài khoản ${record.email}`}
-                            onConfirm={() => confirm(record._id)}
-                            onCancel={cancel}
-                            okText="Đồng ý"
-                            cancelText="Hủy"
-                        >
-                            <Button icon={<DeleteOutlined />} color="danger" variant="outlined"></Button>
-                        </Popconfirm>
-                    )}
-                </Space>
-            ),
         },
     ];
     const handleOnChangePage = (current: number, pageSize: number) => {

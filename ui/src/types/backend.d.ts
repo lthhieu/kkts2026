@@ -65,14 +65,14 @@ declare global {
             "_id": string,
             "name": string
         },
-        "usedYear": number,
+        "usedYear": number | null,
         "soKeToan": {
-            "soLuong": number,
+            "soLuong": number | null,
             "nguyenGia": number,
             "giaTriConLai": null | number
         },
         "kiemKe": {
-            "soLuong": number,
+            "soLuong": number | null,
             "nguyenGia": number,
             "giaTriConLai": null | number
         },
@@ -81,7 +81,7 @@ declare global {
             "thieu": number,
             "giaTriConLai": null | number
         },
-        "chatLuongConLai": number,
+        "chatLuongConLai": number | null,
         "note": string,
         "trongSoChatLuong": number,
         "type": string,
@@ -89,8 +89,10 @@ declare global {
             "_id": string,
             "name": string
         },
-        "createdAt": string,
-        "updatedAt": string,
+        "createdAt"?: string,
+        "updatedAt"?: string,
+        "parent"?: string | null,
+        children?: IDevice[];
     }
     interface IRoom {
         "_id": string,

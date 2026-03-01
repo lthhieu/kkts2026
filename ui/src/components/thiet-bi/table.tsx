@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Descriptions, Drawer, Flex, Grid, Input, Popconfirm, Select, Space, Table, Tooltip, Typography, message, notification } from 'antd';
-import type { DescriptionsProps, PopconfirmProps, TableProps } from 'antd';
+import { Button, Drawer, Flex, Grid, Input, Popconfirm, Select, Space, Table, Tooltip, Typography, message, notification } from 'antd';
+import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { handleDeleteDevice, handleDeleteDeviceMany } from '@/app/(main)/quan-tri/thiet-bi/actions';
@@ -51,6 +51,67 @@ const TableDevices = (props: IProps) => {
     const [selectedDevice, setSelectedDevice] = useState<IDevice | null>(null)
 
     const [open, setOpen] = useState(false);
+
+    const [treeData, setTreeData] = useState<IDevice[]>([])
+    useEffect(() => {
+        const standalone: IDevice[] = [];
+        const groupMap: Record<string, IDevice[]> = {};
+
+        devices.forEach(item => {
+            if (item.parent) {
+                if (!groupMap[item.parent]) groupMap[item.parent] = [];
+                groupMap[item.parent].push(item);
+            } else {
+                standalone.push(item);
+            }
+        });
+
+        const result: IDevice[] = [];
+
+        Object.entries(groupMap).forEach(([parentName, childrenList]) => {
+            result.push({
+                _id: `group-${parentName}`,
+                name: parentName,
+                "description": "",
+                "usedLocation": [],
+                "usedYear": null,
+                "soKeToan": {
+                    "soLuong": null,
+                    "nguyenGia": 0,
+                    "giaTriConLai": null
+                },
+                "kiemKe": {
+                    "soLuong": null,
+                    "nguyenGia": 0,
+                    "giaTriConLai": null
+                },
+                "chenhLech": {
+                    "thua": 0,
+                    "thieu": 0,
+                    "giaTriConLai": 0
+                },
+                "chatLuongConLai": null,
+                "note": "",
+                "trongSoChatLuong": 0,
+                "type": "",
+                "currentRoom": {
+                    "_id": "",
+                    "name": ""
+                },
+                "unit": {
+                    "_id": "",
+                    "name": ""
+                },
+
+                children: childrenList,
+            });
+        });
+
+        result.push(...standalone);
+
+        setTreeData(result);
+    }, [devices]);
+
 
     const showDrawer = (data: IDevice) => {
         setSelectedDevice(data)
@@ -134,12 +195,43 @@ const TableDevices = (props: IProps) => {
                     {record.name}
                 </Typography.Text>
 
-                <Tooltip title="Xem chi tiết">
+                {!record._id.includes('group') && <><Tooltip title="Xem chi tiết">
                     <EyeOutlined
                         style={{ color: '#1890ff', cursor: 'pointer' }}
                         onClick={() => showDrawer(record)}
                     />
                 </Tooltip>
+                    {canUpdateDevice(user ?? {} as IUser, record?.unit?._id! || 'unit_id') && (
+                        <Tooltip title="Cập nhật">
+                            <EditOutlined
+                                style={{ color: '#1cc03d', cursor: 'pointer' }}
+                                onClick={() => {
+                                    setDataUpdate(record)
+                                    setStatus("UPDATE")
+                                    SetIsModalOpen(true)
+                                }}
+                            />
+                        </Tooltip>
+                    )}
+
+                    {canDeleteDevice(user ?? {} as IUser) && (
+                        <Popconfirm
+                            title="Xóa thiết bị này?"
+                            description={`Bạn thực sự muốn xóa thiết bị ${record.name}`}
+                            onConfirm={() => confirm(record._id)}
+                            onCancel={cancel}
+                            okText="Đồng ý"
+                            cancelText="Hủy"
+                            placement='rightBottom'
+                        >
+                            <Tooltip title="Xóa">
+                                <DeleteOutlined
+                                    style={{ color: '#f12929', cursor: 'pointer' }} />
+                            </Tooltip>
+                        </Popconfirm>
+
+
+                    )}</>}
             </Space>
         },
         {
@@ -169,38 +261,9 @@ const TableDevices = (props: IProps) => {
             key: 'chatLuongConLai',
             responsive: ['md'],
             render: (_, record) => {
+                if (record.chatLuongConLai === null) return
                 return `${record.chatLuongConLai}%`
             }
-        },
-        {
-            title: '',
-            key: 'action',
-            render: (_, record) => (
-                <Space size="middle">
-                    {canUpdateDevice(user ?? {} as IUser, record.unit._id) && (
-                        <Button color="green" variant="outlined" icon={<EditOutlined />}
-                            onClick={() => {
-                                setDataUpdate(record)
-                                setStatus("UPDATE")
-                                SetIsModalOpen(true)
-                            }}
-                        ></Button>
-                    )}
-
-                    {canDeleteDevice(user ?? {} as IUser) && (
-                        <Popconfirm
-                            title="Xóa thiết bị này?"
-                            description={`Bạn thực sự muốn xóa thiết bị ${record.name}`}
-                            onConfirm={() => confirm(record._id)}
-                            onCancel={cancel}
-                            okText="Đồng ý"
-                            cancelText="Hủy"
-                        >
-                            <Button icon={<DeleteOutlined />} color="danger" variant="outlined"></Button>
-                        </Popconfirm>
-                    )}
-                </Space>
-            ),
         },
     ];
     const handleOnChangePage = (current: number, pageSize: number) => {
@@ -232,7 +295,9 @@ const TableDevices = (props: IProps) => {
     }
 
     const deleteDeviceMany = async (ids: string[]) => {
-        const res = await handleDeleteDeviceMany(ids, access_token)
+        //xóa id có từ group
+        const ids_filter = ids.filter(item => !item.includes("group"));
+        const res = await handleDeleteDeviceMany(ids_filter, access_token)
         if (!res.data) {
             api.error({
                 title: `Có lỗi xảy ra`,
@@ -372,8 +437,8 @@ const TableDevices = (props: IProps) => {
                     defaultPageSize: 20,
                     showSizeChanger: true,
                 }}
-                rowSelection={{ type: 'checkbox', ...rowSelection }}
-                columns={columns} dataSource={devices} rowKey={"_id"} />
+                rowSelection={{ ...rowSelection, checkStrictly: false }}
+                columns={columns} dataSource={treeData} rowKey={"_id"} />
             <DeviceModal
                 setStatus={setStatus}
                 status={status}

@@ -54,6 +54,9 @@ export class Device {
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Unit.name })
     unit: Unit | null;
 
+    @Prop({ type: String || null, default: null })
+    parent: string | null;
+
 }
 
 export const DeviceSchema = SchemaFactory.createForClass(Device);

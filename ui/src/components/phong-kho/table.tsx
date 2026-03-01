@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Grid, Input, Popconfirm, Select, Space, Table, Typography, message, notification } from 'antd';
+import { Button, Flex, Grid, Input, Popconfirm, Select, Space, Table, Tooltip, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
@@ -94,7 +94,40 @@ const TableRooms = (props: IProps) => {
             title: 'Tên phòng - kho',
             dataIndex: 'name',
             key: 'name',
-            render: (_, record) => <Typography.Text copyable={{ text: record._id }}>{record.name}</Typography.Text>
+            render: (_, record) => <Space>
+                <Typography.Text copyable={{ text: record._id }}>{record.name}</Typography.Text>
+                {canUpdateRoom(user ?? {} as IUser) && (
+                    <Tooltip title="Cập nhật">
+                        <EditOutlined
+                            style={{ color: '#1cc03d', cursor: 'pointer' }}
+                            onClick={() => {
+                                setDataUpdate(record)
+                                setStatus("UPDATE")
+                                SetIsModalOpen(true)
+                            }}
+                        />
+                    </Tooltip>
+                )}
+
+                {canDeleteRoom(user ?? {} as IUser) && (
+                    <Popconfirm
+                        title="Xóa phòng - kho này?"
+                        description={`Bạn thực sự muốn xóa phòng - kho ${record.name}`}
+                        onConfirm={() => confirm(record._id)}
+                        onCancel={cancel}
+                        okText="Đồng ý"
+                        cancelText="Hủy"
+                        placement='rightBottom'
+                    >
+                        <Tooltip title="Xóa">
+                            <DeleteOutlined
+                                style={{ color: '#f12929', cursor: 'pointer' }} />
+                        </Tooltip>
+                    </Popconfirm>
+
+
+                )}
+            </Space>
         },
         {
             title: 'Mô tả',
@@ -106,34 +139,6 @@ const TableRooms = (props: IProps) => {
             dataIndex: ['currentUnit', 'name'],
             key: 'unit',
             render: (_, record) => <Typography.Text copyable={{ text: record.currentUnit?._id || "" }}>{record.currentUnit?.name}</Typography.Text>
-        },
-        {
-            title: '',
-            key: 'action',
-            render: (_, record) => (
-                <Space size="middle">
-                    {canUpdateRoom(user ?? {} as IUser) &&
-                        <Button color="green" variant="outlined" icon={<EditOutlined />}
-                            onClick={() => {
-                                setDataUpdate(record)
-                                setStatus("UPDATE")
-                                SetIsModalOpen(true)
-                            }}
-                        ></Button>}
-
-                    {canDeleteRoom(user ?? {} as IUser) &&
-                        <Popconfirm
-                            title="Xóa phòng - kho này?"
-                            description={`Bạn thực sự muốn xóa phòng - kho ${record.name}`}
-                            onConfirm={() => confirm(record._id)}
-                            onCancel={cancel}
-                            okText="Đồng ý"
-                            cancelText="Hủy"
-                        >
-                            <Button icon={<DeleteOutlined />} color="danger" variant="outlined"></Button>
-                        </Popconfirm>}
-                </Space>
-            ),
         },
     ];
     const handleOnChangePage = (current: number, pageSize: number) => {
