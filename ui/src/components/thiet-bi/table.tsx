@@ -189,7 +189,6 @@ const TableDevices = (props: IProps) => {
             dataIndex: 'name',
             key: 'name',
             ellipsis: true,
-            width: 200,
             render: (_, record) => <Space>
                 <Typography.Text>
                     {record.name}
@@ -253,13 +252,11 @@ const TableDevices = (props: IProps) => {
             title: 'Năm sử dụng',
             dataIndex: 'usedYear',
             key: 'usedYear',
-            responsive: ['md'],
         },
         {
             title: 'Chất lượng còn lại',
             dataIndex: 'chatLuongConLai',
             key: 'chatLuongConLai',
-            responsive: ['md'],
             render: (_, record) => {
                 if (record.chatLuongConLai === null) return
                 return `${record.chatLuongConLai}%`
