@@ -50,7 +50,7 @@ export class DevicesService {
     const totalItems = (await this.deviceModel.find(filter)).length
     const totalPages = Math.ceil(totalItems / defaultLimit)
     if (isEmpty(sort)) {
-      sort = "name"
+      sort = { parent: -1, name: 1 };
     }
     let devices = await this.deviceModel.find(filter)
       .skip(offset)
