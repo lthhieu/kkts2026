@@ -5,7 +5,7 @@ import { Typography } from 'antd';
 const { Text } = Typography;
 
 const MyHome: React.FC = () => (
-    <div style={{ padding: '0 20px' }}>
+    <div style={{ padding: '0 20px', marginTop: 32 }}>
         <ul style={{ lineHeight: '2' }}> {/* lineHeight giúp các dòng cách nhau ra cho dễ đọc */}
             <li><Text>Tên phòng: Quản trị - Thiết bị</Text></li>
             <li><Text>Tên tiếng Anh: Office of Equipment and Facilities Management</Text></li>

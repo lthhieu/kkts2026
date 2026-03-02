@@ -78,6 +78,6 @@ const items: TabsProps['items'] = [
     },
 ];
 
-const VaiTro: React.FC = () => <Tabs defaultActiveKey="1" items={items} onChange={onChange} />;
+const VaiTro: React.FC = () => <Tabs style={{ marginTop: 8 }} defaultActiveKey="1" items={items} onChange={onChange} />;
 
 export default VaiTro;

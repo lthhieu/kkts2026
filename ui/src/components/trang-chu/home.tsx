@@ -13,7 +13,7 @@ const Home = (props: IProps) => {
     if (access_token === '' || role === 'guest') return <>Trang chủ</>
     return (
         <Row wrap={true} gutter={[16, 16]}>
-            <Col span={6}>
+            <Col xs={24} md={6} >
                 <Card>
                     <Meta
                         avatar={<ApiOutlined />}
@@ -22,7 +22,7 @@ const Home = (props: IProps) => {
                     />
                 </Card>
             </Col>
-            <Col span={6}>
+            <Col xs={24} md={6}>
                 <Card>
                     <Meta
                         avatar={<ApartmentOutlined />}
@@ -31,7 +31,7 @@ const Home = (props: IProps) => {
                     />
                 </Card>
             </Col>
-            <Col span={6}>
+            <Col xs={24} md={6}>
                 <Card>
                     <Meta
                         avatar={<DatabaseOutlined />}
@@ -40,7 +40,7 @@ const Home = (props: IProps) => {
                     />
                 </Card>
             </Col>
-            <Col span={6}>
+            <Col xs={24} md={6}>
                 <Card>
                     <Meta
                         avatar={<UserOutlined />}

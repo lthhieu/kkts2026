@@ -1,35 +1,11 @@
 'use client'
-import React, { useState } from 'react';
-import { Layout, Menu, MenuProps } from 'antd';
-import { HomeOutlined, AppstoreOutlined, FileTextOutlined, ProjectOutlined } from '@ant-design/icons';
+import React from 'react';
+import { Layout, Menu, Grid, MenuProps } from 'antd';
 import Image from 'next/image';
-import Link from 'next/link';
+
 import { usePathname } from 'next/navigation';
 
 type MenuItem = Required<MenuProps>['items'][number];
-
-const items: MenuItem[] = [
-    {
-        label: <Link href="/">Giới thiệu</Link>,
-        key: '/',
-        icon: <HomeOutlined />,
-    },
-    {
-        label: <Link href="/vai-tro">Vai trò</Link>,
-        key: '/vai-tro',
-        icon: <AppstoreOutlined />,
-    },
-    {
-        label: <Link href="/tin-tuc">Tin tức</Link>,
-        key: '/tin-tuc',
-        icon: <FileTextOutlined />,
-    },
-    {
-        label: <Link href="/tai-lieu">Tài liệu</Link>,
-        key: '/tai-lieu',
-        icon: <ProjectOutlined />,
-    },
-];
 
 const { Header } = Layout;
 
@@ -42,7 +18,7 @@ const headerStyle: React.CSSProperties = {
     lineHeight: '64px',
     background: '#fff'
 };
-const MyHeader = () => {
+const MyHeader = ({ items }: { items: MenuItem[] }) => {
     const pathname = usePathname()
 
     return (<>
