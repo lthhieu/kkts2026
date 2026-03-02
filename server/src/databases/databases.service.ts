@@ -18,6 +18,14 @@ export class DatabasesService implements OnModuleInit {
         @InjectModel(Device.name) private deviceModel: Model<Device>,
         private usersService: UsersService,
         private configService: ConfigService) { }
+
+    async getData() {
+        const countUser = await this.userModel.countDocuments({})
+        const countUnit = await this.unitModel.countDocuments({})
+        const countRoom = await this.roomModel.countDocuments({})
+        const countDevice = await this.deviceModel.countDocuments({})
+        return { users: countUser, units: countUnit, rooms: countRoom, devices: countDevice }
+    }
     async onModuleInit() {
         const isInit = this.configService.get<string>("SHOULD_INIT")
         if (Boolean(isInit)) {

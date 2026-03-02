@@ -111,7 +111,8 @@ const ModalImport = (props: IProps) => {
                             note: getVal(15) || "",
                             unit: String(getVal(16) || ""),
                             type: String(getVal(17) || ""),
-                            trongSoChatLuong: Number(getVal(18)) || 0
+                            trongSoChatLuong: Number(getVal(18)) || 0,
+                            parent: getVal(19) || null
                         };
 
                         jsonData.push(obj);

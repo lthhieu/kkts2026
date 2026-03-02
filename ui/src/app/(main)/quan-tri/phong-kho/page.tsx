@@ -19,7 +19,7 @@ const PhongKho = async ({ searchParams }: { searchParams: Params }) => {
     if (!permission.can(Action.Read, new RoomSubject())) {
         redirect('/quan-tri/trang-chu')
     }
-    const { pageSize = 10, current = 1, unit, name } = await searchParams
+    const { pageSize = 20, current = 1, unit, name } = await searchParams
     const res = await sendRequest<IBackendResponse<IModelPaginate<IRoom>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/rooms`,
         queryParams: {

@@ -115,4 +115,10 @@ declare global {
         "createdAt": string,
         "updatedAt": string
     }
+    interface IDatabase {
+        "users": number | null,
+        "units": number | null,
+        "rooms": number | null,
+        "devices": number | null
+    }
 }

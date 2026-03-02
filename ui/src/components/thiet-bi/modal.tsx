@@ -216,7 +216,7 @@ const DeviceModal = (props: IProps) => {
                                 style={{ marginBottom: 8 }}
                                 label="Ghi chú"
                                 name="note"
-                                rules={[{ required: true }]}
+                                rules={[{ required: status !== 'UPDATE' ? true : false }]}
                             >
                                 <Input />
                             </Form.Item>
@@ -236,7 +236,8 @@ const DeviceModal = (props: IProps) => {
                                     onChange={onChange}
                                     options={[
                                         { value: 'Công cụ dụng cụ', label: 'Công cụ, dụng cụ' },
-                                        { value: 'Tài sản cố định', label: 'Tài sản cố định' }
+                                        { value: 'Tài sản cố định', label: 'Tài sản cố định' },
+                                        { value: 'Dự án Skeig', label: 'Dự án Skeig' }
                                     ]}
                                 />
                             </Form.Item>

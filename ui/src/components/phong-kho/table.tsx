@@ -252,8 +252,8 @@ const TableRooms = (props: IProps) => {
                     total: meta.total,
                     showTotal: (total, range) => `${range[0]}-${range[1]} / ${total} kết quả`,
                     onChange: (page: number, pageSize: number) => handleOnChangePage(page, pageSize),
-                    pageSizeOptions: [50, 100, 200],
-                    defaultPageSize: 50,
+                    pageSizeOptions: [20, 50, 100],
+                    defaultPageSize: 20,
                     showSizeChanger: true,
                 }}
                 rowSelection={{ type: 'checkbox', ...rowSelection }}

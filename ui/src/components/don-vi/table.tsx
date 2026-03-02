@@ -208,7 +208,8 @@ const TableUnits = (props: IProps) => {
                     total: meta.total,
                     showTotal: (total, range) => `${range[0]}-${range[1]} / ${total} kết quả`,
                     onChange: (page: number, pageSize: number) => handleOnChangePage(page, pageSize),
-                    pageSizeOptions: [5, 10, 20],
+                    pageSizeOptions: [10, 20],
+                    defaultPageSize: 10,
                     showSizeChanger: true,
                 }}
                 rowSelection={{ type: 'checkbox', ...rowSelection }}

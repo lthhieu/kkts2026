@@ -416,7 +416,8 @@ const TableDevices = (props: IProps) => {
                     allowClear
                     options={[
                         { value: 'Công cụ dụng cụ', label: 'Công cụ, dụng cụ' },
-                        { value: 'Tài sản cố định', label: 'Tài sản cố định' }
+                        { value: 'Tài sản cố định', label: 'Tài sản cố định' },
+                        { value: 'Dự án Skeig', label: 'Dự án Skeig' }
                     ]}
                 />
                 <Button icon={<ClearOutlined />} onClick={handleClear}>Xóa bộ lọc</Button>
@@ -430,7 +431,7 @@ const TableDevices = (props: IProps) => {
                     total: meta.total,
                     showTotal: (total, range) => `${range[0]}-${range[1]} / ${total} kết quả`,
                     onChange: (page: number, pageSize: number) => handleOnChangePage(page, pageSize),
-                    pageSizeOptions: [20, 50, 100],
+                    pageSizeOptions: [20, 50, 100, 200],
                     defaultPageSize: 20,
                     showSizeChanger: true,
                 }}

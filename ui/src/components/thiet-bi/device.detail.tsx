@@ -36,7 +36,7 @@ const DeviceDetail = ({ device }: IProps) => {
                     {device.note || '—'}
                 </Descriptions.Item>
                 <Descriptions.Item label="Loại thiết bị">
-                    <Tag color={device.type === 'Tài sản cố định' ? 'blue' : 'green'}>
+                    <Tag color={device.type === 'Tài sản cố định' ? 'blue' : device.type === 'Công cụ dụng cụ' ? 'green' : 'gold'}>
                         {device.type}
                     </Tag>
                 </Descriptions.Item>
@@ -47,15 +47,10 @@ const DeviceDetail = ({ device }: IProps) => {
                     {device.trongSoChatLuong}%
                 </Descriptions.Item>
                 <Descriptions.Item label="Chất lượng còn lại">
-                    <Tag color={
-                        (device.chatLuongConLai ?? 0) >= 80 ? 'green' :
-                            (device.chatLuongConLai ?? 0) >= 50 ? 'orange' : 'red'
-                    }>
-                        {device.chatLuongConLai}%
-                    </Tag>
+                    {device.chatLuongConLai}%
                 </Descriptions.Item>
                 <Descriptions.Item label="Phòng hiện tại">
-                    <Tag color="green">{device.currentRoom?.name || '—'}</Tag>
+                    <Tag color="default">{device.currentRoom?.name || '—'}</Tag>
                 </Descriptions.Item>
             </Descriptions>
 
@@ -103,14 +98,10 @@ const DeviceDetail = ({ device }: IProps) => {
                 column={{ xs: 1, sm: 3, md: 3 }}
             >
                 <Descriptions.Item label="Thừa">
-                    <Tag color={device.chenhLech?.thua ? 'green' : 'default'}>
-                        {device.chenhLech?.thua ?? 0}
-                    </Tag>
+                    {device.chenhLech?.thua ?? 0}
                 </Descriptions.Item>
                 <Descriptions.Item label="Thiếu">
-                    <Tag color={device.chenhLech?.thieu ? 'red' : 'default'}>
-                        {device.chenhLech?.thieu ?? 0}
-                    </Tag>
+                    {device.chenhLech?.thieu ?? 0}
                 </Descriptions.Item>
                 <Descriptions.Item label="Giá trị còn lại">
                     {formatMoney(device.chenhLech?.giaTriConLai)}

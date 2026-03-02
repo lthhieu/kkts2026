@@ -1,4 +1,4 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsOptional } from "class-validator";
 
 export class CreateDeviceDto {
     @IsNotEmpty({ message: "Tên không được để trống" })
@@ -36,4 +36,7 @@ export class CreateDeviceDto {
 
     @IsNotEmpty({ message: "Đơn vị không được để trống" })
     unit: any;
+
+    @IsOptional()
+    parent: any;
 }
