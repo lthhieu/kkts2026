@@ -29,3 +29,9 @@ export class UnitSubject {
 export class RoomSubject {
     '_id': string;
 }
+export class NewsSubject {
+    '_id': string;
+}
+export class UploadSubject {
+    '_id': string;
+}

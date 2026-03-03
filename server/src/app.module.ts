@@ -11,6 +11,8 @@ import { RoomsModule } from './rooms/rooms.module';
 import { DevicesModule } from './devices/devices.module';
 import { CaslModule } from './casl/casl.module';
 import { DatabasesModule } from './databases/databases.module';
+import { NewsModule } from './news/news.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true, }),
@@ -22,6 +24,8 @@ import { DatabasesModule } from './databases/databases.module';
     DevicesModule,
     CaslModule,
     DatabasesModule,
+    NewsModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

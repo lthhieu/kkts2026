@@ -84,7 +84,7 @@ export class RoomsService {
   async remove(id: string) {
     return await this.roomModel.deleteOne({ _id: id });
   }
-  removeMany(ids: any[]) {
-    return this.roomModel.deleteMany({ _id: { $in: ids } });
+  async removeMany(ids: any[]) {
+    return await this.roomModel.deleteMany({ _id: { $in: ids } });
   }
 }

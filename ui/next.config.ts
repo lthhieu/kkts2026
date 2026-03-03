@@ -9,6 +9,13 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '50mb',
     },
   },
+  images: {
+    localPatterns: [
+      {
+        pathname: '/**',
+      },
+    ],
+  },
 };
 
 export default nextConfig;

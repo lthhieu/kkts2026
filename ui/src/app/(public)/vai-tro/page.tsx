@@ -5,9 +5,6 @@ import type { TabsProps } from 'antd';
 
 const { Text } = Typography;
 
-const onChange = (key: string) => {
-    console.log(key);
-};
 
 const ChucNang = () => {
     return (<div style={{ padding: '0 20px' }}>
@@ -78,6 +75,6 @@ const items: TabsProps['items'] = [
     },
 ];
 
-const VaiTro: React.FC = () => <Tabs style={{ marginTop: 8 }} defaultActiveKey="1" items={items} onChange={onChange} />;
+const VaiTro: React.FC = () => <Tabs style={{ marginTop: 8 }} defaultActiveKey="1" items={items} />;
 
 export default VaiTro;

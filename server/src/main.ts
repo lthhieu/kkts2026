@@ -6,9 +6,11 @@ import { TransformInterceptor } from 'src/configs/transform.interceptor';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   //port
   const configService = app.get(ConfigService);
@@ -34,6 +36,9 @@ async function bootstrap() {
   //request entity too large
   app.use(bodyParser.json({ limit: '50mb' }));
   app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
+  //public folder
+  app.useStaticAssets(join(__dirname, '..', 'public'));
 
   await app.listen(port ?? 8000);
 }

@@ -121,7 +121,6 @@ const Dashboard = ({
                     mode="inline"
                     selectedKeys={[pathname]}
                     items={menuItems}
-                    onClick={() => setCollapsed(true)}
                 />
             </Sider>
             <Layout>

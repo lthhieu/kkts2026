@@ -1,26 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUnitDto } from './dto/create-unit.dto';
-import { UpdateUnitDto } from './dto/update-unit.dto';
+import { CreateNewsDto } from './dto/create-news.dto';
+import { UpdateNewsDto } from './dto/update-news.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Unit } from 'src/units/schemas/unit.schema';
+import { News } from 'src/news/schemas/news.schema';
 import { Model } from 'mongoose';
-import aqp from 'api-query-params';
 import { isEmpty } from 'class-validator';
+import aqp from 'api-query-params';
 
 @Injectable()
-export class UnitsService {
-  constructor(@InjectModel(Unit.name) private unitModel: Model<Unit>) { }
+export class NewsService {
+  constructor(@InjectModel(News.name) private newsModel: Model<News>) { }
 
-  async create(createUnitDto: CreateUnitDto) {
-    return await this.unitModel.create({
-      ...createUnitDto
+  async create(createNewsDto: CreateNewsDto) {
+    return await this.newsModel.create({
+      ...createNewsDto
     })
-  }
-
-  async createMany(createUnitDto: CreateUnitDto[]) {
-    // insertMany accepts an array of plain JavaScript objects
-    const createdUnits = await this.unitModel.insertMany(createUnitDto);
-    return createdUnits;
   }
 
   async findAll(current: number, pageSize: number, queryString: string) {
@@ -31,12 +25,12 @@ export class UnitsService {
     let defaultLimit = +pageSize ? +pageSize : 10
     let defaultCurrent = +current ? +current : 1
     let offset = (+defaultCurrent - 1) * (+defaultLimit)
-    const totalItems = (await this.unitModel.find(filter)).length
+    const totalItems = (await this.newsModel.find(filter)).length
     const totalPages = Math.ceil(totalItems / defaultLimit)
     if (isEmpty(sort)) {
-      sort = "name"
+      sort = "createdAt"
     }
-    let units = await this.unitModel.find(filter)
+    let units = await this.newsModel.find(filter)
       .skip(offset)
       .limit(defaultLimit)
       .sort(sort)
@@ -54,19 +48,15 @@ export class UnitsService {
   }
 
   async findOne(id: string) {
-    return await this.unitModel.findOne({ _id: id });
+    return await this.newsModel.findOne({ _id: id });
   }
 
-  async update(id: string, updateUnitDto: UpdateUnitDto) {
-    return await this.unitModel.updateOne({ _id: id }, updateUnitDto);
+  async update(id: string, updateNewsDto: UpdateNewsDto) {
+    return await this.newsModel.updateOne({ _id: id }, updateNewsDto);
   }
 
   async remove(id: string) {
     // throw new Error('Method not implemented.');
-    return await this.unitModel.deleteOne({ _id: id });
-  }
-
-  async removeMany(ids: any[]) {
-    return await this.unitModel.deleteMany({ _id: { $in: ids } });
+    return await this.newsModel.deleteOne({ _id: id });
   }
 }

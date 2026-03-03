@@ -5,8 +5,7 @@ import { usePathname } from 'next/navigation';
 type MenuItem = Required<MenuProps>['items'][number];
 
 const { Sider } = Layout;
-const MySider = ({ items, collapsed, setCollapsed }: { items: MenuItem[], collapsed: boolean, setCollapsed: (v: boolean) => void }) => {
-    const pathname = usePathname()
+const MySider = ({ items, collapsed, setCollapsed, selectedKey }: { items: MenuItem[], collapsed: boolean, setCollapsed: (v: boolean) => void, selectedKey: string }) => {
 
     return (
         <Sider
@@ -25,9 +24,8 @@ const MySider = ({ items, collapsed, setCollapsed }: { items: MenuItem[], collap
                 style={{}}
                 theme="dark"
                 mode="inline"
-                selectedKeys={[pathname]}
+                selectedKeys={[selectedKey]}
                 items={items}
-                onClick={() => setCollapsed(true)}
             />
         </Sider>
     )

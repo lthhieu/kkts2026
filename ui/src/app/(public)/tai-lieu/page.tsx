@@ -1,8 +1,8 @@
-'use client'
-import React from 'react';
-
-const TaiLieu: React.FC = () => (
-    <div>Đang cập nhật tài liệu</div>
-);
+import TaiLieuComponent from '@/components/public/tai-lieu/tai-lieu';
+const TaiLieu = () => {
+    return (
+        <TaiLieuComponent />
+    )
+};
 
 export default TaiLieu;

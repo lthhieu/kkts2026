@@ -1,10 +1,11 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Button, Flex, Grid, Layout, MenuProps } from 'antd';
 import MyHeader from '@/components/public/layout/header';
 import { HomeOutlined, AppstoreOutlined, FileTextOutlined, ProjectOutlined, MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import MySider from '@/components/public/layout/sider';
+import { usePathname } from 'next/navigation';
 type MenuItem = Required<MenuProps>['items'][number];
 const { useBreakpoint } = Grid;
 
@@ -59,11 +60,33 @@ const PublicLayout = ({
     const screens = useBreakpoint();
     const isMobile = !screens.md;
     const [collapsed, setCollapsed] = useState(false);
+    const pathname = usePathname()
+
+    // Tính toán key cần active dựa trên pathname hiện tại
+    const selectedKey = useMemo(() => {
+        // Tìm item nào trong menu khớp với pathname
+        const foundItem = items.find((item) => {
+            const key = String(item?.key);
+
+            // 1. Trường hợp đặc biệt: Trang chủ '/'
+            // Chỉ active khi pathname đúng y chang là '/'
+            if (key === '/') {
+                return pathname === '/';
+            }
+
+            // 2. Trường hợp các trang con (ví dụ key là '/tin-tuc')
+            // Active khi pathname là '/tin-tuc' HOẶC '/tin-tuc/abcd'
+            // Dùng startsWith(`${key}/`) để tránh nhầm lẫn (ví dụ /tin-tuc và /tin-tuc-moi)
+            return pathname === key || pathname.startsWith(`${key}/`);
+        });
+
+        return foundItem ? String(foundItem.key) : '';
+    }, [pathname, items]);
 
     return (
         <Flex gap="middle" wrap>
             <Layout style={{ ...layoutStyle, margin: isMobile ? "" : "0 5%" }}>
-                {isMobile && <MySider items={items} collapsed={collapsed} setCollapsed={setCollapsed} />}
+                {isMobile && <MySider items={items} collapsed={collapsed} setCollapsed={setCollapsed} selectedKey={selectedKey} />}
                 <Layout>
                     {isMobile && <Header style={{ background: '#fff', padding: 0 }}>
                         <Button
@@ -76,7 +99,7 @@ const PublicLayout = ({
                                 height: 64,
                             }}
                         /></Header>}
-                    {!isMobile && <MyHeader items={items} />}
+                    {!isMobile && <MyHeader items={items} selectedKey={selectedKey} />}
                     <Content style={contentStyle}>{children}</Content>
                     <Footer style={footerStyle}>©{new Date().getFullYear()} Trường Đại học Sư phạm Kỹ thuật Vĩnh Long</Footer>
                 </Layout>

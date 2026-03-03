@@ -2,7 +2,9 @@ import TinTucComponent from "@/components/public/tin.tuc";
 
 const TinTuc = () => {
     return (
-        <TinTucComponent />
+        <div style={{ marginTop: 32 }}>
+            <TinTucComponent />
+        </div>
     )
 };
 
