@@ -7,6 +7,7 @@ import { authenticate, } from "@/app/(auth)/dang-nhap/actions";
 import React, { useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
@@ -56,8 +57,8 @@ export default function LoginComponent() {
             alignItems: "center",
             backgroundColor: token.colorBgContainer,
             display: "flex",
-            height: screens.sm ? "100vh" : "auto",
-            padding: screens.md ? `${token.sizeXXL}px 0px` : "0px"
+            height: '100vh',
+            // padding: screens.md ? `${token.sizeXXL}px 0px` : "0px"
         },
         text: {
             color: token.colorTextSecondary
@@ -73,10 +74,17 @@ export default function LoginComponent() {
             <section style={styles.section}>
                 <div style={styles.container}>
                     <div style={styles.header}>
-
+                        <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+                            <Image
+                                style={{}}
+                                width={44}
+                                height={44}
+                                alt='logo'
+                                src="/logo.png" />
+                        </div>
                         <Title style={{ ...styles.title, textAlign: 'center' }}>Đăng nhập</Title>
                     </div>
-                    <Form
+                    {/* <Form
                         name="login"
                         initialValues={{
                             remember: true,
@@ -127,7 +135,7 @@ export default function LoginComponent() {
                             </Button>
                         </Form.Item>
                     </Form>
-                    <Divider plain>Hoặc</Divider>
+                    <Divider plain>Hoặc</Divider> */}
                     <Button icon={<GoogleOutlined />} block={true} type="default" onClick={() => signIn("google")}>
                         Đăng nhập với tài khoản Google
                     </Button>

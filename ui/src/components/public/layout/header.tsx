@@ -1,9 +1,8 @@
 'use client'
-import React, { useMemo } from 'react';
-import { Layout, Menu, Grid, MenuProps } from 'antd';
+import React from 'react';
+import { Layout, Menu, MenuProps } from 'antd';
 import Image from 'next/image';
-
-import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -16,12 +15,10 @@ const headerStyle: React.CSSProperties = {
     textAlign: 'center',
     height: 64,
     lineHeight: '64px',
-    background: '#fff'
+    background: '#fff',
+    justifyContent: 'space-between'
 };
 const MyHeader = ({ items, selectedKey }: { items: MenuItem[], selectedKey: string }) => {
-
-
-
     return (<>
         <Header style={headerStyle}>
             <Image
@@ -31,6 +28,7 @@ const MyHeader = ({ items, selectedKey }: { items: MenuItem[], selectedKey: stri
                 alt='logo'
                 src="/logo.png" />
             <Menu style={{ padding: 0, background: '#fff' }} selectedKeys={[selectedKey]} mode="horizontal" items={items} />
+            <Link href={'/dang-nhap'}>Đăng nhập</Link>
         </Header></>
     )
 }

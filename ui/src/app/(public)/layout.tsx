@@ -2,7 +2,7 @@
 import React, { useMemo, useState } from 'react';
 import { Button, Flex, Grid, Layout, MenuProps } from 'antd';
 import MyHeader from '@/components/public/layout/header';
-import { HomeOutlined, AppstoreOutlined, FileTextOutlined, ProjectOutlined, MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { HomeOutlined, AppstoreOutlined, FileTextOutlined, ProjectOutlined, MenuUnfoldOutlined, MenuFoldOutlined, LoginOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import MySider from '@/components/public/layout/sider';
 import { usePathname } from 'next/navigation';
@@ -36,7 +36,7 @@ const items: MenuItem[] = [
         icon: <HomeOutlined />,
     },
     {
-        label: <Link href="/vai-tro">Vai trò</Link>,
+        label: <Link href="/vai-tro">Chức năng-Nhiệm vụ</Link>,
         key: '/vai-tro',
         icon: <AppstoreOutlined />,
     },
@@ -49,6 +49,33 @@ const items: MenuItem[] = [
         label: <Link href="/tai-lieu">Tài liệu</Link>,
         key: '/tai-lieu',
         icon: <ProjectOutlined />,
+    },
+];
+const itemsMobile: MenuItem[] = [
+    {
+        label: <Link href="/">Giới thiệu</Link>,
+        key: '/',
+        icon: <HomeOutlined />,
+    },
+    {
+        label: <Link href="/vai-tro">Chức năng-Nhiệm vụ</Link>,
+        key: '/vai-tro',
+        icon: <AppstoreOutlined />,
+    },
+    {
+        label: <Link href="/tin-tuc">Tin tức</Link>,
+        key: '/tin-tuc',
+        icon: <FileTextOutlined />,
+    },
+    {
+        label: <Link href="/tai-lieu">Tài liệu</Link>,
+        key: '/tai-lieu',
+        icon: <ProjectOutlined />,
+    },
+    {
+        label: <Link href="/dang-nhap">Đăng nhập</Link>,
+        key: '/dang-nhap',
+        icon: <LoginOutlined />,
     },
 ];
 
@@ -86,7 +113,7 @@ const PublicLayout = ({
     return (
         <Flex gap="middle" wrap>
             <Layout style={{ ...layoutStyle, margin: isMobile ? "" : "0 5%" }}>
-                {isMobile && <MySider items={items} collapsed={collapsed} setCollapsed={setCollapsed} selectedKey={selectedKey} />}
+                {isMobile && <MySider items={itemsMobile} collapsed={collapsed} setCollapsed={setCollapsed} selectedKey={selectedKey} />}
                 <Layout>
                     {isMobile && <Header style={{ background: '#fff', padding: 0 }}>
                         <Button

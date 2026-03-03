@@ -24,7 +24,7 @@ services:
     ports:
       - 3000:3000
     environment:
-      - MONGO_URI=mongodb://root:123456@mongo:27017/kkts?authSource=admin
+      - MONGO_URI=mongodb+srv://hieulth_db_user:SH0hzvwMhZDNC3jx@cluster0.of7u79n.mongodb.net/
       - NODE_ENV=production
     depends_on:
       - mongo

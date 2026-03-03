@@ -1,8 +1,9 @@
 'use client'
 import { Layout, Menu, MenuProps } from 'antd';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 type MenuItem = Required<MenuProps>['items'][number];
+
 
 const { Sider } = Layout;
 const MySider = ({ items, collapsed, setCollapsed, selectedKey }: { items: MenuItem[], collapsed: boolean, setCollapsed: (v: boolean) => void, selectedKey: string }) => {

@@ -47,8 +47,8 @@ export class NewsService {
     }
   }
 
-  async findOne(id: string) {
-    return await this.newsModel.findOne({ _id: id });
+  async findOne(slug: string) {
+    return await this.newsModel.findOne({ slug });
   }
 
   async update(id: string, updateNewsDto: UpdateNewsDto) {
