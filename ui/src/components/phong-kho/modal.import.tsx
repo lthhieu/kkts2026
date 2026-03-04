@@ -170,7 +170,6 @@ const ModalImport = (props: IProps) => {
                     xl: '50%',
                     xxl: '40%',
                 }}
-                maskClosable={false}
             >
                 <Dragger {...uploadProps}>
                     <p className="ant-upload-drag-icon">
