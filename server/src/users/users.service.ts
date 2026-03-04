@@ -80,7 +80,7 @@ export class UsersService {
     return await this.userModel.insertMany(payload);
   }
 
-  async findAll(current: number, pageSize: number, queryString: string) {
+  async findAll(current: number, pageSize: number, queryString: string, user: IUser) {
     let { filter, population } = aqp(queryString)
     let { sort }: { sort: any } = aqp(queryString)
     delete filter.current
@@ -88,8 +88,15 @@ export class UsersService {
     let defaultLimit = +pageSize ? +pageSize : 10
     let defaultCurrent = +current ? +current : 1
     let offset = (+defaultCurrent - 1) * (+defaultLimit)
+    if (user.role === 'truongdv') {
+      filter = {
+        ...filter,
+        unit: user.unit  // Gắn thêm điều kiện lọc theo unit
+      };
+    }
     const totalItems = (await this.userModel.find(filter)).length
     const totalPages = Math.ceil(totalItems / defaultLimit)
+
     if (isEmpty(sort)) {
       sort = "name"
     }

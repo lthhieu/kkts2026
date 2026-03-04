@@ -31,8 +31,8 @@ export class UsersController {
   @Get()
   @ResponseMessage('Lấy danh sách người dùng thành công')
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Read, UserSubject))
-  findAll(@Query('current') current: string, @Query('pageSize') pageSize: string, @Query() queryString: string) {
-    return this.usersService.findAll(+current, +pageSize, queryString);
+  findAll(@Query('current') current: string, @Query('pageSize') pageSize: string, @Query() queryString: string, @User() user: IUser) {
+    return this.usersService.findAll(+current, +pageSize, queryString, user);
   }
 
   @Get(':id')

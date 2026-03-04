@@ -86,7 +86,7 @@ const Dashboard = ({
             key: '/quan-tri/tai-khoan',
             icon: <UserOutlined />,
             label: <Link href="/quan-tri/tai-khoan">Tài khoản</Link>,
-            permission: { action: Action.Manage, subject: new UserSubject() },
+            permission: { action: Action.Read, subject: new UserSubject() },
         },
     ];
     const menuItems = rawMenuItems.filter(item => {
