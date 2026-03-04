@@ -57,6 +57,9 @@ export class Device {
     @Prop({ type: String || null, default: null })
     parent: string | null;
 
+    @Prop({ default: 'dangsudung' })
+    status: string
+
 }
 
 export const DeviceSchema = SchemaFactory.createForClass(Device);

@@ -257,7 +257,7 @@ const TableUsers = (props: IProps) => {
                 vertical={isMobile} gap={16}>
                 <h2>Danh sách tài khoản</h2>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                    {canDeleteUser(user ?? {} as IUser) && (<Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa</Button>)}
+                    {canDeleteUser(user ?? {} as IUser) && (<Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa {selectedRowKeys.length !== 0 && `(${selectedRowKeys.length})`}</Button>)}
                     {canCreateUser(user ?? {} as IUser) && <Button onClick={showModalImport} type='primary' icon={<CloudUploadOutlined />}>Import</Button>}
                     {canReadUser(user ?? {} as IUser) && (<Button type='primary' icon={<CloudDownloadOutlined />}>
                         <CSVLink

@@ -2,6 +2,7 @@
 
 import { Typography, Tag, Divider, Timeline, Descriptions } from 'antd';
 import { EnvironmentOutlined } from '@ant-design/icons';
+import { STATUS_COLOR_MAP, STATUS_LABEL_MAP } from '@/components/thiet-bi/table';
 
 interface IProps {
     device: IDevice | null;
@@ -9,6 +10,7 @@ interface IProps {
 
 const DeviceDetail = ({ device }: IProps) => {
     if (!device) return null;
+    console.log(device)
 
     // Format số tiền
     const formatMoney = (value: number | null | undefined) => {
@@ -36,7 +38,7 @@ const DeviceDetail = ({ device }: IProps) => {
                     {device.note || '—'}
                 </Descriptions.Item>
                 <Descriptions.Item label="Loại thiết bị">
-                    <Tag color={device.type === 'Tài sản cố định' ? 'blue' : device.type === 'Công cụ dụng cụ' ? 'green' : 'gold'}>
+                    <Tag color={device.type === 'Tài sản cố định' ? 'blue' : device.type === 'Công cụ dụng cụ' ? 'cyan' : 'gold'}>
                         {device.type}
                     </Tag>
                 </Descriptions.Item>
@@ -51,6 +53,11 @@ const DeviceDetail = ({ device }: IProps) => {
                 </Descriptions.Item>
                 <Descriptions.Item label="Phòng hiện tại">
                     <Tag color="default">{device.currentRoom?.name || '—'}</Tag>
+                </Descriptions.Item>
+                <Descriptions.Item label="Trạng thái">
+                    <Tag color={STATUS_COLOR_MAP[device.status!] || 'default'} variant='outlined'>
+                        {STATUS_LABEL_MAP[device.status!] || device.status}
+                    </Tag>
                 </Descriptions.Item>
             </Descriptions>
 

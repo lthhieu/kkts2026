@@ -2,6 +2,7 @@
 import { Modal, Form, Input, message, Select, Row, Col, InputNumber, Typography, notification } from 'antd';
 import React, { useEffect, useMemo } from 'react';
 import { handleCreateOrUpdateDevice } from '@/app/(main)/quan-tri/thiet-bi/actions';
+import { statusArr, typeArr } from '@/components/thiet-bi/table';
 
 interface IProps {
     access_token?: string,
@@ -59,7 +60,8 @@ const DeviceModal = (props: IProps) => {
                 "note": dataUpdate.note,
                 "trongSoChatLuong": dataUpdate.trongSoChatLuong,
                 "type": dataUpdate.type,
-                "unit": dataUpdate.unit._id
+                "unit": dataUpdate.unit._id,
+                "status": dataUpdate.status
             })
         }
     }, [dataUpdate])
@@ -97,8 +99,8 @@ const DeviceModal = (props: IProps) => {
 
     const onFinish = async (values: IDevice) => {
         // console.log('Received values of form: ', values);
-        const { name, description, usedLocation, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note, trongSoChatLuong, type, unit, parent } = values
-        const data = { name, description, usedLocation, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note, trongSoChatLuong, type, unit, parent }
+        const { name, description, usedLocation, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note, trongSoChatLuong, type, unit, parent, status: statusDevice } = values
+        const data = { name, description, usedLocation, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note, trongSoChatLuong, type, unit, parent, statusDevice }
 
         const response = await handleCreateOrUpdateDevice(data, access_token ?? '', status, dataUpdate)
 
@@ -215,14 +217,26 @@ const DeviceModal = (props: IProps) => {
                     </Row>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item
+                            {status === 'UPDATE' && <Form.Item
+                                style={{ marginBottom: 8 }}
+                                label="Trạng thái"
+                                name="status"
+                            >
+                                <Select
+                                    style={{ width: '100%' }}
+                                    showSearch={{ optionFilterProp: 'label' }}
+                                    placeholder="Vui lòng chọn trạng thái"
+                                    options={statusArr}
+                                />
+                            </Form.Item>}
+                            {status === 'CREATE' && <Form.Item
                                 style={{ marginBottom: 8 }}
                                 label="Ghi chú"
                                 name="note"
-                                rules={[{ required: status !== 'UPDATE' ? true : false }]}
+                                rules={[{ required: true }]}
                             >
                                 <Input />
-                            </Form.Item>
+                            </Form.Item>}
 
                         </Col>
 
@@ -237,15 +251,19 @@ const DeviceModal = (props: IProps) => {
                                     showSearch={{ optionFilterProp: 'label' }}
                                     placeholder="Vui lòng chọn loại thiết bị"
                                     onChange={onChange}
-                                    options={[
-                                        { value: 'Công cụ dụng cụ', label: 'Công cụ, dụng cụ' },
-                                        { value: 'Tài sản cố định', label: 'Tài sản cố định' },
-                                        { value: 'Dự án Skeig', label: 'Dự án Skeig' }
-                                    ]}
+                                    options={typeArr}
                                 />
                             </Form.Item>
                         </Col>
                     </Row>
+                    {status === 'UPDATE' && <Form.Item
+                        style={{ marginBottom: 8 }}
+                        label="Ghi chú"
+                        name="note"
+                        rules={[{ required: false }]}
+                    >
+                        <Input />
+                    </Form.Item>}
 
                     <Row gutter={16}>
                         <Col span={8}>

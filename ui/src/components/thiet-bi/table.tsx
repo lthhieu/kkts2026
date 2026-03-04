@@ -1,15 +1,16 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Drawer, Flex, Grid, Input, Popconfirm, Select, Space, Table, Tooltip, Typography, message, notification } from 'antd';
+import { Button, Drawer, Flex, Grid, Input, Popconfirm, Select, Space, Table, Tag, Tooltip, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { handleDeleteDevice, handleDeleteDeviceMany } from '@/app/(main)/quan-tri/thiet-bi/actions';
 import DeviceModal from '@/components/thiet-bi/modal';
-import { canCreateDevice, canDeleteDevice, canReadDevice, canUpdateDevice } from '@/libs/devices';
+import { canCreateDevice, canDeleteDevice, canManageDevice, canReadDevice, canUpdateDevice } from '@/libs/devices';
 import ModalImport from '@/components/thiet-bi/modal.import';
 import { CSVLink } from 'react-csv';
 import DeviceDetail from '@/components/thiet-bi/device.detail';
+import ModalUpdateMany from '@/components/thiet-bi/modal.update.clcl';
 
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
 const { useBreakpoint } = Grid;
@@ -23,12 +24,30 @@ interface IProps {
     units: IUnit[],
     user: IUser | null,
 }
+export const typeArr = [
+    { value: 'Công cụ dụng cụ', label: 'Công cụ, dụng cụ' },
+    { value: 'Tài sản cố định', label: 'Tài sản cố định' },
+    { value: 'Dự án Skeig', label: 'Dự án Skeig' }
+]
+export const statusArr = [
+    { value: 'dangsudung', label: 'Đang sử dụng' },
+    { value: 'thanhly', label: 'Thanh lý' },
+]
+export const STATUS_COLOR_MAP: Record<string, string> = {
+    dangsudung: 'green',
+    thanhly: 'red',
+};
+export const STATUS_LABEL_MAP: Record<string, string> = {
+    dangsudung: 'Đang sử dụng',
+    thanhly: 'Thanh lý'
+};
 
 const Context = React.createContext({ name: 'Default' });
 
 const TableDevices = (props: IProps) => {
     const { devices, access_token, meta, rooms, units, user, email } = props
     const [isModalOpen, SetIsModalOpen] = useState(false)
+    const [isModalUpdateManyOpen, setIsModalUpdateManyOpen] = useState(false)
     const [isModalImportOpen, SetIsModalImportOpen] = useState(false)
     const [status, setStatus] = useState('')
     const [loading, setLoading] = useState(false);
@@ -42,6 +61,7 @@ const TableDevices = (props: IProps) => {
     const [selectedRoom, setSelectedRoom] = useState<string | undefined>(undefined);
     const [selectedUnit, setSelectedUnit] = useState<string | undefined>(undefined);
     const [selectedType, setSelectedType] = useState<string | undefined>(undefined);
+    const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
 
     const [dataExport, setDataExport] = useState<any[]>([])
     const screens = useBreakpoint();
@@ -140,6 +160,10 @@ const TableDevices = (props: IProps) => {
     const onChangeRoom = (value: string) => {
         setSelectedRoom(value);
     };
+    // Hàm xử lý khi chọn status
+    const onChangeStatus = (value: string) => {
+        setSelectedStatus(value);
+    };
     // Hàm xử lý khi chọn type
     const onChangeType = (value: string) => {
         setSelectedType(value);
@@ -154,11 +178,15 @@ const TableDevices = (props: IProps) => {
         setSelectedRoom(undefined); // Reset về trạng thái ban đầu
         setSelectedType(undefined);
         setSelectedUnit(undefined);
+        setSelectedStatus(undefined)
     };
 
     const showModal = () => {
         setStatus("CREATE")
         SetIsModalOpen(true);
+    }
+    const showModalUpdateMany = () => {
+        setIsModalUpdateManyOpen(true);
     }
     const showModalImport = () => {
         SetIsModalImportOpen(true);
@@ -201,7 +229,7 @@ const TableDevices = (props: IProps) => {
                         onClick={() => showDrawer(record)}
                     />
                 </Tooltip>
-                    {canUpdateDevice(user ?? {} as IUser, record?.unit?._id! || 'unit_id') && (
+                    {canUpdateDevice(user ?? {} as IUser) && (
                         <Tooltip title="Cập nhật">
                             <EditOutlined
                                 style={{ color: '#1cc03d', cursor: 'pointer' }}
@@ -263,6 +291,16 @@ const TableDevices = (props: IProps) => {
                 return `${record.chatLuongConLai}%`
             }
         },
+        {
+            title: 'Trạng thái',
+            dataIndex: 'status',
+            key: 'status',
+            render: (_, record) => (
+                <Tag color={STATUS_COLOR_MAP[record.status!] || 'default'} variant='outlined'>
+                    {STATUS_LABEL_MAP[record.status!] || record.status}
+                </Tag>
+            )
+        },
     ];
     const handleOnChangePage = (current: number, pageSize: number) => {
         const params = new URLSearchParams()
@@ -271,6 +309,7 @@ const TableDevices = (props: IProps) => {
         if (selectedRoom) params.set('currentRoom', selectedRoom)
         if (selectedUnit) params.set('unit', selectedUnit)
         if (selectedType) params.set('type', selectedType)
+        if (selectedStatus) params.set('status', selectedStatus)
 
         params.set('current', current.toString())
         params.set('pageSize', pageSize.toString())
@@ -285,6 +324,7 @@ const TableDevices = (props: IProps) => {
         if (selectedUnit) params.set('unit', selectedUnit)
         if (selectedType) params.set('type', selectedType)
         if (selectedName) params.set('name', selectedName)
+        if (selectedStatus) params.set('status', selectedStatus)
 
         params.set('current', '1')
         params.set('pageSize', meta.pageSize.toString())
@@ -355,7 +395,11 @@ const TableDevices = (props: IProps) => {
                 <h2>Danh sách thiết bị</h2>
 
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                    {canDeleteDevice(user ?? {} as IUser) && <Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa</Button>}
+                    {canManageDevice(user ?? {} as IUser) &&
+                        <Button variant='solid' color='cyan' onClick={showModalUpdateMany}>
+                            Cập nhật CLCL thiết bị
+                        </Button>}
+                    {canDeleteDevice(user ?? {} as IUser) && <Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa {selectedRowKeys.length !== 0 && `(${selectedRowKeys.length})`}</Button>}
                     {canCreateDevice(user ?? {} as IUser) && <Button onClick={showModalImport} type='primary' icon={<CloudUploadOutlined />}>Import</Button>}
                     {canReadDevice(user ?? {} as IUser) && <Button type='primary' icon={<CloudDownloadOutlined />}>
                         <CSVLink
@@ -391,7 +435,7 @@ const TableDevices = (props: IProps) => {
                             : []
                     }
                 />
-                <Select
+                {user?.role === 'gv' ? <></> : <Select
                     style={{ width: '100%' }}
                     showSearch={{ optionFilterProp: 'label' }}
                     placeholder="Vui lòng chọn đơn vị"
@@ -407,7 +451,7 @@ const TableDevices = (props: IProps) => {
                             }))
                             : []
                     }
-                />
+                />}
                 <Select
                     style={{ width: '100%' }}
                     showSearch={{ optionFilterProp: 'label' }}
@@ -415,11 +459,16 @@ const TableDevices = (props: IProps) => {
                     value={selectedType}
                     onChange={onChangeType}
                     allowClear
-                    options={[
-                        { value: 'Công cụ dụng cụ', label: 'Công cụ, dụng cụ' },
-                        { value: 'Tài sản cố định', label: 'Tài sản cố định' },
-                        { value: 'Dự án Skeig', label: 'Dự án Skeig' }
-                    ]}
+                    options={typeArr}
+                />
+                <Select
+                    style={{ width: '100%' }}
+                    showSearch={{ optionFilterProp: 'label' }}
+                    placeholder="Vui lòng chọn trạng thái thiết bị"
+                    value={selectedStatus}
+                    onChange={onChangeStatus}
+                    allowClear
+                    options={statusArr}
                 />
                 <Button icon={<ClearOutlined />} onClick={handleClear}>Xóa bộ lọc</Button>
                 <Button icon={<SearchOutlined />} type='primary' onClick={handleFilter}>Lọc</Button>
@@ -455,6 +504,11 @@ const TableDevices = (props: IProps) => {
                 access_token={access_token}
                 isModalImportOpen={isModalImportOpen}
                 setIsModalImportOpen={SetIsModalImportOpen}
+            />
+            <ModalUpdateMany
+                access_token={access_token}
+                isModalUpdateManyOpen={isModalUpdateManyOpen}
+                setIsModalUpdateManyOpen={setIsModalUpdateManyOpen}
             />
             <Drawer
                 title="Xem chi tiết thiết bị"

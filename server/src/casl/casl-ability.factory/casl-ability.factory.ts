@@ -35,10 +35,7 @@ export class CaslAbilityFactory {
             can(Action.Read, UnitSubject);
             can(Action.Read, RoomSubject);
         } else if (user.role === 'gv') {
-            cannot(Action.Delete, DeviceSubject);
-            can(Action.Update, DeviceSubject, { unit: { $eq: user.unit } });
             can(Action.Read, DeviceSubject);
-            can(Action.Create, DeviceSubject);
             can(Action.Read, UnitSubject);
             can(Action.Read, RoomSubject);
             cannot(Action.Manage, UserSubject);

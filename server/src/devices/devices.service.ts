@@ -38,7 +38,7 @@ export class DevicesService {
     return createdDevices;
   }
 
-  async findAll(current: number, pageSize: number, queryString: string) {
+  async findAll(current: number, pageSize: number, queryString: string, user: IUser) {
     let { filter, population } = aqp(queryString)
     let { sort }: { sort: any } = aqp(queryString)
     delete filter.current
@@ -47,6 +47,13 @@ export class DevicesService {
     let defaultLimit = +pageSize ? +pageSize : 10
     let defaultCurrent = +current ? +current : 1
     let offset = (+defaultCurrent - 1) * (+defaultLimit)
+
+    if (user.role === 'gv') {
+      filter = {
+        ...filter,
+        unit: user.unit  // Gắn thêm điều kiện lọc theo unit
+      };
+    }
     const totalItems = (await this.deviceModel.find(filter)).length
     const totalPages = Math.ceil(totalItems / defaultLimit)
     if (isEmpty(sort)) {
@@ -81,25 +88,80 @@ export class DevicesService {
       .exec();
   }
 
-  async update(id: string, updateDeviceDto: UpdateDeviceDto, user: IUser) {
+  async update(id: string, updateDeviceDto: UpdateDeviceDto) {
     const { usedLocation, ...rest } = updateDeviceDto;
     const currentRoom = usedLocation ? usedLocation[usedLocation.length - 1].room : ''
 
-    const ability = this.caslAbilityFactory.createForUser(user);
-    const device = await this.deviceModel.findOne({ _id: id });
-    const deviceSubject = new DeviceSubject();
-    deviceSubject._id = device?._id.toString()!;
-    deviceSubject.unit = device?.unit?.toString()!;
+    return await this.deviceModel.updateOne({ _id: id }, {
+      ...rest,
+      ...(usedLocation !== undefined && { $set: { usedLocation } }),
+      currentRoom
+    });
 
-    if (ability.can(Action.Update, deviceSubject)) {
-      return await this.deviceModel.updateOne({ _id: id }, {
-        ...rest,
-        ...(usedLocation !== undefined && { $set: { usedLocation } }),
-        currentRoom
-      });
-    }
-    throw new ForbiddenException();
+  }
 
+  async updateAllQualityAggregate(year: number) {
+    const currentYear = year ?? new Date().getFullYear()
+    const result = await this.deviceModel.updateMany(
+      {
+        usedYear: { $exists: true, $ne: null },
+        trongSoChatLuong: { $exists: true, $ne: null }
+      },
+      [ // Aggregation Pipeline (Dấu ngoặc vuông)
+        {
+          $set: {
+            chatLuongConLai: {
+              $cond: {
+                if: { $gte: ["$usedYear", currentYear] },
+                then: 100,
+                else: {
+                  $max: [
+                    0,
+                    {
+                      $subtract: [
+                        100,
+                        {
+                          $multiply: [
+                            { $subtract: [currentYear, "$usedYear"] },
+                            "$trongSoChatLuong"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ],
+      { updatePipeline: true }
+    );
+
+    return {
+      matched: result.matchedCount,
+      updated: result.modifiedCount
+    };
+  }
+
+  async updateAllStatusAggregate() {
+    const result = await this.deviceModel.updateMany(
+      {
+      },
+      [ // Aggregation Pipeline (Dấu ngoặc vuông)
+        {
+          $set: {
+            status: 'dangsudung'
+          }
+        }
+      ],
+      { updatePipeline: true }
+    );
+
+    return {
+      matched: result.matchedCount,
+      updated: result.modifiedCount
+    };
   }
 
   async remove(id: string, user: IUser) {

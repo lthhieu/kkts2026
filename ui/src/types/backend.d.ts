@@ -94,6 +94,7 @@ declare global {
         "createdAt"?: string,
         "updatedAt"?: string,
         "parent"?: string | null,
+        status?: string,
         children?: IDevice[];
     }
     interface IRoom {
@@ -122,5 +123,9 @@ declare global {
         "units": number | null,
         "rooms": number | null,
         "devices": number | null
+    }
+    interface IUpdateMany {
+        matched: number,
+        updated: number
     }
 }

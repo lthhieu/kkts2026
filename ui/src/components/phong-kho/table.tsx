@@ -206,7 +206,7 @@ const TableRooms = (props: IProps) => {
                 <h2>Danh sách phòng - kho</h2>
 
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                    {canDeleteRoom(user ?? {} as IUser) && <Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa</Button>}
+                    {canDeleteRoom(user ?? {} as IUser) && <Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa {selectedRowKeys.length !== 0 && `(${selectedRowKeys.length})`}</Button>}
                     {canCreateRoom(user ?? {} as IUser) && <Button onClick={showModalImport} type='primary' icon={<CloudUploadOutlined />}>Import</Button>}
                     {canReadRoom(user ?? {} as IUser) && <Button type='primary' icon={<CloudDownloadOutlined />}>
                         <CSVLink

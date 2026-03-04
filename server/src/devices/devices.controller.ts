@@ -29,8 +29,8 @@ export class DevicesController {
   @Get()
   @ResponseMessage('Lấy danh sách thiết bị thành công')
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Read, DeviceSubject))
-  findAll(@Query('current') current: string, @Query('pageSize') pageSize: string, @Query() queryString: string) {
-    return this.devicesService.findAll(+current, +pageSize, queryString);
+  findAll(@Query('current') current: string, @Query('pageSize') pageSize: string, @Query() queryString: string, @User() user: IUser) {
+    return this.devicesService.findAll(+current, +pageSize, queryString, user);
   }
 
   @Get(':id')
@@ -40,10 +40,25 @@ export class DevicesController {
     return this.devicesService.findOne(id);
   }
 
+  @Patch('/update-many')
+  @ResponseMessage('Cập nhật thiết bị thành công')
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Update, DeviceSubject))
+  updateMany(@Body() data: { year: number }) {
+    return this.devicesService.updateAllQualityAggregate(data.year);
+  }
+
+  @Patch('/update-all-status')
+  @ResponseMessage('Cập nhật thiết bị thành công')
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Update, DeviceSubject))
+  updateManyStatus() {
+    return this.devicesService.updateAllStatusAggregate();
+  }
+
   @Patch(':id')
   @ResponseMessage('Cập nhật thiết bị thành công')
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Update, DeviceSubject))
   update(@Param('id') id: string, @Body() updateDeviceDto: UpdateDeviceDto, @User() user: IUser) {
-    return this.devicesService.update(id, updateDeviceDto, user);
+    return this.devicesService.update(id, updateDeviceDto);
   }
 
   @Delete('/delete-many')

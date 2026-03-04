@@ -19,6 +19,7 @@ type Params = Promise<{
     unit?: string;
     type?: string;
     name?: string;
+    status?: string;
 }>
 const Thietbi = async ({ searchParams }: { searchParams: Params }) => {
     const session = await auth()
@@ -26,7 +27,7 @@ const Thietbi = async ({ searchParams }: { searchParams: Params }) => {
     if (!permission.can(Action.Read, new DeviceSubject())) {
         redirect('/quan-tri/trang-chu')
     }
-    const { pageSize = 20, current = 1, currentRoom, type, unit, name } = await searchParams
+    const { pageSize = 20, current = 1, currentRoom, type, unit, name, status } = await searchParams
     const res = await sendRequest<IBackendResponse<IModelPaginate<IDevice>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/devices`,
         queryParams: {
@@ -35,6 +36,7 @@ const Thietbi = async ({ searchParams }: { searchParams: Params }) => {
             ...(unit && { unit }),
             ...(type && { type }),
             ...(name && { name: `/${name}/i` }),
+            ...(status && { status }),
         },
         headers: {
             Authorization: `Bearer ${session?.access_token}`,
