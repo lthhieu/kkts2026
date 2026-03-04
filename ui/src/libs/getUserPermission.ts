@@ -25,7 +25,7 @@ export function getUserPermission(user: any) {
         can(Action.Manage, UnitSubject);
         can(Action.Manage, RoomSubject);
     } else if (user.role === 'truongdv') {
-        cannot(Action.Manage, UserSubject);
+        can(Action.Read, UserSubject);
         cannot(Action.Manage, NewsSubject);
         cannot(Action.Manage, UploadSubject);
         can(Action.Read, DeviceSubject);
