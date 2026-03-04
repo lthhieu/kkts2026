@@ -1,20 +1,4 @@
 services:
-  mongo:
-    image: mongo:latest
-    restart: always
-    container_name: mongo
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: 123456
-    ports:
-      - 27017:27017
-    volumes:
-      - mongo-data:/data/db
-    healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
   backend:
     build:
       context: ./server
@@ -24,10 +8,8 @@ services:
     ports:
       - 3000:3000
     environment:
-      - MONGO_URI=mongodb+srv://hieulth_db_user:SH0hzvwMhZDNC3jx@cluster0.of7u79n.mongodb.net/
+      - MONGO_URI=mongodb+srv://hieulth_db_user:SH0hzvwMhZDNC3jx@cluster0.of7u79n.mongodb.net/kkts?authSource=admin
       - NODE_ENV=production
-    depends_on:
-      - mongo
   frontend:
     build:
       context: ./ui
@@ -40,5 +22,3 @@ services:
       - NEXT_PUBLIC_BACKEND_URI=http://backend-kkts:3000
     depends_on:
       - backend
-volumes:
-  mongo-data:
