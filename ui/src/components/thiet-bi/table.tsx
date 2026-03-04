@@ -17,6 +17,7 @@ const { useBreakpoint } = Grid;
 interface IProps {
     devices: IDevice[],
     access_token: string,
+    email: string,
     meta: IMeta,
     rooms: IRoom[],
     units: IUnit[],
@@ -26,7 +27,7 @@ interface IProps {
 const Context = React.createContext({ name: 'Default' });
 
 const TableDevices = (props: IProps) => {
-    const { devices, access_token, meta, rooms, units, user } = props
+    const { devices, access_token, meta, rooms, units, user, email } = props
     const [isModalOpen, SetIsModalOpen] = useState(false)
     const [isModalImportOpen, SetIsModalImportOpen] = useState(false)
     const [status, setStatus] = useState('')
@@ -441,6 +442,7 @@ const TableDevices = (props: IProps) => {
                 setStatus={setStatus}
                 status={status}
                 access_token={access_token}
+                email={email}
                 isModalOpen={isModalOpen}
                 setIsModalOpen={SetIsModalOpen}
                 //update info

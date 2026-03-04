@@ -14,9 +14,9 @@ export class Device {
     description: string;
 
     @Prop({
-        type: [{ _id: false, year: { type: Number }, room: { type: mongoose.Schema.Types.ObjectId, ref: Room.name } }]
+        type: [{ _id: false, year: { type: Number }, room: { type: mongoose.Schema.Types.ObjectId, ref: Room.name }, reason: { type: String }, person: { type: String } }]
     })
-    usedLocation: { year: number | null; room: Room | null }[];
+    usedLocation: { year: number | null; room: Room | null; reason?: string; person?: string }[];
 
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Room.name })
     currentRoom: Room | null;

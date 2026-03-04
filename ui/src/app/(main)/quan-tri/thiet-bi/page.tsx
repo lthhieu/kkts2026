@@ -68,6 +68,7 @@ const Thietbi = async ({ searchParams }: { searchParams: Params }) => {
             <TableDevices
                 devices={res?.data?.result ?? []}
                 access_token={session?.access_token ?? ''}
+                email={session?.user.email ?? ''}
                 meta={res?.data?.meta!}
                 rooms={res1?.data?.result ?? []}
                 units={res2?.data?.result ?? []}

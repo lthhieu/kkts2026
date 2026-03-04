@@ -118,7 +118,7 @@ const DeviceDetail = ({ device }: IProps) => {
             {device.usedLocation && device.usedLocation.length > 0 ? (
                 <Timeline
                     items={device.usedLocation.map((location, index) => ({
-                        color: index === 0 ? 'green' : 'gray',
+                        color: 'green',
                         icon: <EnvironmentOutlined />,
                         content: (
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>

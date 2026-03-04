@@ -59,7 +59,9 @@ declare global {
             "room": {
                 "_id": string,
                 "name": string
-            }
+            },
+            reason?: string,
+            person?: string
         }[],
         "currentRoom": {
             "_id": string,

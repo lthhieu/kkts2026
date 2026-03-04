@@ -8,7 +8,7 @@ export class CreateDeviceDto {
     description: string;
 
     @IsNotEmpty({ message: "Nơi sử dụng không được để trống" })
-    usedLocation: { year: number; room: any }[];
+    usedLocation: { year: number; room: any; reason: string; person: string }[];
 
     @IsNotEmpty({ message: "Năm sử dụng không được để trống" })
     usedYear: number;

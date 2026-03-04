@@ -7,7 +7,7 @@ import { Model } from 'mongoose';
 import aqp from 'api-query-params';
 import { isEmpty } from 'class-validator';
 import { CaslAbilityFactory } from 'src/casl/casl-ability.factory/casl-ability.factory';
-import { Action, DeviceSubject, RoomSubject } from 'src/configs/enum';
+import { Action, DeviceSubject } from 'src/configs/enum';
 
 @Injectable()
 export class DevicesService {

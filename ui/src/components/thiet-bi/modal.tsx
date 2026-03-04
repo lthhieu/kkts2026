@@ -5,6 +5,7 @@ import { handleCreateOrUpdateDevice } from '@/app/(main)/quan-tri/thiet-bi/actio
 
 interface IProps {
     access_token?: string,
+    email: string,
     isModalOpen: boolean,
     setIsModalOpen: (value: boolean) => void,
     status: string,
@@ -19,7 +20,7 @@ interface IProps {
 const Context = React.createContext({ name: 'Default' });
 
 const DeviceModal = (props: IProps) => {
-    const { setIsModalOpen, isModalOpen, setStatus, status, access_token, setDataUpdate, dataUpdate, rooms, units } = props
+    const { setIsModalOpen, isModalOpen, setStatus, status, access_token, setDataUpdate, dataUpdate, rooms, units, email } = props
     const [form] = Form.useForm()
     const [messageApi, contextHolder] = message.useMessage();
     const [api, contextHolderNotification] = notification.useNotification();
@@ -34,7 +35,9 @@ const DeviceModal = (props: IProps) => {
                 "description": dataUpdate.description,
                 "usedLocation": dataUpdate.usedLocation.map(i => ({
                     ...i,
-                    room: i.room?._id  // 🔥 ÉP VỀ ID
+                    room: i.room?._id,  // 🔥 ÉP VỀ ID
+                    reason: i.reason,
+                    person: i.person
                 })),
                 "usedYear": dataUpdate.usedYear,
                 "soKeToan": {
@@ -385,68 +388,102 @@ const DeviceModal = (props: IProps) => {
                     <Form.List name="usedLocation">
                         {(fields, { add, remove }) => (
                             <>
-                                {fields.map(({ key, name, ...restField }, index) => (
-                                    <div
-                                        key={key}
-                                        style={{
-                                            border: '1px solid #f0f0f0',
-                                            padding: 12,
-                                            marginBottom: 6,
-                                            borderRadius: 6
-                                        }}
-                                    >
-                                        <Typography.Text strong>
-                                            Nơi sử dụng {index + 1}
-                                        </Typography.Text>
-
-                                        <Row gutter={12}>
-                                            <Col span={8}>
-                                                <Form.Item
-                                                    {...restField}
-                                                    label="Năm"
-                                                    name={[name, 'year']}
-                                                    rules={[{ required: true }]}
-                                                >
-                                                    <InputNumber type="number" />
-                                                </Form.Item>
-                                            </Col>
-
-                                            <Col span={16}>
-                                                <Form.Item
-                                                    {...restField}
-                                                    label="Phòng - kho"
-                                                    name={[name, 'room']}
-                                                    style={{ marginBottom: 6 }}
-                                                    rules={[{ required: true }]}
-                                                >
-                                                    <Select
-                                                        style={{ width: '100%' }}
-                                                        showSearch={{ optionFilterProp: 'label' }}
-                                                        placeholder="Vui lòng chọn phòng - kho"
-                                                        onChange={onChange}
-                                                        options={
-                                                            rooms && rooms.length > 0
-                                                                ? rooms.map(({ _id, name, currentUnit }) => ({
-                                                                    value: _id,
-                                                                    label: `${name} (${currentUnit?.name || 'N/A'})`
-                                                                }))
-                                                                : []
-                                                        }
-                                                    />
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
-
-                                        <Typography.Link
-                                            onClick={() => remove(name)}
-                                            style={{ color: 'red' }}
+                                {fields.map(({ key, name, ...restField }, index) => {
+                                    const currentLocation = form.getFieldValue(['usedLocation', name]);
+                                    const showReasonInfo = currentLocation?.person || currentLocation?.reason;
+                                    return (
+                                        <div
+                                            key={key}
+                                            style={{
+                                                border: '1px solid #f0f0f0',
+                                                padding: 12,
+                                                marginBottom: 6,
+                                                borderRadius: 6
+                                            }}
                                         >
-                                            Xóa nơi sử dụng này
-                                        </Typography.Link>
-                                    </div>
-                                ))}
+                                            <Typography.Text strong>
+                                                Nơi sử dụng {index + 1}
+                                            </Typography.Text>
+
+                                            <Row gutter={12}>
+                                                <Col span={8}>
+                                                    <Form.Item
+                                                        {...restField}
+                                                        label="Năm"
+                                                        name={[name, 'year']}
+                                                        rules={[{ required: true }]}
+                                                    >
+                                                        <InputNumber type="number" />
+                                                    </Form.Item>
+                                                </Col>
+
+                                                <Col span={16}>
+                                                    <Form.Item
+                                                        {...restField}
+                                                        label="Phòng - kho"
+                                                        name={[name, 'room']}
+                                                        style={{ marginBottom: 6 }}
+                                                        rules={[{ required: true }]}
+                                                    >
+                                                        <Select
+                                                            style={{ width: '100%' }}
+                                                            showSearch={{ optionFilterProp: 'label' }}
+                                                            placeholder="Vui lòng chọn phòng - kho"
+                                                            onChange={onChange}
+                                                            options={
+                                                                rooms && rooms.length > 0
+                                                                    ? rooms.map(({ _id, name, currentUnit }) => ({
+                                                                        value: _id,
+                                                                        label: `${name} (${currentUnit?.name || 'N/A'})`
+                                                                    }))
+                                                                    : []
+                                                            }
+                                                        />
+                                                    </Form.Item>
+                                                </Col>
+                                            </Row>
+                                            {showReasonInfo && <Row gutter={12}>
+                                                <Col span={8}>
+                                                    <Form.Item
+                                                        {...restField}
+                                                        label="Người thay đổi"
+                                                        name={[name, 'person']}
+                                                        rules={[{ required: true }]}
+                                                    >
+                                                        <Input readOnly />
+                                                    </Form.Item>
+                                                </Col>
+
+                                                <Col span={16}>
+                                                    <Form.Item
+                                                        {...restField}
+                                                        label="Lý do"
+                                                        name={[name, 'reason']}
+
+                                                        style={{ marginBottom: 6 }}
+                                                        rules={[{ required: true }]}
+                                                    >
+                                                        <Input />
+                                                    </Form.Item>
+                                                </Col>
+                                            </Row>}
+
+                                            <Typography.Link
+                                                onClick={() => remove(name)}
+                                                style={{ color: 'red' }}
+                                            >
+                                                Xóa nơi sử dụng này
+                                            </Typography.Link>
+                                        </div>
+                                    )
+                                }
+                                )}
                                 <Form.Item>
-                                    <Typography.Link onClick={() => add()}>
+                                    <Typography.Link onClick={() => add({
+                                        year: new Date().getFullYear(),
+                                        person: email, // Điền sẵn email vào field person
+                                        reason: ''
+                                    })}>
                                         + Thêm nơi sử dụng
                                     </Typography.Link>
                                 </Form.Item>
