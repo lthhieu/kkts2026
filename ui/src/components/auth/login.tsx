@@ -84,7 +84,7 @@ export default function LoginComponent() {
                         </div>
                         <Title style={{ ...styles.title, textAlign: 'center' }}>Đăng nhập</Title>
                     </div>
-                    <Form
+                    {/* <Form
                         name="login"
                         initialValues={{
                             remember: true,
@@ -135,7 +135,7 @@ export default function LoginComponent() {
                             </Button>
                         </Form.Item>
                     </Form>
-                    <Divider plain>Hoặc</Divider>
+                    <Divider plain>Hoặc</Divider> */}
                     <Button icon={<GoogleOutlined />} block={true} type="default" onClick={() => signIn("google")}>
                         Đăng nhập với tài khoản Google
                     </Button>

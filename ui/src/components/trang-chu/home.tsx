@@ -10,7 +10,13 @@ interface IProps {
 }
 const Home = (props: IProps) => {
     const { getData, access_token, role } = props
-    if (access_token === '' || role === 'guest') return <>Trang chủ</>
+    if (access_token === '' || role === 'guest') return <div style={{ lineHeight: 3 }}>
+        <strong>Kính chào Quý Thầy/Cô.</strong>
+        <div style={{ lineHeight: 1.5 }}>
+            <p>Để thuận tiện trong việc sử dụng hệ thống, kính đề nghị Quý Thầy/Cô vui lòng liên hệ Quản trị viên để được xem xét và phân quyền phù hợp.</p>
+            <p>Trân trọng.</p>
+        </div>
+    </div>
     return (
         <Row wrap={true} gutter={[16, 16]}>
             <Col xs={24} md={6} >

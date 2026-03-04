@@ -39,6 +39,15 @@ export const ROLE_LABEL_MAP: Record<string, string> = {
     guest: 'Khách'
 };
 
+export const roleArray = [
+    { value: 'superadmin', label: 'Quản trị hệ thống' },
+    { value: 'admin', label: 'Quản trị' },
+    { value: 'thukho', label: 'Thủ kho' },
+    { value: 'truongdv', label: 'Trưởng đơn vị' },
+    { value: 'gv', label: 'Giáo viên' },
+    { value: 'guest', label: 'Khách' }
+]
+
 
 const TableUsers = (props: IProps) => {
     const { users, access_token, meta, units, user } = props
@@ -269,7 +278,7 @@ const TableUsers = (props: IProps) => {
             {canReadUser(user ?? {} as IUser) && (<Space style={{ marginBottom: 16, flexWrap: 'wrap' }}>
                 <Input allowClear placeholder="Tìm theo địa chỉ email"
                     onChange={(e) => setSelectedEmail(e.target.value)} value={selectedEmail} />
-                <Select
+                {user?.role === 'truongdv' ? <></> : <Select
                     style={{ width: '100%' }}
                     showSearch={{ optionFilterProp: 'label' }}
                     placeholder="Vui lòng chọn đơn vị"
@@ -285,7 +294,7 @@ const TableUsers = (props: IProps) => {
                             }))
                             : []
                     }
-                />
+                />}
                 <Select
                     style={{ width: '100%' }}
                     showSearch={{ optionFilterProp: 'label' }}
@@ -294,13 +303,7 @@ const TableUsers = (props: IProps) => {
                     value={selectedRole}
                     onChange={onChangeRole}
                     allowClear
-                    options={[
-                        { value: 'superadmin', label: 'Quản trị hệ thống' },
-                        { value: 'admin', label: 'Quản trị' },
-                        { value: 'thukho', label: 'Thủ kho' },
-                        { value: 'truongdv', label: 'Trưởng đơn vị' },
-                        { value: 'gv', label: 'Giáo viên' }
-                    ]}
+                    options={roleArray}
                 />
                 <Button icon={<ClearOutlined />} onClick={handleClear}>Xóa bộ lọc</Button>
                 <Button icon={<SearchOutlined />} type='primary' onClick={handleFilter}>Lọc</Button>

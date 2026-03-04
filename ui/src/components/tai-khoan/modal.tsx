@@ -3,6 +3,7 @@ import { Modal, Form, Input, message, Select, notification } from 'antd';
 import React, { useEffect, useMemo } from 'react';
 import { handleCreateOrUpdateUser } from '@/app/(main)/quan-tri/tai-khoan/actions';
 import { LockOutlined } from '@ant-design/icons';
+import { roleArray } from '@/components/tai-khoan/table';
 
 interface IProps {
     access_token?: string,
@@ -162,15 +163,7 @@ const UserModal = (props: IProps) => {
                             style={{ minWidth: 250 }}
                             showSearch
                             placeholder="Vui lòng chọn quyền hạn"
-                            options={[
-                                { value: 'superadmin', label: 'Quản trị hệ thống' },
-                                { value: 'admin', label: 'Quản trị' },
-                                { value: 'thukho', label: 'Thủ kho' },
-                                { value: 'truongdv', label: 'Trưởng đơn vị' },
-                                { value: 'gv', label: 'Giáo viên' },
-                                { value: 'guest', label: 'Khách' }
-                            ]
-                            }
+                            options={roleArray}
                         />
                     </Form.Item>
                 </Form>
