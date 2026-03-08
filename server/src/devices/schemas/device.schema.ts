@@ -58,7 +58,16 @@ export class Device {
     parent: string | null;
 
     @Prop({ default: 'dangsudung' })
-    status: string
+    status: string;
+
+    @Prop({ default: false })
+    isDeleted: boolean;
+
+    @Prop({ default: null })
+    deletedAt: Date;
+
+    @Prop({ default: null })
+    deletedBy: string
 
 }
 

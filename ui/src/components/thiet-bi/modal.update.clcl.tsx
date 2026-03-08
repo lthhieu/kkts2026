@@ -83,6 +83,7 @@ const ModalUpdateMany = (props: IProps) => {
                     md: '30%',
                 }}
             >
+                <Typography style={{ marginBottom: 8, fontStyle: 'italic' }}>Thao tác này sẽ cập nhật chất lượng còn lại của toàn bộ thiết bị trên hệ thống dựa theo năm hiện tại, năm đưa vào sử dụng và tỷ lệ khấu hao của từng thiết bị</Typography>
                 <Form
                     form={form}
                     autoComplete="off"

@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button, Drawer, Flex, Grid, Input, Popconfirm, Select, Space, Table, Tag, Tooltip, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
-import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
+import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, DeploymentUnitOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { handleDeleteDevice, handleDeleteDeviceMany } from '@/app/(main)/quan-tri/thiet-bi/actions';
 import DeviceModal from '@/components/thiet-bi/modal';
@@ -32,10 +32,12 @@ export const typeArr = [
 export const statusArr = [
     { value: 'dangsudung', label: 'Đang sử dụng' },
     { value: 'thanhly', label: 'Thanh lý' },
+    { value: 'daxoa', label: 'Đã xóa' },
 ]
 export const STATUS_COLOR_MAP: Record<string, string> = {
     dangsudung: 'green',
     thanhly: 'red',
+    daxoa: 'blue',
 };
 export const STATUS_LABEL_MAP: Record<string, string> = {
     dangsudung: 'Đang sử dụng',
@@ -123,8 +125,10 @@ const TableDevices = (props: IProps) => {
                     "_id": "",
                     "name": ""
                 },
-
                 children: childrenList,
+                deletedAt: null,
+                deletedBy: '',
+                isDeleted: false
             });
         });
 
@@ -217,9 +221,8 @@ const TableDevices = (props: IProps) => {
             title: 'Tên thiết bị',
             dataIndex: 'name',
             key: 'name',
-            ellipsis: true,
             render: (_, record) => <Space>
-                <Typography.Text>
+                <Typography.Text copyable={{ text: record._id }}>
                     {record.name}
                 </Typography.Text>
 
@@ -229,37 +232,42 @@ const TableDevices = (props: IProps) => {
                         onClick={() => showDrawer(record)}
                     />
                 </Tooltip>
-                    {canUpdateDevice(user ?? {} as IUser) && (
-                        <Tooltip title="Cập nhật">
-                            <EditOutlined
-                                style={{ color: '#1cc03d', cursor: 'pointer' }}
-                                onClick={() => {
-                                    setDataUpdate(record)
-                                    setStatus("UPDATE")
-                                    SetIsModalOpen(true)
-                                }}
-                            />
-                        </Tooltip>
+                    {record?.status !== "daxoa" && (
+                        <>
+                            {canUpdateDevice(user ?? {} as IUser) && (
+                                <Tooltip title="Cập nhật">
+                                    <EditOutlined
+                                        style={{ color: '#1cc03d', cursor: 'pointer' }}
+                                        onClick={() => {
+                                            setDataUpdate(record)
+                                            setStatus("UPDATE")
+                                            SetIsModalOpen(true)
+                                        }}
+                                    />
+                                </Tooltip>
+                            )}
+
+                            {canDeleteDevice(user ?? {} as IUser) && (
+                                <Popconfirm
+                                    title="Xóa thiết bị này?"
+                                    description={`Bạn thực sự muốn xóa thiết bị ${record.name}`}
+                                    onConfirm={() => confirm(record._id)}
+                                    onCancel={cancel}
+                                    okText="Đồng ý"
+                                    cancelText="Hủy"
+                                    placement='rightBottom'
+                                >
+                                    <Tooltip title="Xóa">
+                                        <DeleteOutlined
+                                            style={{ color: '#f12929', cursor: 'pointer' }} />
+                                    </Tooltip>
+                                </Popconfirm>
+
+
+                            )}
+                        </>
                     )}
-
-                    {canDeleteDevice(user ?? {} as IUser) && (
-                        <Popconfirm
-                            title="Xóa thiết bị này?"
-                            description={`Bạn thực sự muốn xóa thiết bị ${record.name}`}
-                            onConfirm={() => confirm(record._id)}
-                            onCancel={cancel}
-                            okText="Đồng ý"
-                            cancelText="Hủy"
-                            placement='rightBottom'
-                        >
-                            <Tooltip title="Xóa">
-                                <DeleteOutlined
-                                    style={{ color: '#f12929', cursor: 'pointer' }} />
-                            </Tooltip>
-                        </Popconfirm>
-
-
-                    )}</>}
+                </>}
             </Space>
         },
         {
@@ -396,8 +404,8 @@ const TableDevices = (props: IProps) => {
 
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {canManageDevice(user ?? {} as IUser) &&
-                        <Button variant='solid' color='cyan' onClick={showModalUpdateMany}>
-                            Cập nhật CLCL thiết bị
+                        <Button icon={<DeploymentUnitOutlined />} type='primary' onClick={showModalUpdateMany}>
+                            Cập nhật chất lượng thiết bị
                         </Button>}
                     {canDeleteDevice(user ?? {} as IUser) && <Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa {selectedRowKeys.length !== 0 && `(${selectedRowKeys.length})`}</Button>}
                     {canCreateDevice(user ?? {} as IUser) && <Button onClick={showModalImport} type='primary' icon={<CloudUploadOutlined />}>Import</Button>}

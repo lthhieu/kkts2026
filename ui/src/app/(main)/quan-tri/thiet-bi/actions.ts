@@ -20,7 +20,7 @@ export const handleCreateOrUpdateDevice = async (data: any, access_token: string
 
 export const handleDeleteDevice = async (_id: string, access_token: string) => {
     const res = await sendRequest<IBackendResponse<any>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/devices/${_id}`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/devices/soft-delete/${_id}`,
         method: 'DELETE',
         headers: {
             Authorization: `Bearer ${access_token!}`,

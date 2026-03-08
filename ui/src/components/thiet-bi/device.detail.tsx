@@ -3,6 +3,7 @@
 import { Typography, Tag, Divider, Timeline, Descriptions } from 'antd';
 import { EnvironmentOutlined } from '@ant-design/icons';
 import { STATUS_COLOR_MAP, STATUS_LABEL_MAP } from '@/components/thiet-bi/table';
+import dayjs from 'dayjs';
 
 interface IProps {
     device: IDevice | null;
@@ -10,7 +11,6 @@ interface IProps {
 
 const DeviceDetail = ({ device }: IProps) => {
     if (!device) return null;
-    console.log(device)
 
     // Format số tiền
     const formatMoney = (value: number | null | undefined) => {
@@ -59,6 +59,14 @@ const DeviceDetail = ({ device }: IProps) => {
                         {STATUS_LABEL_MAP[device.status!] || device.status}
                     </Tag>
                 </Descriptions.Item>
+                {device.status === 'daxoa' && (<>
+                    <Descriptions.Item label="Người xóa">
+                        {device.deletedBy}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Thời gian xóa">
+                        {dayjs(device.deletedAt).format('DD/MM/YYYY').toString()}
+                    </Descriptions.Item>
+                </>)}
             </Descriptions>
 
             <Divider style={{ margin: '16px 0' }} />

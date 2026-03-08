@@ -96,6 +96,9 @@ declare global {
         "parent"?: string | null,
         status?: string,
         children?: IDevice[];
+        isDeleted: boolean;
+        deletedAt: Date | null;
+        deletedBy: string
     }
     interface IRoom {
         "_id": string,

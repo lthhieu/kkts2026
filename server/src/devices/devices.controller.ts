@@ -54,6 +54,13 @@ export class DevicesController {
     return this.devicesService.updateAllStatusAggregate();
   }
 
+  @Patch('/update-soft-delete')
+  @ResponseMessage('Cập nhật thiết bị thành công')
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Update, DeviceSubject))
+  updateSoftDelete() {
+    return this.devicesService.updateSoftDeleteAggregate();
+  }
+
   @Patch(':id')
   @ResponseMessage('Cập nhật thiết bị thành công')
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Update, DeviceSubject))
@@ -66,6 +73,13 @@ export class DevicesController {
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Delete, DeviceSubject))
   removeMany(@Body() ids: any[], @User() user: IUser) {
     return this.devicesService.removeMany(ids, user);
+  }
+
+  @Delete('/soft-delete/:id')
+  @ResponseMessage('Xóa thiết bị thành công')
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Delete, DeviceSubject))
+  softRemove(@Param('id') id: string, @User() user: IUser) {
+    return this.devicesService.softRemove(id, user);
   }
 
   @Delete(':id')

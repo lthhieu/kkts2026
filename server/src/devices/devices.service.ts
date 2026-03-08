@@ -48,6 +48,11 @@ export class DevicesService {
     let defaultCurrent = +current ? +current : 1
     let offset = (+defaultCurrent - 1) * (+defaultLimit)
 
+    filter = {
+      ...filter,
+      isDeleted: filter?.status === 'daxoa'
+    };
+
     if (user.role === 'gv') {
       filter = {
         ...filter,
@@ -164,6 +169,28 @@ export class DevicesService {
     };
   }
 
+  async updateSoftDeleteAggregate() {
+    const result = await this.deviceModel.updateMany(
+      {
+      },
+      [ // Aggregation Pipeline (Dấu ngoặc vuông)
+        {
+          $set: {
+            isDeleted: false,
+            deletedAt: null,
+            deletedBy: null
+          }
+        }
+      ],
+      { updatePipeline: true }
+    );
+
+    return {
+      matched: result.matchedCount,
+      updated: result.modifiedCount
+    };
+  }
+
   async remove(id: string, user: IUser) {
     const ability = this.caslAbilityFactory.createForUser(user);
     const device = await this.deviceModel.findOne({ _id: id });
@@ -173,6 +200,19 @@ export class DevicesService {
 
     if (ability.can(Action.Delete, deviceSubject)) {
       return await this.deviceModel.deleteOne({ _id: id });
+    }
+    throw new ForbiddenException();
+  }
+
+  async softRemove(id: string, user: IUser) {
+    const ability = this.caslAbilityFactory.createForUser(user);
+    const device = await this.deviceModel.findOne({ _id: id });
+    const deviceSubject = new DeviceSubject();
+    deviceSubject._id = device?._id.toString()!;
+    deviceSubject.unit = device?.unit?.toString()!;
+
+    if (ability.can(Action.Delete, deviceSubject)) {
+      return await this.deviceModel.updateOne({ _id: id }, { deletedAt: new Date(), deletedBy: user.email, isDeleted: true, status: 'daxoa' });
     }
     throw new ForbiddenException();
   }
