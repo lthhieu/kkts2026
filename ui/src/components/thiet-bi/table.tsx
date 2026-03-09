@@ -31,17 +31,18 @@ export const typeArr = [
 ]
 export const statusArr = [
     { value: 'dangsudung', label: 'Đang sử dụng' },
+    { value: 'huhong', label: 'Hư hỏng' },
     { value: 'thanhly', label: 'Thanh lý' },
-    { value: 'daxoa', label: 'Đã xóa' },
 ]
 export const STATUS_COLOR_MAP: Record<string, string> = {
     dangsudung: 'green',
     thanhly: 'red',
-    daxoa: 'blue',
+    huhong: 'blue',
 };
 export const STATUS_LABEL_MAP: Record<string, string> = {
     dangsudung: 'Đang sử dụng',
-    thanhly: 'Thanh lý'
+    thanhly: 'Thanh lý',
+    huhong: 'Hư hỏng'
 };
 
 const Context = React.createContext({ name: 'Default' });
@@ -271,6 +272,16 @@ const TableDevices = (props: IProps) => {
             </Space>
         },
         {
+            title: 'Trạng thái',
+            dataIndex: 'status',
+            key: 'status',
+            render: (_, record) => (
+                <Tag color={STATUS_COLOR_MAP[record.status!] || 'default'} variant='outlined'>
+                    {STATUS_LABEL_MAP[record.status!] || record.status}
+                </Tag>
+            )
+        },
+        {
             title: 'Số lượng',
             dataIndex: ['kiemKe', 'soLuong'],
             key: 'soLuong',
@@ -298,16 +309,6 @@ const TableDevices = (props: IProps) => {
                 if (record.chatLuongConLai === null) return
                 return `${record.chatLuongConLai}%`
             }
-        },
-        {
-            title: 'Trạng thái',
-            dataIndex: 'status',
-            key: 'status',
-            render: (_, record) => (
-                <Tag color={STATUS_COLOR_MAP[record.status!] || 'default'} variant='outlined'>
-                    {STATUS_LABEL_MAP[record.status!] || record.status}
-                </Tag>
-            )
         },
     ];
     const handleOnChangePage = (current: number, pageSize: number) => {
