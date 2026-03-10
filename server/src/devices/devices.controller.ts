@@ -54,6 +54,13 @@ export class DevicesController {
     return this.devicesService.updateAllStatusAggregate();
   }
 
+  @Patch('/update-current-room')
+  @ResponseMessage('Cập nhật thiết bị thành công')
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Update, DeviceSubject))
+  currentRoomToArray() {
+    return this.devicesService.currentRoomToArray();
+  }
+
   @Patch('/update-soft-delete')
   @ResponseMessage('Cập nhật thiết bị thành công')
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Update, DeviceSubject))

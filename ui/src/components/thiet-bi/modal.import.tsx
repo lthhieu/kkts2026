@@ -88,7 +88,7 @@ const ModalImport = (props: IProps) => {
                             usedLocation: [
                                 {
                                     year: Number(getVal(4)), // Cột D: Năm SD
-                                    room: String(getVal(3) || "") // Cột C: Nơi SD
+                                    room: [String(getVal(3) || "")] // Cột C: Nơi SD
                                 }
                             ],
                             usedYear: Number(getVal(4)),

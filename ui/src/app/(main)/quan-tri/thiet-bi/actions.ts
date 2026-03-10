@@ -4,7 +4,7 @@ import { updateTag } from 'next/cache'
 
 export const handleCreateOrUpdateDevice = async (data: any, access_token: string, status: string, dataUpdate?: null | IDevice) => {
     const { name, description, usedLocation, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note, trongSoChatLuong, type, unit, parent, statusDevice } = data
-    const body: any = { name, description, usedLocation, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note: note === "" ? '—' : note, trongSoChatLuong, type, unit, parent, status: statusDevice }
+    const body: any = { name, description: description === "" ? '—' : description, usedLocation, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note: note === "" ? '—' : note, trongSoChatLuong, type, unit, parent, status: statusDevice }
 
     const res = await sendRequest<IBackendResponse<any>>({
         url: status === "CREATE" ? `${process.env.NEXT_PUBLIC_BACKEND_URI}/devices` : `${process.env.NEXT_PUBLIC_BACKEND_URI}/devices/${dataUpdate?._id}`,

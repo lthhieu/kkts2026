@@ -118,10 +118,10 @@ const TableDevices = (props: IProps) => {
                 "note": "",
                 "trongSoChatLuong": 0,
                 "type": "",
-                "currentRoom": {
+                "currentRoom": [{
                     "_id": "",
                     "name": ""
-                },
+                }],
                 "unit": {
                     "_id": "",
                     "name": ""
@@ -152,7 +152,11 @@ const TableDevices = (props: IProps) => {
     useEffect(() => {
         const filteredData = devices.map(({ _id, name, description, currentRoom, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note, type }) =>
         ({
-            _id, name, description, currentRoom: currentRoom?.name || "", usedYear,
+            _id, name, description,
+            currentRoom: Array.isArray(currentRoom)
+                ? currentRoom.map(r => r?.name).filter(Boolean).join(', ')
+                : "",
+            usedYear,
             skt_sl: soKeToan?.soLuong || 0, skt_ng: soKeToan?.nguyenGia || 0, skt_gtcl: soKeToan?.giaTriConLai || 0,
             kt_sl: kiemKe?.soLuong || 0, kt_ng: kiemKe?.nguyenGia || 0, kt_gtcl: kiemKe?.giaTriConLai || 0,
             cl_thua: chenhLech?.thua || 0, cl_thieu: chenhLech?.thieu || 0, cl_gtcl: chenhLech?.giaTriConLai || 0,
@@ -288,8 +292,16 @@ const TableDevices = (props: IProps) => {
         },
         {
             title: 'Nơi sử dụng',
-            dataIndex: ['currentRoom', 'name'],
             key: 'currentRoom',
+            dataIndex: 'currentRoom', // Bỏ cái mảng đi
+            render: (currentRooms) => {
+                // Kiểm tra nếu currentRooms là mảng và có phần tử
+                if (Array.isArray(currentRooms) && currentRooms.length > 0) {
+                    // Lấy ra danh sách tên và nối chúng lại
+                    return currentRooms.map(room => room?.name).filter(Boolean).join(', ');
+                }
+                return ""; // Trả về chuỗi rỗng nếu không có dữ liệu
+            },
         },
         {
             title: 'Thuộc đơn vị',

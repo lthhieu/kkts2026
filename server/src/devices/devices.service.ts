@@ -14,23 +14,45 @@ export class DevicesService {
   constructor(@InjectModel(Device.name) private deviceModel: Model<Device>,
     private caslAbilityFactory: CaslAbilityFactory) { }
 
+  async currentRoomToArray() {
+    const result = await this.deviceModel.updateMany(
+      {
+        // Điều kiện: Chỉ chọn những bản ghi mà currentRoom là kiểu ObjectId (chưa phải mảng)
+        currentRoom: { $type: "objectId" }
+      },
+      [
+        {
+          // Chuyển giá trị hiện tại vào trong một mảng mới
+          $set: {
+            currentRoom: { $concatArrays: [["$currentRoom"]] }
+          }
+        }
+      ],
+      { updatePipeline: true }
+    );
+    return {
+      matched: result.matchedCount,
+      updated: result.modifiedCount
+    };
+  }
+
   async create(createDeviceDto: CreateDeviceDto) {
     const { usedLocation } = createDeviceDto
-    const currentRoom = usedLocation[usedLocation.length - 1].room
+    // Trích xuất tất cả các room thành một mảng mới
+    const allRooms = usedLocation.map(item => item.room);
     return await this.deviceModel.create({
       ...createDeviceDto,
-      currentRoom
-    })
+      currentRoom: allRooms[0] // Lưu mảng này vào database
+    });
   }
 
   async createMany(createDeviceDto: CreateDeviceDto[]) {
     const payload = createDeviceDto.map((dto) => {
       const usedLocation = dto.usedLocation ?? [];
-      const currentRoom =
-        usedLocation.length > 0 ? usedLocation[usedLocation.length - 1].room : null;
+      const currentRoom = usedLocation.map((item) => item.room);
       return {
         ...dto,
-        currentRoom,
+        currentRoom: currentRoom[0],
       };
     });
 
@@ -95,12 +117,13 @@ export class DevicesService {
 
   async update(id: string, updateDeviceDto: UpdateDeviceDto) {
     const { usedLocation, ...rest } = updateDeviceDto;
-    const currentRoom = usedLocation ? usedLocation[usedLocation.length - 1].room : ''
+    const currentRoom = usedLocation ?
+      usedLocation.map(item => item.room) : []
 
     return await this.deviceModel.updateOne({ _id: id }, {
       ...rest,
       ...(usedLocation !== undefined && { $set: { usedLocation } }),
-      currentRoom
+      currentRoom: currentRoom[currentRoom.length - 1]
     });
 
   }

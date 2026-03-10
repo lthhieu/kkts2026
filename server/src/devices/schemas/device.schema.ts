@@ -14,12 +14,12 @@ export class Device {
     description: string;
 
     @Prop({
-        type: [{ _id: false, year: { type: Number }, room: { type: mongoose.Schema.Types.ObjectId, ref: Room.name }, reason: { type: String }, person: { type: String } }]
+        type: [{ _id: false, year: { type: Number }, room: { type: [{ type: mongoose.Schema.Types.ObjectId, ref: Room.name }] }, reason: { type: String }, person: { type: String } }]
     })
-    usedLocation: { year: number | null; room: Room | null; reason?: string; person?: string }[];
+    usedLocation: { year: number | null; room: Room[] | null; reason?: string; person?: string }[];
 
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Room.name })
-    currentRoom: Room | null;
+    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: Room.name }] })
+    currentRoom: Room[] | null;
 
     @Prop()
     usedYear: number;

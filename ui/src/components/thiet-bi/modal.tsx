@@ -1,5 +1,5 @@
 "use client"
-import { Modal, Form, Input, message, Select, Row, Col, InputNumber, Typography, notification } from 'antd';
+import { Modal, Form, Input, message, Select, Row, Col, InputNumber, Typography, notification, Space } from 'antd';
 import React, { useEffect, useMemo } from 'react';
 import { handleCreateOrUpdateDevice } from '@/app/(main)/quan-tri/thiet-bi/actions';
 import { statusArr, typeArr } from '@/components/thiet-bi/table';
@@ -36,7 +36,7 @@ const DeviceModal = (props: IProps) => {
                 "description": dataUpdate.description,
                 "usedLocation": dataUpdate.usedLocation.map(i => ({
                     ...i,
-                    room: i.room?._id,  // 🔥 ÉP VỀ ID
+                    room: i.room?.map(item => item._id),  // 🔥 ÉP VỀ ID
                     reason: i.reason,
                     person: i.person
                 })),
@@ -98,10 +98,8 @@ const DeviceModal = (props: IProps) => {
     };
 
     const onFinish = async (values: IDevice) => {
-        // console.log('Received values of form: ', values);
         const { name, description, usedLocation, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note, trongSoChatLuong, type, unit, parent, status: statusDevice } = values
         const data = { name, description, usedLocation, usedYear, soKeToan, kiemKe, chenhLech, chatLuongConLai, note, trongSoChatLuong, type, unit, parent, statusDevice }
-
         const response = await handleCreateOrUpdateDevice(data, access_token ?? '', status, dataUpdate)
 
         if (response.data) {
@@ -120,7 +118,7 @@ const DeviceModal = (props: IProps) => {
         required: '${label} không được để trống',
     }
 
-    const onChange = (value: string) => {
+    const onChange = (value: string[]) => {
         console.log(`selected ${value}`);
     };
 
@@ -185,7 +183,7 @@ const DeviceModal = (props: IProps) => {
                                 style={{ marginBottom: 8 }}
                                 label="Mã số/Mô tả"
                                 name="description"
-                                rules={[{ required: true }]}
+                                rules={[{ required: status === 'CREATE' ? true : false }]}
                             >
                                 <Input />
                             </Form.Item>
@@ -444,6 +442,7 @@ const DeviceModal = (props: IProps) => {
                                                         rules={[{ required: true }]}
                                                     >
                                                         <Select
+                                                            mode="multiple"
                                                             style={{ width: '100%' }}
                                                             showSearch={{ optionFilterProp: 'label' }}
                                                             placeholder="Vui lòng chọn phòng - kho"
@@ -452,10 +451,16 @@ const DeviceModal = (props: IProps) => {
                                                                 rooms && rooms.length > 0
                                                                     ? rooms.map(({ _id, name, currentUnit }) => ({
                                                                         value: _id,
-                                                                        label: `${name} (${currentUnit?.name || 'N/A'})`
+                                                                        label: name,
+                                                                        unit: currentUnit.name
                                                                     }))
                                                                     : []
                                                             }
+                                                            optionRender={(option) => (
+                                                                <Space>
+                                                                    {`${option.data.label} (${option.data.unit})`}
+                                                                </Space>
+                                                            )}
                                                         />
                                                     </Form.Item>
                                                 </Col>
@@ -486,17 +491,17 @@ const DeviceModal = (props: IProps) => {
                                                 </Col>
                                             </Row>}
 
-                                            <Typography.Link
+                                            {status === "UPDATE" && <Typography.Link
                                                 onClick={() => remove(name)}
                                                 style={{ color: 'red' }}
                                             >
                                                 Xóa nơi sử dụng này
-                                            </Typography.Link>
+                                            </Typography.Link>}
                                         </div>
                                     )
                                 }
                                 )}
-                                <Form.Item>
+                                {status === "UPDATE" && <Form.Item>
                                     <Typography.Link onClick={() => add({
                                         year: new Date().getFullYear(),
                                         person: email, // Điền sẵn email vào field person
@@ -504,7 +509,7 @@ const DeviceModal = (props: IProps) => {
                                     })}>
                                         + Thêm nơi sử dụng
                                     </Typography.Link>
-                                </Form.Item>
+                                </Form.Item>}
                             </>
                         )}
                     </Form.List>

@@ -19,7 +19,7 @@ const Taikhoan = async ({ searchParams }: { searchParams: Params }) => {
         redirect('/quan-tri/trang-chu')
     }
 
-    const { pageSize = 10, current = 1, email, role, unit } = await searchParams
+    const { pageSize = 20, current = 1, email, role, unit } = await searchParams
 
     const res = await sendRequest<IBackendResponse<IModelPaginate<IUser>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/users`,

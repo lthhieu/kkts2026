@@ -52,7 +52,7 @@ const DeviceDetail = ({ device }: IProps) => {
                     {device.chatLuongConLai}%
                 </Descriptions.Item>
                 <Descriptions.Item label="Phòng hiện tại">
-                    <Tag color="default">{device.currentRoom?.name || '—'}</Tag>
+                    <Tag color="default">{device.currentRoom.map(room => room?.name).filter(Boolean).join(', ') || '—'}</Tag>
                 </Descriptions.Item>
                 <Descriptions.Item label="Trạng thái">
                     <Tag color={STATUS_COLOR_MAP[device.status!] || 'default'} variant='outlined'>
@@ -138,7 +138,7 @@ const DeviceDetail = ({ device }: IProps) => {
                         content: (
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                                 <Tag color="blue">{location.year}</Tag>
-                                <span>{location.room?.name || '—'}</span>
+                                <Tag>{location.room.map(room => room?.name).filter(Boolean).join(', ') || '—'}</Tag>
                             </div>
                         ),
                     }))}
