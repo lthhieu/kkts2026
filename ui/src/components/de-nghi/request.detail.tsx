@@ -5,15 +5,17 @@ import { STATUS_COLOR_MAP, STATUS_LABEL_MAP } from '@/components/de-nghi/table';
 import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useState } from 'react';
 import { handleAddComment } from '@/app/(main)/quan-tri/de-nghi/actions';
+import { canCommentRequest } from '@/libs/request';
 
 interface IProps {
     request: IRequestModule | null;
     access_token: string,
-    onRefresh?: () => void
+    onRefresh?: () => void,
+    user: IUser | null
 }
 const Context = React.createContext({ name: 'Default' });
 
-const RequestDetail = ({ request, access_token, onRefresh }: IProps) => {
+const RequestDetail = ({ request, access_token, onRefresh, user }: IProps) => {
     if (!request) return null;
     const [commentText, setCommentText] = useState<string>("")
     const [sending, setSending] = useState<boolean>(false)
@@ -152,27 +154,29 @@ const RequestDetail = ({ request, access_token, onRefresh }: IProps) => {
                     />
                 </>}
 
-                <Divider style={{ margin: '16px 0' }} />
+                {canCommentRequest(user ?? {} as IUser) && <>
+                    <Divider style={{ margin: '16px 0' }} />
 
-                <Input.TextArea
-                    rows={2}
-                    placeholder="Nhập bình luận / bổ sung thông tin..."
-                    value={commentText}
-                    onChange={(e) => setCommentText(e.target.value)}
-                    showCount
-                    maxLength={500}
-                />
+                    <Input.TextArea
+                        rows={2}
+                        placeholder="Nhập bình luận / bổ sung thông tin..."
+                        value={commentText}
+                        onChange={(e) => setCommentText(e.target.value)}
+                        showCount
+                        maxLength={500}
+                    />
 
-                <div style={{ marginTop: 24, textAlign: 'right' }}>
-                    <Button
-                        type="primary"
-                        loading={sending}
-                        disabled={!commentText.trim()}
-                        onClick={submitComment}
-                    >
-                        Gửi bình luận
-                    </Button>
-                </div>
+                    <div style={{ marginTop: 24, textAlign: 'right' }}>
+                        <Button
+                            type="primary"
+                            loading={sending}
+                            disabled={!commentText.trim()}
+                            onClick={submitComment}
+                        >
+                            Gửi bình luận
+                        </Button>
+                    </div>
+                </>}
 
             </div>
         </Context.Provider>

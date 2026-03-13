@@ -133,7 +133,7 @@ const TableRequests = (props: IProps) => {
             key: 'name',
             render: (_, record) => <Space>
                 <Typography.Text copyable={{ text: record._id }}>{record.name}</Typography.Text>
-                {canUpdateRequest(user ?? {} as IUser) && (
+                {canReadRequest(user ?? {} as IUser) && (
                     <Tooltip title="Xem chi tiết">
                         <EyeOutlined
                             style={{ color: '#1890ff', cursor: 'pointer' }}
@@ -369,6 +369,7 @@ const TableRequests = (props: IProps) => {
                 }
             >
                 <RequestDetail
+                    user={user}
                     onRefresh={refreshSelectedRequest}
                     access_token={access_token}
                     request={selectedRequest} />
