@@ -100,6 +100,35 @@ declare global {
         deletedAt: Date | null;
         deletedBy: string
     }
+
+    interface IRequestModule {
+        "_id": string,
+        "name": string,
+        "type": string,
+        "status": string,
+        "createdBy": string,
+        "device": {
+            "_id": string,
+            "name": string
+        },
+        "description": string,
+        "image": string,
+        "unit": {
+            "_id": string,
+            "name": string
+        },
+        "comments": {
+            "content": string,
+            "createdBy": string,
+            "createdAt": string,
+            "_id": string
+        }[],
+        "createdAt": string,
+        "updatedAt": string,
+        "__v": number,
+        "reason": null | string
+    }
+
     interface IRoom {
         "_id": string,
         "name": string,
@@ -130,5 +159,10 @@ declare global {
     interface IUpdateMany {
         matched: number,
         updated: number
+    }
+    interface IUploadImage {
+        "filename": string,
+        "folder": string,
+        "link": string
     }
 }

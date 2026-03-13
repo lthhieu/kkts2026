@@ -13,6 +13,7 @@ export enum Action {
     Read = 'read',
     Update = 'update',
     Delete = 'delete',
+    Comment = "Comment"
 }
 export class UserSubject {
     _id: string;
@@ -34,4 +35,8 @@ export class NewsSubject {
 }
 export class UploadSubject {
     _id: string;
+}
+export class RequestSubject {
+    _id: string;
+    unit: string
 }

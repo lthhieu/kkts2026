@@ -10,14 +10,14 @@ import {
     LogoutOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
-    UserOutlined,
+    UserOutlined, DiffOutlined
 } from '@ant-design/icons';
 import { Button, Layout, Menu, Space, theme, Dropdown, MenuProps } from 'antd';
 import Link from 'next/link';
 import { handleSignOut } from '@/app/(auth)/dang-nhap/actions';
 import { usePathname, useRouter } from 'next/navigation';
 import { getUserPermission } from '@/libs/getUserPermission';
-import { Action, DeviceSubject, RoomSubject, UnitSubject, UserSubject } from '@/libs/enum';
+import { Action, DeviceSubject, RequestSubject, RoomSubject, UnitSubject, UserSubject } from '@/libs/enum';
 import ChangePasswordModal from '@/components/dashboard/change-password-modal';
 import Image from 'next/image';
 
@@ -69,6 +69,12 @@ const Dashboard = ({
             icon: <ApiOutlined />,
             label: <Link href="/quan-tri/thiet-bi">Thiết bị</Link>,
             permission: { action: Action.Read, subject: new DeviceSubject() },
+        },
+        {
+            key: '/quan-tri/de-nghi',
+            icon: <DiffOutlined />,
+            label: <Link href="/quan-tri/de-nghi">Đề nghị</Link>,
+            permission: { action: Action.Read, subject: new RequestSubject() },
         },
         {
             key: '/quan-tri/don-vi',

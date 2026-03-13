@@ -37,7 +37,7 @@ export class RoomsService {
     let defaultLimit = +pageSize ? +pageSize : 10
     let defaultCurrent = +current ? +current : 1
     let offset = (+defaultCurrent - 1) * (+defaultLimit)
-    const totalItems = (await this.roomModel.find(filter)).length
+    const totalItems = await this.roomModel.countDocuments(filter)
     const totalPages = Math.ceil(totalItems / defaultLimit)
     if (isEmpty(sort)) {
       sort = "name"

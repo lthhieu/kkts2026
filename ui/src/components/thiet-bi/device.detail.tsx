@@ -1,6 +1,6 @@
 'use client'
 
-import { Typography, Tag, Divider, Timeline, Descriptions } from 'antd';
+import { Typography, Tag, Divider, Timeline, Descriptions, Space } from 'antd';
 import { EnvironmentOutlined } from '@ant-design/icons';
 import { STATUS_COLOR_MAP, STATUS_LABEL_MAP } from '@/components/thiet-bi/table';
 import dayjs from 'dayjs';
@@ -136,10 +136,11 @@ const DeviceDetail = ({ device }: IProps) => {
                         color: 'green',
                         icon: <EnvironmentOutlined />,
                         content: (
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                            <Space>
                                 <Tag color="blue">{location.year}</Tag>
                                 <Tag>{location.room.map(room => room?.name).filter(Boolean).join(', ') || '—'}</Tag>
-                            </div>
+                                {location.reason && <Typography.Text>{location.reason} ({location.person})</Typography.Text>}
+                            </Space>
                         ),
                     }))}
                 />

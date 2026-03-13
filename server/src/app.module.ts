@@ -13,6 +13,7 @@ import { CaslModule } from './casl/casl.module';
 import { DatabasesModule } from './databases/databases.module';
 import { NewsModule } from './news/news.module';
 import { UploadModule } from './upload/upload.module';
+import { RequestsModule } from './requests/requests.module';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true, }),
@@ -26,6 +27,7 @@ import { UploadModule } from './upload/upload.module';
     DatabasesModule,
     NewsModule,
     UploadModule,
+    RequestsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

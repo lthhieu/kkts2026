@@ -94,7 +94,7 @@ export class UsersService {
         unit: user.unit  // Gắn thêm điều kiện lọc theo unit
       };
     }
-    const totalItems = (await this.userModel.find(filter)).length
+    const totalItems = await this.userModel.countDocuments(filter)
     const totalPages = Math.ceil(totalItems / defaultLimit)
 
     if (isEmpty(sort)) {

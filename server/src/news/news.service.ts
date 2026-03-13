@@ -25,7 +25,7 @@ export class NewsService {
     let defaultLimit = +pageSize ? +pageSize : 10
     let defaultCurrent = +current ? +current : 1
     let offset = (+defaultCurrent - 1) * (+defaultLimit)
-    const totalItems = (await this.newsModel.find(filter)).length
+    const totalItems = await this.newsModel.countDocuments(filter)
     const totalPages = Math.ceil(totalItems / defaultLimit)
     if (isEmpty(sort)) {
       sort = "createdAt"

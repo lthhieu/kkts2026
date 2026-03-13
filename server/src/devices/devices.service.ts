@@ -81,7 +81,7 @@ export class DevicesService {
         unit: user.unit  // Gắn thêm điều kiện lọc theo unit
       };
     }
-    const totalItems = (await this.deviceModel.find(filter)).length
+    const totalItems = await this.deviceModel.countDocuments(filter)
     const totalPages = Math.ceil(totalItems / defaultLimit)
     if (isEmpty(sort)) {
       sort = { unit: 1, parent: 1, name: 1 };
