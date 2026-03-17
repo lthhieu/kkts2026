@@ -64,14 +64,14 @@ export class AuthService {
         return 'ok'
     }
 
-    async refresh(token: string, response: Response) {
+    async refresh(token: string, response: Response, userid: string) {
         try {
             this.jwtService.verify(token, {
                 secret: this.configService.get<string>('JWT_SECRET')
             })
-            const user = await this.usersService.findOneByToken(token)
-            if (user) {
-                const { _id, email, name, role, unit } = user;
+            const userindb = await this.usersService.findOne(userid)
+            if (userindb) {
+                const { _id, email, name, role, unit } = userindb;
                 return this.login({
                     _id: _id.toString(),
                     email, name, role, unit
@@ -80,6 +80,7 @@ export class AuthService {
                 throw new BadRequestException('Something went wrong')
             }
         } catch (e) {
+            console.log("refresh error:", e?.name, e?.message);
             throw new BadRequestException('Refresh token hết hiệu lực. Vui lòng đăng nhập!')
         }
     }

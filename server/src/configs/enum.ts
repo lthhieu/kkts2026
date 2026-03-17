@@ -40,3 +40,6 @@ export class RequestSubject {
     _id: string;
     unit: string
 }
+export class SnapshotSubject {
+    '_id': string;
+}

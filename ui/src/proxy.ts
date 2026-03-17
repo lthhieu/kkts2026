@@ -2,28 +2,47 @@ import { auth } from '@/auth';
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-// This function can be marked `async` if using `await` inside
-export async function proxy(request: NextRequest) {
+// ✅ DEFAULT EXPORT BẮT BUỘC
+export default async function proxy(request: NextRequest) {
     const { nextUrl } = request;
-    // Lấy session trực tiếp từ hàm auth(), cách này đáng tin cậy hơn là chỉ check cookie
-    const session = await auth();
-    const isAuthenticated = !!session?.access_token;
+    const pathname = nextUrl.pathname;
 
-    // 1. Các trang yêu cầu đăng nhập (private routes)
-    const isProtectedRoute = nextUrl.pathname.startsWith('/quan-tri');
-
-    // Nếu truy cập trang private mà chưa đăng nhập -> redirect về trang đăng nhập
-    if (isProtectedRoute && !isAuthenticated) {
-        // Thêm `?callbackUrl=` để sau khi đăng nhập thành công, user được trả về đúng trang họ muốn
-        const callbackUrl = nextUrl.pathname + nextUrl.search;
-        return NextResponse.redirect(new URL(`/dang-nhap?callbackUrl=${encodeURIComponent(callbackUrl)}`, request.url));
+    // ✅ Bước 1: Bỏ qua tất cả các request API Auth để tránh chặn session
+    if (pathname.startsWith('/api/auth')) {
+        return NextResponse.next();
     }
 
-    // 2. Các trang công khai nhưng người đã đăng nhập không nên vào (public-only routes)
-    const isPublicOnlyRoute = nextUrl.pathname === '/dang-nhap';
+    // Lấy session
+    const session = await auth();
 
-    // Nếu đã đăng nhập mà cố vào trang đăng nhập-> redirect về trang chủ quản trị
-    if (isPublicOnlyRoute && isAuthenticated) {
+    // Kiểm tra trạng thái xác thực (Đảm bảo session tồn tại và có access_token)
+    const isAuthenticated = !!session?.access_token;
+
+    // Xử lý lỗi refresh token nếu có
+    const isErrorSession = session?.error === "RefreshAccessTokenError";
+
+    // 1. Các trang yêu cầu đăng nhập
+    const isProtectedRoute = pathname.startsWith('/quan-tri');
+
+    // Nếu truy cập trang private mà chưa đăng nhập HOẶC session bị lỗi -> Redirect về đăng nhập
+    if (isProtectedRoute && (!isAuthenticated || isErrorSession)) {
+        // Xóa cookie session cũ để tránh loop khi quay lại đăng nhập
+        const response = NextResponse.redirect(new URL(`/dang-nhap?callbackUrl=${encodeURIComponent(pathname)}`, request.url));
+
+        // Xóa sạch cookie AuthJS
+        response.cookies.delete('authjs.session-token');
+        response.cookies.delete('authjs.csrf-token');
+        response.cookies.delete('__Host-authjs.session-token');
+        response.cookies.delete('__Host-authjs.csrf-token');
+
+        return response;
+    }
+
+    // 2. Các trang công khai nhưng người đã đăng nhập không nên vào
+    const isPublicOnlyRoute = pathname === '/dang-nhap';
+
+    // Nếu đã đăng nhập mà cố vào trang đăng nhập -> Redirect về trang chủ quản trị
+    if (isPublicOnlyRoute && isAuthenticated && !isErrorSession) {
         return NextResponse.redirect(new URL('/quan-tri/trang-chu', request.url));
     }
 
@@ -31,9 +50,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
 }
 
-// Alternatively, you can use a default export:
-// export default function proxy(request: NextRequest) { ... }
-
+// ✅ Config Matcher cần bao gồm tất cả trừ các resource tĩnh
 export const config = {
-    matcher: ['/quan-tri/:path*', '/dang-nhap'],
+    matcher: ['/((?!_next/static|_next/image|favicon.ico|api/auth).*)'],
 };

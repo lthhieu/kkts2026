@@ -253,4 +253,11 @@ export class DevicesService {
     throw new ForbiddenException();
 
   }
+
+  async findForSnapshot() {
+    return await this.deviceModel.find({})
+      .populate({ path: 'currentRoom', select: 'name' })
+      .populate({ path: 'unit', select: 'name' })
+      .lean()
+  }
 }

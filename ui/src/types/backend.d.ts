@@ -47,6 +47,7 @@ declare global {
     }
     interface ILogin {
         access_token: string,
+        refresh_token: string,
         user: IUser
     }
     interface IDevice {

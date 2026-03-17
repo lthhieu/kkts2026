@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common
 import { AppService } from './app.service';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
 import { AuthService } from 'src/auth/auth.service';
-import { Public, ResponseMessage } from 'src/configs/my.decorator';
+import { Public, ResponseMessage, User } from 'src/configs/my.decorator';
 import type { Response, Request } from 'express';
 import { LoginBySocial } from 'src/auth/auth.dto';
 
@@ -47,9 +47,9 @@ export class AppController {
   @Public()
   @Post('auth/refresh-token')
   @ResponseMessage("Cấp lại token thành công")
-  refresh(@Req() req: Request, @Res({ passthrough: true }) response: any) {
-    const refreshToken = req.cookies['refresh-token'];
-    return this.authService.refresh(refreshToken, response);
+  refresh(@Req() req: Request, @Res({ passthrough: true }) response: any, @Body() data: any) {
+    // const refreshToken = req.cookies['refresh-token'];
+    return this.authService.refresh(data.refresh_token, response, data.userid);
   }
 
 }

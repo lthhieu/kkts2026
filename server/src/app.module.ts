@@ -14,6 +14,7 @@ import { DatabasesModule } from './databases/databases.module';
 import { NewsModule } from './news/news.module';
 import { UploadModule } from './upload/upload.module';
 import { RequestsModule } from './requests/requests.module';
+import { SnapshotModule } from './snapshot/snapshot.module';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true, }),
@@ -28,6 +29,7 @@ import { RequestsModule } from './requests/requests.module';
     NewsModule,
     UploadModule,
     RequestsModule,
+    SnapshotModule,
   ],
   controllers: [AppController],
   providers: [AppService],

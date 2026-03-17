@@ -9,5 +9,6 @@ import { CaslModule } from 'src/casl/casl.module';
   imports: [MongooseModule.forFeature([{ name: Device.name, schema: DeviceSchema }]), CaslModule],
   controllers: [DevicesController],
   providers: [DevicesService],
+  exports: [DevicesService]
 })
 export class DevicesModule { }

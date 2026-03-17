@@ -4,6 +4,7 @@ import { sendRequest } from '@/utils/api';
 
 const Trangchu = async () => {
     const session = await auth()
+    // console.log(session)
     const res = await sendRequest<IBackendResponse<IDatabase>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/databases/get-data`,
         headers: {
