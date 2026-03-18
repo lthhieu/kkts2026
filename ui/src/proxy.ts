@@ -31,9 +31,7 @@ export default async function proxy(request: NextRequest) {
 
         // Xóa sạch cookie AuthJS
         response.cookies.delete('authjs.session-token');
-        response.cookies.delete('authjs.csrf-token');
-        response.cookies.delete('__Host-authjs.session-token');
-        response.cookies.delete('__Host-authjs.csrf-token');
+        response.cookies.delete('__Secure-authjs.session-token');
 
         return response;
     }

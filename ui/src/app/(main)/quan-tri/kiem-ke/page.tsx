@@ -1,8 +1,7 @@
 
 import { auth } from "@/auth";
 import TableSnapshot from "@/components/kiem-ke/table";
-import TableDevices from "@/components/thiet-bi/table";
-import { Action, DeviceSubject } from "@/libs/enum";
+import { Action, SnapshotSubject } from "@/libs/enum";
 import { getUserPermission } from "@/libs/getUserPermission";
 import { sendRequest } from "@/utils/api";
 import { Metadata } from "next";
@@ -16,37 +15,51 @@ export const metadata: Metadata = {
 type Params = Promise<{
     current: string;
     pageSize: string;
-    currentRoom?: string;
+    room?: string;
     unit?: string;
     type?: string;
     name?: string;
     status?: string;
+    year?: number
 }>
 const KiemKe = async ({ searchParams }: { searchParams: Params }) => {
     const session = await auth()
     const permission = getUserPermission(session?.user ?? {} as IUser);
-    if (!permission.can(Action.Read, new DeviceSubject())) {
+    if (!permission.can(Action.Read, new SnapshotSubject())) {
         redirect('/quan-tri/trang-chu')
     }
-    const { pageSize = 20, current = 1, currentRoom, type, unit, name, status } = await searchParams
-    const res = await sendRequest<IBackendResponse<IModelPaginate<IDevice>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/devices`,
+
+    const { pageSize = 20, current = 1, room, type, unit, name, status, year } = await searchParams
+
+    const res = await sendRequest<IBackendResponse<IModelPaginate<ISnapshot>>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/snapshot`,
         queryParams: {
             current, pageSize,
-            ...(currentRoom && { currentRoom }),
-            ...(unit && { unit }),
-            ...(type && { type }),
+            ...(room && { room: `/${room}/i` }),
+            ...(unit && { unit: `/${unit}/i` }),
+            ...(type && { type: `/${type}/i` }),
             ...(name && { name: `/${name}/i` }),
-            ...(status && { status }),
+            ...(status && { status: `/${status}/i` }),
+            ...(year && { year }),
         },
         headers: {
             Authorization: `Bearer ${session?.access_token}`,
         },
         nextOption: {
-            next: { tags: ['devices'] }
+            next: { tags: ['snapshot'] }
         }
     })
-    const res1 = await sendRequest<IBackendResponse<IModelPaginate<IRoom>>>({
+
+    const res1 = await sendRequest<IBackendResponse<IGetYearSnapshot>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/snapshot/available-years`,
+        headers: {
+            Authorization: `Bearer ${session?.access_token}`,
+        },
+        nextOption: {
+            next: { tags: ['snapshot'] }
+        }
+    })
+    const res2 = await sendRequest<IBackendResponse<IModelPaginate<IRoom>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/rooms`,
         queryParams: { current: 1, pageSize: 100000 },
         headers: {
@@ -56,7 +69,7 @@ const KiemKe = async ({ searchParams }: { searchParams: Params }) => {
             next: { tags: ['rooms'] }
         }
     })
-    const res2 = await sendRequest<IBackendResponse<IModelPaginate<IUnit>>>({
+    const res3 = await sendRequest<IBackendResponse<IModelPaginate<IUnit>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/units`,
         queryParams: { current: 1, pageSize: 100000 },
         headers: {
@@ -66,17 +79,17 @@ const KiemKe = async ({ searchParams }: { searchParams: Params }) => {
             next: { tags: ['units'] }
         }
     })
+
     return (
         <div>
-            {/* <TableSnapshot
-                devices={res?.data?.result ?? []}
-                access_token={session?.access_token ?? ''}
-                email={session?.user.email ?? ''}
+            <TableSnapshot
+                snapshots={res.data?.result ?? []}
                 meta={res?.data?.meta!}
-                rooms={res1?.data?.result ?? []}
-                units={res2?.data?.result ?? []}
-                user={session?.user ?? null} /> */}
-            Đang cập nhật
+                yearsArr={res1.data ?? []}
+                access_token={session?.access_token ?? ''}
+                rooms={res2?.data?.result ?? []}
+                units={res3?.data?.result ?? []}
+                user={session?.user ?? null} />
         </div>
     )
 }

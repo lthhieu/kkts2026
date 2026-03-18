@@ -6,10 +6,10 @@ import { STATUS_COLOR_MAP, STATUS_LABEL_MAP } from '@/components/thiet-bi/table'
 import dayjs from 'dayjs';
 
 interface IProps {
-    device: IDevice | null;
+    device: ISnapshot | null;
 }
 
-const DeviceDetail = ({ device }: IProps) => {
+const KiemKeDetail = ({ device }: IProps) => {
     if (!device) return null;
 
     // Format số tiền
@@ -32,7 +32,7 @@ const DeviceDetail = ({ device }: IProps) => {
                     {device.description || '—'}
                 </Descriptions.Item>
                 <Descriptions.Item label="Đơn vị">
-                    {device.unit?.name || '—'}
+                    {device.unit || '—'}
                 </Descriptions.Item>
                 <Descriptions.Item label="Ghi chú">
                     {device.note || '—'}
@@ -52,7 +52,7 @@ const DeviceDetail = ({ device }: IProps) => {
                     {device.chatLuongConLai}%
                 </Descriptions.Item>
                 <Descriptions.Item label="Phòng hiện tại">
-                    <Tag color="default">{device.currentRoom.map(room => room?.name).filter(Boolean).join(', ') || '—'}</Tag>
+                    <Tag color="default">{device.room || '—'}</Tag>
                 </Descriptions.Item>
                 <Descriptions.Item label="Trạng thái">
                     <Tag color={STATUS_COLOR_MAP[device.status!] || 'default'} variant='outlined'>
@@ -114,33 +114,8 @@ const DeviceDetail = ({ device }: IProps) => {
                     {formatMoney(device.chenhLech?.giaTriConLai)}
                 </Descriptions.Item>
             </Descriptions>
-
-            <Divider style={{ margin: '16px 0' }} />
-
-            {/* Lịch sử nơi sử dụng */}
-            <Typography.Title level={5} style={{ marginBottom: 12 }}>
-                Lịch sử nơi sử dụng
-            </Typography.Title>
-
-            {device.usedLocation && device.usedLocation.length > 0 ? (
-                <Timeline
-                    items={device.usedLocation.map((location, index) => ({
-                        color: 'green',
-                        icon: <EnvironmentOutlined />,
-                        content: (
-                            <Space>
-                                <Tag color="blue">{location.year}</Tag>
-                                <Tag>{location.room.map(room => room?.name).filter(Boolean).join(', ') || '—'}</Tag>
-                                {location.reason && <Typography.Text>{location.reason} ({location.person})</Typography.Text>}
-                            </Space>
-                        ),
-                    }))}
-                />
-            ) : (
-                <Typography.Text type="secondary">Chưa có thông tin nơi sử dụng</Typography.Text>
-            )}
         </div>
     );
 };
 
-export default DeviceDetail;
+export default KiemKeDetail;

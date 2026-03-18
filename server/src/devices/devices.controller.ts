@@ -78,8 +78,8 @@ export class DevicesController {
   @Delete('/delete-many')
   @ResponseMessage('Xóa thiết bị thành công')
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Delete, DeviceSubject))
-  removeMany(@Body() ids: any[], @User() user: IUser) {
-    return this.devicesService.removeMany(ids, user);
+  removeMany(@Body() ids: any[]) {
+    return this.devicesService.removeMany(ids);
   }
 
   @Delete('/soft-delete/:id')
@@ -91,7 +91,8 @@ export class DevicesController {
 
   @Delete(':id')
   @ResponseMessage('Xóa thiết bị thành công')
-  remove(@Param('id') id: string, @User() user: IUser) {
-    return this.devicesService.remove(id, user);
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Delete, DeviceSubject))
+  remove(@Param('id') id: string) {
+    return this.devicesService.remove(id);
   }
 }

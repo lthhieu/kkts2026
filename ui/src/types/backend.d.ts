@@ -166,4 +166,51 @@ declare global {
         "folder": string,
         "link": string
     }
+    interface ICreateSnapshot {
+        "message": string,
+        "count": number
+    }
+    interface IGetYearSnapshot {
+        "years": {
+            value: string, label: string
+        }[]
+    }
+    interface ISnapshot {
+        "_id": string,
+        "year"?: number,
+        "closedBy"?: string,
+        "name": string,
+        "description": string,
+        "room": string,
+        "usedYear": number | null,
+        "soKeToan": {
+            "soLuong": number | null,
+            "nguyenGia": number | null,
+            "giaTriConLai": number | null
+        },
+        "kiemKe": {
+            "soLuong": number | null,
+            "nguyenGia": number | null,
+            "giaTriConLai": number | null
+        },
+        "chenhLech": {
+            "thua": number | null,
+            "thieu": number | null,
+            "giaTriConLai": number | null
+        },
+        "chatLuongConLai": number | null,
+        "note": string,
+        "trongSoChatLuong": number | null,
+        "type": string,
+        "unit": string,
+        "parent"?: string | null,
+        "status"?: string,
+        "isDeleted": boolean,
+        "deletedAt": string | null,
+        "deletedBy": string | null,
+        "__v"?: number,
+        "createdAt"?: string,
+        "updatedAt"?: string,
+        children?: ISnapshot[];
+    }
 }

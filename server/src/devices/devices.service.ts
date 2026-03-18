@@ -214,17 +214,8 @@ export class DevicesService {
     };
   }
 
-  async remove(id: string, user: IUser) {
-    const ability = this.caslAbilityFactory.createForUser(user);
-    const device = await this.deviceModel.findOne({ _id: id });
-    const deviceSubject = new DeviceSubject();
-    deviceSubject._id = device?._id.toString()!;
-    deviceSubject.unit = device?.unit?.toString()!;
-
-    if (ability.can(Action.Delete, deviceSubject)) {
-      return await this.deviceModel.deleteOne({ _id: id });
-    }
-    throw new ForbiddenException();
+  async remove(id: string) {
+    return await this.deviceModel.deleteOne({ _id: id });
   }
 
   async softRemove(id: string, user: IUser) {
@@ -240,17 +231,8 @@ export class DevicesService {
     throw new ForbiddenException();
   }
 
-  async removeMany(ids: any[], user: IUser) {
-    const ability = this.caslAbilityFactory.createForUser(user);
-    const device = await this.deviceModel.findOne({ _id: ids[0] });
-    const deviceSubject = new DeviceSubject();
-    deviceSubject._id = device?._id.toString()!;
-    deviceSubject.unit = device?.unit?.toString()!;
-
-    if (ability.can(Action.Delete, deviceSubject)) {
-      return this.deviceModel.deleteMany({ _id: { $in: ids } });
-    }
-    throw new ForbiddenException();
+  async removeMany(ids: any[]) {
+    return await this.deviceModel.deleteMany({ _id: { $in: ids } });
 
   }
 
