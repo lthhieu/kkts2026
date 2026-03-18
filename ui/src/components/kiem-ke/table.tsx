@@ -2,15 +2,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button, Drawer, Flex, Grid, Input, Popconfirm, Select, Space, Table, Tag, Tooltip, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
-import { ClearOutlined, CloudDownloadOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
+import { ClearOutlined, CloudDownloadOutlined, DeleteOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
-import { handleDeleteDevice, handleDeleteDeviceMany } from '@/app/(main)/quan-tri/thiet-bi/actions';
-import { canCreateDevice, canDeleteDevice, canReadDevice, canUpdateDevice } from '@/libs/devices';
 import { CSVLink } from 'react-csv';
 import ModalKiemKe from '@/components/kiem-ke/modal.kiemke';
 import { statusArr, typeArr } from '@/components/thiet-bi/table';
-import { canCreateSnapshot, canReadSnapshot } from '@/libs/snapshot';
+import { canCreateSnapshot, canDeleteSnapshot, canReadSnapshot } from '@/libs/snapshot';
 import KiemKeDetail from '@/components/kiem-ke/kiemke.detail';
+import ModalDeleteSnapshot from '@/components/kiem-ke/modal.delete.snapshot';
 
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
 const { useBreakpoint } = Grid;
@@ -40,7 +39,7 @@ const Context = React.createContext({ name: 'Default' });
 
 const TableSnapshot = (props: IProps) => {
     const { access_token, user, yearsArr, meta, snapshots, rooms, units } = props
-    const [isModalOpen, SetIsModalOpen] = useState(false)
+    const [isModalDeleteSnapshotOpen, setIsModalDeleteSnapshotOpen] = useState(false)
     const [isModalKiemKeOpen, setIsModalKiemKeOpen] = useState(false)
     const [isModalImportOpen, SetIsModalImportOpen] = useState(false)
     const [status, setStatus] = useState('')
@@ -284,11 +283,15 @@ const TableSnapshot = (props: IProps) => {
         onChange: onSelectChange,
     };
 
+    const start = () => {
+        setIsModalDeleteSnapshotOpen(true)
+    };
+
     const headers = [
         { label: "Mã thiết bị", key: "_id" },
         { label: "Tên thiết bị", key: "name" },
         { label: "Mã số/Mô tả", key: "description" },
-        { label: "Nơi sử dụng", key: "currentRoom" },
+        { label: "Nơi sử dụng", key: "room" },
         { label: "Năm sử dụng", key: "usedYear" },
         { label: "Sổ KT - Số lượng", key: "skt_sl" },
         { label: "Sổ KT - Nguyên giá", key: "skt_ng" },
@@ -314,7 +317,9 @@ const TableSnapshot = (props: IProps) => {
 
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
 
-                    {canReadSnapshot(user ?? {} as IUser) && <Button type='primary' icon={<CloudDownloadOutlined />}>
+                    {canDeleteSnapshot(user ?? {} as IUser) && snapshots.length > 0 && <Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start}>Xóa sổ kiểm kê</Button>}
+
+                    {canReadSnapshot(user ?? {} as IUser) && snapshots.length > 0 && <Button type='primary' icon={<CloudDownloadOutlined />}>
                         <CSVLink
                             data={dataExport}
                             filename={"kiem-ke.csv"}
@@ -425,6 +430,12 @@ const TableSnapshot = (props: IProps) => {
             >
                 <KiemKeDetail device={selectedDevice} />
             </Drawer>
+            <ModalDeleteSnapshot
+                isModalDeleteSnapshotOpen={isModalDeleteSnapshotOpen}
+                setIsModalDeleteSnapshotOpen={setIsModalDeleteSnapshotOpen}
+                access_token={access_token}
+                yearsArr={yearsArr}
+            />
         </Context.Provider>
     )
 }

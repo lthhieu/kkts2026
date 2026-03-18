@@ -1,11 +1,12 @@
 'use client'
-import { Form, InputNumber, Modal, Space, Typography, message, notification } from 'antd';
+import { Form, InputNumber, Modal, Select, Space, Typography, message, notification } from 'antd';
 import React, { useMemo, useState } from 'react';
-import { handleCreateSnapshot } from '@/app/(main)/quan-tri/kiem-ke/actions';
+import { handleCreateSnapshot, handleDeleteSnapshot } from '@/app/(main)/quan-tri/kiem-ke/actions';
 interface IProps {
     access_token?: string,
-    isModalKiemKeOpen: boolean,
-    setIsModalKiemKeOpen: (value: boolean) => void,
+    isModalDeleteSnapshotOpen: boolean,
+    setIsModalDeleteSnapshotOpen: (value: boolean) => void,
+    yearsArr: IGetYearSnapshot | any,
 }
 const HandleDescript = ({ message }: { message: string }) => {
     return (
@@ -15,13 +16,12 @@ const HandleDescript = ({ message }: { message: string }) => {
     )
 }
 const Context = React.createContext({ name: 'Default' });
-const ModalKiemKe = (props: IProps) => {
-    const { setIsModalKiemKeOpen, isModalKiemKeOpen, access_token } = props
+const ModalDeleteSnapshot = (props: IProps) => {
+    const { setIsModalDeleteSnapshotOpen, isModalDeleteSnapshotOpen, access_token, yearsArr } = props
     const [messageApi, contextHolder] = message.useMessage();
     const [api, contextHolderNotification] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
     const [confirmLoading, setConfirmLoading] = useState(false);
-
 
     const handleOk = () => {
         setConfirmLoading(true);
@@ -33,17 +33,17 @@ const ModalKiemKe = (props: IProps) => {
 
     const handleCancel = () => {
         form.resetFields();
-        setIsModalKiemKeOpen(false);
+        setIsModalDeleteSnapshotOpen(false);
     };
 
     const [form] = Form.useForm()
     const onFinish = async (values: any) => {
         // console.log('Received values of form: ', values.year);
-        const response = await handleCreateSnapshot(values.year, access_token ?? '')
+        const response = await handleDeleteSnapshot(values.year, access_token ?? '')
 
         if (response.data) {
             api.success({
-                title: `Chốt sổ kiểm kê thành công`,
+                title: `Xóa sổ kiểm kê thành công`,
                 description: <HandleDescript message={response.data.message} />,
                 placement: 'topRight',
             });
@@ -66,9 +66,9 @@ const ModalKiemKe = (props: IProps) => {
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
             <Modal
-                title={"Chốt sổ kiểm kê"}
+                title={"Xóa sổ kiểm kê"}
                 closable={{ 'aria-label': 'Custom Close Button' }}
-                open={isModalKiemKeOpen}
+                open={isModalDeleteSnapshotOpen}
                 onOk={handleOk}
                 onCancel={handleCancel}
                 okText={"Đồng ý"}
@@ -87,11 +87,6 @@ const ModalKiemKe = (props: IProps) => {
                     name="snapshot-modal"
                     onFinish={onFinish}
                     validateMessages={validateMessages}
-                    initialValues={
-                        {
-                            "year": new Date().getFullYear(),
-                        }
-                    }
                 >
                     <Form.Item
                         style={{ marginBottom: 8, width: '100%' }}
@@ -99,7 +94,13 @@ const ModalKiemKe = (props: IProps) => {
                         name="year"
                         rules={[{ required: true }]}
                     >
-                        <InputNumber style={{ width: '100%' }} />
+                        <Select
+                            style={{}}
+                            showSearch={{ optionFilterProp: 'label' }}
+                            placeholder="Vui lòng chọn năm kiểm kê"
+                            allowClear
+                            options={yearsArr.years}
+                        />
                     </Form.Item>
                 </Form>
             </Modal>
@@ -107,4 +108,4 @@ const ModalKiemKe = (props: IProps) => {
     );
 };
 
-export default ModalKiemKe;
+export default ModalDeleteSnapshot;
