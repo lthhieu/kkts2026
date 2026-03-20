@@ -3,7 +3,6 @@
 import { Typography, Tag, Divider, Timeline, Descriptions, Space } from 'antd';
 import { EnvironmentOutlined } from '@ant-design/icons';
 import { STATUS_COLOR_MAP, STATUS_LABEL_MAP } from '@/components/thiet-bi/table';
-import dayjs from 'dayjs';
 
 interface IProps {
     device: IDevice | null;
@@ -34,9 +33,6 @@ const DeviceDetail = ({ device }: IProps) => {
                 <Descriptions.Item label="Đơn vị">
                     {device.unit?.name || '—'}
                 </Descriptions.Item>
-                <Descriptions.Item label="Ghi chú">
-                    {device.note || '—'}
-                </Descriptions.Item>
                 <Descriptions.Item label="Loại thiết bị">
                     <Tag color={device.type === 'Tài sản cố định' ? 'blue' : device.type === 'Công cụ dụng cụ' ? 'cyan' : 'gold'}>
                         {device.type}
@@ -51,13 +47,16 @@ const DeviceDetail = ({ device }: IProps) => {
                 <Descriptions.Item label="Chất lượng còn lại">
                     {device.chatLuongConLai}%
                 </Descriptions.Item>
-                <Descriptions.Item label="Phòng hiện tại">
-                    <Tag color="default">{device.currentRoom.map(room => room?.name).filter(Boolean).join(', ') || '—'}</Tag>
-                </Descriptions.Item>
                 <Descriptions.Item label="Trạng thái">
                     <Tag color={STATUS_COLOR_MAP[device.status!] || 'default'} variant='outlined'>
                         {STATUS_LABEL_MAP[device.status!] || device.status}
                     </Tag>
+                </Descriptions.Item>
+                <Descriptions.Item label="Phòng hiện tại" span={3}>
+                    <Tag color="default">{device.currentRoom.map(room => room?.name).filter(Boolean).join(', ') || '—'}</Tag>
+                </Descriptions.Item>
+                <Descriptions.Item label="Ghi chú" span={3}>
+                    {device.note || '—'}
                 </Descriptions.Item>
             </Descriptions>
 

@@ -57,8 +57,8 @@ const RequestDetail = ({ request, access_token, onRefresh, user }: IProps) => {
             <div style={{ padding: 8 }}>
 
                 {/* ✅ Thông tin tổng thể */}
-                <Descriptions column={2} size="small">
-                    <Descriptions.Item label="Tên đề nghị" span={2}>
+                <Descriptions column={{ xs: 1, sm: 3 }} size="small">
+                    <Descriptions.Item label="Tên đề nghị" span={3}>
                         <Typography.Text strong>{request.name}</Typography.Text>
                     </Descriptions.Item>
 

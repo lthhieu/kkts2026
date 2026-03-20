@@ -21,6 +21,7 @@ const contentStyle: React.CSSProperties = {
 const footerStyle: React.CSSProperties = {
     textAlign: 'center',
     background: '#fff',
+    borderTop: '1px solid #ccc'
 };
 
 const layoutStyle = {
@@ -128,8 +129,20 @@ const PublicLayout = ({
                         /></Header>}
                     {!isMobile && <MyHeader items={items} selectedKey={selectedKey} />}
                     <Content style={contentStyle}>{children}</Content>
-                    <Footer style={footerStyle}>©{new Date().getFullYear()} Trường Đại học Sư phạm Kỹ thuật Vĩnh Long</Footer>
-                </Layout>
+                    <Footer style={footerStyle}>
+                        <div style={{ fontWeight: 500, marginBottom: 8 }}>
+                            ©{new Date().getFullYear()} Trường Đại học Sư phạm Kỹ thuật Vĩnh Long
+                        </div>
+                        <div style={{ fontSize: '14px', color: 'rgba(0, 0, 0, 0.65)', lineHeight: 1.6 }}>
+                            Địa chỉ: Số 73, Nguyễn Huệ, Phường Long Châu, Tỉnh Vĩnh Long
+                            <br />
+                            Email:{' '}
+                            <a href="#" style={{ color: '#4275e4', textDecoration: 'none' }}>
+                                spktvl@vlute.edu.vn
+                            </a>{' '}
+                            | Fax: 02703 821 003
+                        </div>
+                    </Footer>                </Layout>
             </Layout>
         </Flex>
     )

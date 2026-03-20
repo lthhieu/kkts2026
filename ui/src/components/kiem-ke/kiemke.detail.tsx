@@ -34,9 +34,6 @@ const KiemKeDetail = ({ device }: IProps) => {
                 <Descriptions.Item label="Đơn vị">
                     {device.unit || '—'}
                 </Descriptions.Item>
-                <Descriptions.Item label="Ghi chú">
-                    {device.note || '—'}
-                </Descriptions.Item>
                 <Descriptions.Item label="Loại thiết bị">
                     <Tag color={device.type === 'Tài sản cố định' ? 'blue' : device.type === 'Công cụ dụng cụ' ? 'cyan' : 'gold'}>
                         {device.type}
@@ -48,10 +45,13 @@ const KiemKeDetail = ({ device }: IProps) => {
                 <Descriptions.Item label="Tỷ lệ khấu hao">
                     {device.trongSoChatLuong}%
                 </Descriptions.Item>
-                <Descriptions.Item label="Chất lượng còn lại">
+                <Descriptions.Item label="Chất lượng còn lại" span={2}>
                     {device.chatLuongConLai}%
                 </Descriptions.Item>
-                <Descriptions.Item label="Phòng hiện tại">
+                <Descriptions.Item label="Ghi chú" span={3}>
+                    {device.note || '—'}
+                </Descriptions.Item>
+                <Descriptions.Item label="Phòng hiện tại" span={3}>
                     <Tag color="default">{device.room || '—'}</Tag>
                 </Descriptions.Item>
                 <Descriptions.Item label="Trạng thái">

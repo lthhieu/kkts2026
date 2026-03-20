@@ -352,6 +352,17 @@ const TableRequests = (props: IProps) => {
                 setDataUpdate={setDataUpdate}
             />
             <Drawer
+                styles={{
+                    header: {
+                        display: 'flex',
+                        flexDirection: isMobile ? 'column' : 'row', // chuyển thành cột trên mobile
+                        alignItems: isMobile ? 'flex-start' : 'center',
+                        justifyContent: 'space-between',
+                        gap: isMobile ? 12 : 0,
+                        // Có thể điều chỉnh thêm padding nếu muốn
+                        padding: isMobile ? '16px 16px 8px' : undefined,
+                    }
+                }}
                 title="Xem chi tiết đề nghị"
                 closable={{ 'aria-label': 'Close Button' }}
                 onClose={onClose}
