@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button, Drawer, Flex, Grid, Input, Popconfirm, Select, Space, Table, Tag, Tooltip, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
-import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, DeploymentUnitOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
+import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, DeploymentUnitOutlined, DiffOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { handleDeleteDevice, handleDeleteDeviceMany } from '@/app/(main)/quan-tri/thiet-bi/actions';
 import DeviceModal from '@/components/thiet-bi/modal';
@@ -11,6 +11,8 @@ import ModalImport from '@/components/thiet-bi/modal.import';
 import { CSVLink } from 'react-csv';
 import DeviceDetail from '@/components/thiet-bi/device.detail';
 import ModalUpdateMany from '@/components/thiet-bi/modal.update.clcl';
+import { canCreateRequest } from '@/libs/request';
+import RequestModal from '@/components/de-nghi/modal';
 
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
 const { useBreakpoint } = Grid;
@@ -50,6 +52,8 @@ const Context = React.createContext({ name: 'Default' });
 const TableDevices = (props: IProps) => {
     const { devices, access_token, meta, rooms, units, user, email } = props
     const [isModalOpen, SetIsModalOpen] = useState(false)
+    const [isModalRequestOpen, setIsModalRequestOpen] = useState(false)
+
     const [isModalUpdateManyOpen, setIsModalUpdateManyOpen] = useState(false)
     const [isModalImportOpen, SetIsModalImportOpen] = useState(false)
     const [status, setStatus] = useState('')
@@ -247,6 +251,18 @@ const TableDevices = (props: IProps) => {
                                             setDataUpdate(record)
                                             setStatus("UPDATE")
                                             SetIsModalOpen(true)
+                                        }}
+                                    />
+                                </Tooltip>
+                            )}
+
+                            {canCreateRequest(user ?? {} as IUser) && (
+                                <Tooltip title="Đề nghị">
+                                    <DiffOutlined
+                                        style={{ color: '#e426cb', cursor: 'pointer' }}
+                                        onClick={() => {
+                                            setDataUpdate(record)
+                                            setIsModalRequestOpen(true)
                                         }}
                                     />
                                 </Tooltip>
@@ -530,6 +546,14 @@ const TableDevices = (props: IProps) => {
                 access_token={access_token}
                 isModalUpdateManyOpen={isModalUpdateManyOpen}
                 setIsModalUpdateManyOpen={setIsModalUpdateManyOpen}
+            />
+            <RequestModal
+                access_token={access_token}
+                isModalOpen={isModalRequestOpen}
+                setIsModalOpen={setIsModalRequestOpen}
+                //update info
+                setDataUpdate={setDataUpdate}
+                dataUpdate={dataUpdate}
             />
             <Drawer
                 title="Xem chi tiết thiết bị"

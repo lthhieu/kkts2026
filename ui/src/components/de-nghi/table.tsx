@@ -34,8 +34,10 @@ export const STATUS_LABEL_MAP: Record<string, string> = {
     reject: 'Từ chối'
 };
 
-export const typeArr = [{ value: 'Hư hỏng', label: 'Hư hỏng' },
-{ value: 'Thanh lý', label: 'Thanh lý' }
+export const typeArr = [
+    { value: 'Cập nhật thiết bị', label: 'Cập nhật thiết bị' },
+    { value: 'Hư hỏng', label: 'Hư hỏng' },
+    { value: 'Thanh lý', label: 'Thanh lý' }
 ]
 
 const Context = React.createContext({ name: 'Default' });
@@ -50,7 +52,6 @@ const TableRequests = (props: IProps) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [api, contextHolderNotification] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
-    const [dataExport, setDataExport] = useState<any[]>([])
     const screens = useBreakpoint();
     const isMobile = !screens.md;  // < 768px
     const [selectedName, setSelectedName] = useState<string | undefined>(undefined);

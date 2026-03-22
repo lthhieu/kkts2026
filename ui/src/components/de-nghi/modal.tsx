@@ -12,18 +12,29 @@ interface IProps {
     access_token?: string,
     isModalOpen: boolean,
     setIsModalOpen: (value: boolean) => void,
+    //update
+    dataUpdate?: null | IDevice,
+    setDataUpdate?: (value: null | IDevice) => void,
 }
 
 const Context = React.createContext({ name: 'Default' });
 
 
 const RequestModal = (props: IProps) => {
-    const { setIsModalOpen, isModalOpen, access_token } = props
+    const { setIsModalOpen, isModalOpen, access_token, dataUpdate, setDataUpdate } = props
     const [form] = Form.useForm()
     const [messageApi, contextHolder] = message.useMessage();
     const [api, contextHolderNotification] = notification.useNotification();
     const [imageProp, setImageProp] = useState<UploadFile | null>(null)
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
+
+    useEffect(() => {
+        if (dataUpdate) {
+            form.setFieldsValue({
+                "device": dataUpdate._id,
+            })
+        }
+    }, [dataUpdate])
 
     const uploadProps: UploadProps = {
         name: 'file',
@@ -132,7 +143,9 @@ const RequestModal = (props: IProps) => {
                         name="device"
                         rules={[{ required: true }]}
                     >
-                        <Input />
+                        <Input
+                            disabled={dataUpdate ? true : false}
+                        />
                     </Form.Item>
 
                     <Form.Item
@@ -160,11 +173,11 @@ const RequestModal = (props: IProps) => {
 
                     <Form.Item
                         style={{ marginBottom: 8 }}
-                        label="Tình trạng"
+                        label="Mô tả"
                         name="description"
                         rules={[{ required: true }]}
                     >
-                        <Input />
+                        <Input.TextArea autoSize />
                     </Form.Item>
 
                     <Form.Item

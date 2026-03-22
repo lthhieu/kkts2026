@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { INIT_DEVICES, INIT_ROOMS, INIT_UNITS } from 'src/databases/sample';
 import { Device } from 'src/devices/schemas/device.schema';
+import { Request } from 'src/requests/schemas/request.schema';
 import { Room } from 'src/rooms/schemas/room.schema';
 import { Unit } from 'src/units/schemas/unit.schema';
 import { User } from 'src/users/schemas/user.schema';
@@ -16,6 +17,7 @@ export class DatabasesService implements OnModuleInit {
         @InjectModel(Unit.name) private unitModel: Model<Unit>,
         @InjectModel(Room.name) private roomModel: Model<Room>,
         @InjectModel(Device.name) private deviceModel: Model<Device>,
+        @InjectModel(Request.name) private requestModel: Model<Request>,
         private usersService: UsersService,
         private configService: ConfigService) { }
 
@@ -24,7 +26,9 @@ export class DatabasesService implements OnModuleInit {
         const countUnit = await this.unitModel.countDocuments({})
         const countRoom = await this.roomModel.countDocuments({})
         const countDevice = await this.deviceModel.countDocuments({})
-        return { users: countUser, units: countUnit, rooms: countRoom, devices: countDevice }
+        const countRequest = await this.requestModel.countDocuments({})
+
+        return { users: countUser, units: countUnit, rooms: countRoom, devices: countDevice, requests: countRequest }
     }
     async onModuleInit() {
         const isInit = this.configService.get<string>("SHOULD_INIT")

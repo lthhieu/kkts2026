@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { Room } from 'src/rooms/schemas/room.schema';
 import { Unit } from 'src/units/schemas/unit.schema';
+import { User } from 'src/users/schemas/user.schema';
 
 export type DeviceDocument = HydratedDocument<Device>;
 
@@ -67,7 +68,10 @@ export class Device {
     deletedAt: Date;
 
     @Prop({ default: null })
-    deletedBy: string
+    deletedBy: string;
+
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name, default: null })
+    user: User | null;
 
 }
 

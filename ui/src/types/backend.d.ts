@@ -155,7 +155,8 @@ declare global {
         "users": number | null,
         "units": number | null,
         "rooms": number | null,
-        "devices": number | null
+        "devices": number | null,
+        "requests": number | null
     }
     interface IUpdateMany {
         matched: number,

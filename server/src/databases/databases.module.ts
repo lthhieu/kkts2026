@@ -7,6 +7,7 @@ import { Unit, UnitSchema } from 'src/units/schemas/unit.schema';
 import { Room, RoomSchema } from 'src/rooms/schemas/room.schema';
 import { UsersService } from 'src/users/users.service';
 import { Device, DeviceSchema } from 'src/devices/schemas/device.schema';
+import { Request, RequestSchema } from 'src/requests/schemas/request.schema';
 
 @Module({
   controllers: [DatabasesController],
@@ -16,6 +17,7 @@ import { Device, DeviceSchema } from 'src/devices/schemas/device.schema';
     { name: Room.name, schema: RoomSchema },
     { name: Unit.name, schema: UnitSchema },
     { name: Device.name, schema: DeviceSchema },
+    { name: Request.name, schema: RequestSchema },
   ])],
 })
 export class DatabasesModule { }
