@@ -40,3 +40,18 @@ a {
     color-scheme: dark;
   }
 }
+
+.noi-dung {
+  text-align: justify;
+  line-height: 2;
+  margin-top: 8px;
+}
+
+.noi-dung img {
+  width: 100%;
+  border-radius: 12px;
+  max-height: none;
+  object-fit: cover;
+  margin-bottom: 6px;
+  margin-top: 6px;
+}

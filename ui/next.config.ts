@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
+    remotePatterns: [new URL('https://vlute.edu.vn/cdn/files/**')],
   },
 };
 

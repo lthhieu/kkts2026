@@ -31,7 +31,7 @@ const MyHeader = ({ items, selectedKey }: { items: MenuItem[], selectedKey: stri
                 />
                 <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.25 }}>
                     <span style={{ fontWeight: 600, fontSize: 15, color: '#1f1f1f' }}>
-                        Đại học Sư phạm Kỹ thuật Vĩnh Long
+                        Trường Đại học Sư phạm Kỹ thuật Vĩnh Long
                     </span>
                     <span style={{ fontSize: 13, color: 'rgba(0,0,0,0.65)', marginTop: 2 }}>
                         Phòng Quản trị - Thiết bị

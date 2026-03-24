@@ -11,9 +11,10 @@ import aqp from 'api-query-params';
 export class NewsService {
   constructor(@InjectModel(News.name) private newsModel: Model<News>) { }
 
-  async create(createNewsDto: CreateNewsDto) {
+  async create(createNewsDto: CreateNewsDto, user: IUser) {
     return await this.newsModel.create({
-      ...createNewsDto
+      ...createNewsDto,
+      author: user._id as any
     })
   }
 
@@ -28,13 +29,14 @@ export class NewsService {
     const totalItems = await this.newsModel.countDocuments(filter)
     const totalPages = Math.ceil(totalItems / defaultLimit)
     if (isEmpty(sort)) {
-      sort = "createdAt"
+      sort = "-postedAt"
     }
     let units = await this.newsModel.find(filter)
       .skip(offset)
       .limit(defaultLimit)
       .sort(sort)
       .populate(population)
+      .populate({ path: 'author', select: 'name' })
       .exec()
     return {
       meta: {
@@ -48,7 +50,8 @@ export class NewsService {
   }
 
   async findOne(slug: string) {
-    return await this.newsModel.findOne({ slug });
+    return await this.newsModel.findOne({ slug })
+      .populate({ path: 'author', select: 'name' });
   }
 
   async update(id: string, updateNewsDto: UpdateNewsDto) {
@@ -58,5 +61,9 @@ export class NewsService {
   async remove(id: string) {
     // throw new Error('Method not implemented.');
     return await this.newsModel.deleteOne({ _id: id });
+  }
+
+  async removeMany(ids: any[]) {
+    return await this.newsModel.deleteMany({ _id: { $in: ids } });
   }
 }

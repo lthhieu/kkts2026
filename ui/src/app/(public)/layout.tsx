@@ -15,13 +15,14 @@ const { Footer, Content, Header } = Layout;
 const contentStyle: React.CSSProperties = {
     paddingTop: 16,
     background: '#fff',
-    padding: "0 5%"
+    padding: "0 5%",
+    paddingBottom: 16
 };
 
 const footerStyle: React.CSSProperties = {
     textAlign: 'center',
     background: '#fff',
-    borderTop: '1px solid #ccc'
+    borderTop: '1px solid #ccc',
 };
 
 const layoutStyle = {
@@ -142,7 +143,8 @@ const PublicLayout = ({
                             </a>{' '}
                             | Fax: 02703 821 003
                         </div>
-                    </Footer>                </Layout>
+                    </Footer>
+                </Layout>
             </Layout>
         </Flex>
     )

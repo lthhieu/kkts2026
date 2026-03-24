@@ -10,14 +10,15 @@ import {
     LogoutOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
-    UserOutlined, DiffOutlined, RadarChartOutlined
+    UserOutlined, DiffOutlined, RadarChartOutlined,
+    FormOutlined
 } from '@ant-design/icons';
 import { Button, Layout, Menu, Space, theme, Dropdown, MenuProps } from 'antd';
 import Link from 'next/link';
 import { handleSignOut } from '@/app/(auth)/dang-nhap/actions';
 import { usePathname, useRouter } from 'next/navigation';
 import { getUserPermission } from '@/libs/getUserPermission';
-import { Action, DeviceSubject, RequestSubject, RoomSubject, SnapshotSubject, UnitSubject, UserSubject } from '@/libs/enum';
+import { Action, DeviceSubject, NewsSubject, RequestSubject, RoomSubject, SnapshotSubject, UnitSubject, UserSubject } from '@/libs/enum';
 import ChangePasswordModal from '@/components/dashboard/change-password-modal';
 import Image from 'next/image';
 import UpdateModal from '@/components/dashboard/update.info';
@@ -101,6 +102,12 @@ const Dashboard = ({
             icon: <DatabaseOutlined />,
             label: <Link href="/quan-tri/phong-kho">Phòng - Kho</Link>,
             permission: { action: Action.Read, subject: new RoomSubject() },
+        },
+        {
+            key: '/quan-tri/tin-tuc',
+            icon: <FormOutlined />,
+            label: <Link href="/quan-tri/tin-tuc">Tin tức</Link>,
+            permission: { action: Action.Read, subject: new NewsSubject() },
         },
         {
             key: '/quan-tri/tai-khoan',

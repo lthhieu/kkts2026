@@ -232,4 +232,20 @@ declare global {
         "updatedAt"?: string,
         children?: ISnapshot[];
     }
+    interface INews {
+        "_id": string,
+        "title": string,
+        "slug": string,
+        "content": string,
+        "thumbnail": string,
+        "category": string,
+        "author": {
+            "_id": string,
+            "name": string
+        },
+        "postedAt": string,
+        "createdAt": string,
+        "updatedAt": string,
+        "__v": number
+    }
 }
