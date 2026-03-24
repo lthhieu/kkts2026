@@ -42,6 +42,12 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
+  @Patch('update-info')
+  @ResponseMessage('Cập nhật người dùng thành công')
+  updateInfo(@User() user: IUser, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.updateInfo(user, updateUserDto);
+  }
+
   @Patch(':id')
   @ResponseMessage('Cập nhật người dùng thành công')
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Update, UserSubject))

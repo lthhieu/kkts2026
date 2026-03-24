@@ -44,6 +44,18 @@ const PhongKho = async ({ searchParams }: { searchParams: Params }) => {
             next: { tags: ['units'] }
         }
     })
+    const res2 = await sendRequest<IBackendResponse<IModelPaginate<IUser>>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/users`,
+        queryParams: {
+            current: 1, pageSize: 1000
+        },
+        headers: {
+            Authorization: `Bearer ${session?.access_token}`,
+        },
+        nextOption: {
+            next: { tags: ['users'] }
+        }
+    })
     return (
         <div>
             <TableRooms
@@ -51,6 +63,7 @@ const PhongKho = async ({ searchParams }: { searchParams: Params }) => {
                 meta={res?.data?.meta!}
                 rooms={res?.data?.result ?? []}
                 units={res1?.data?.result ?? []}
+                users={res2.data?.result ?? []}
                 user={session?.user ?? null} />
         </div>
     )

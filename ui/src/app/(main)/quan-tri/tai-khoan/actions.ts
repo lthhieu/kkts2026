@@ -3,10 +3,13 @@ import { sendRequest } from '@/utils/api'
 import { updateTag } from 'next/cache'
 
 export const handleCreateOrUpdateUser = async (data: any, access_token: string, status: string, dataUpdate?: null | IUser) => {
-    const { name, email, password, unit, role } = data
-    const body: any = { email, name, password, unit, role }
+    const { name, email, password, unit, role, phone } = data
+    const body: any = { email, name, password, unit, role, phone }
     if (!password)
         delete body.password
+
+    if (!phone)
+        delete body.phone
 
     const res = await sendRequest<IBackendResponse<IUser>>({
         url: status === "CREATE" ? `${process.env.NEXT_PUBLIC_BACKEND_URI}/users` : `${process.env.NEXT_PUBLIC_BACKEND_URI}/users/${dataUpdate?._id}`,

@@ -134,6 +134,10 @@ export class UsersService {
     }
   }
 
+  async updateInfo(user: IUser, updateUserDto: UpdateUserDto) {
+    return await this.userModel.updateOne({ _id: user._id }, updateUserDto)
+  }
+
   async remove(id: string, user: IUser) {
     const exist = await this.findOne(id)
     if (user.email === exist?.email) {

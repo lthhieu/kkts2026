@@ -37,7 +37,8 @@ declare global {
             "name": string
         },
         createdAt: string,
-        updatedAt: string
+        updatedAt: string,
+        phone?: string
     }
     interface IUnit {
         _id: string,
@@ -66,8 +67,15 @@ declare global {
         }[],
         "currentRoom": {
             "_id": string,
-            "name": string
+            "name": string,
+            "users":
+            {
+                "_id": string,
+                "name": string,
+                "phone"?: string | null
+            }[],
         }[],
+
         "usedYear": number | null,
         "soKeToan": {
             "soLuong": number | null,
@@ -149,7 +157,12 @@ declare global {
             "name": string
         },
         "createdAt": string,
-        "updatedAt": string
+        "updatedAt": string,
+        "users":
+        {
+            "_id": string,
+            "name": string
+        }[]
     }
     interface IDatabase {
         "users": number | null,

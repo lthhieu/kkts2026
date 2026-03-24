@@ -113,6 +113,7 @@ const TableDevices = (props: IProps) => {
                     "nguyenGia": 0,
                     "giaTriConLai": null
                 },
+
                 "chenhLech": {
                     "thua": 0,
                     "thieu": 0,
@@ -124,7 +125,8 @@ const TableDevices = (props: IProps) => {
                 "type": "",
                 "currentRoom": [{
                     "_id": "",
-                    "name": ""
+                    "name": "",
+                    users: [],
                 }],
                 "unit": {
                     "_id": "",
@@ -305,6 +307,31 @@ const TableDevices = (props: IProps) => {
             title: 'Số lượng',
             dataIndex: ['kiemKe', 'soLuong'],
             key: 'soLuong',
+        },
+        {
+            title: 'Giảng viên quản lý',
+            dataIndex: 'currentRoom',
+            key: 'currentRoomUsers',
+            render: (currentRoom: any[] | null | undefined) => {
+                if (!currentRoom || currentRoom.length === 0) {
+                    return <span style={{ color: '#999' }}>—</span>;
+                }
+
+                // 1. Gom tất cả name từ users của mọi phòng
+                // 2. Lọc giá trị rỗng & dùng Set để bỏ trùng (nếu 1 người phụ trách nhiều phòng)
+                const names = [
+                    ...new Set(
+                        currentRoom.flatMap(room =>
+                            room.users?.map((u: any) => u.name).filter(Boolean) || []
+                        )
+                    )
+                ];
+
+                if (names.length === 0) return <span style={{ color: '#999' }}>—</span>;
+
+                // Hiển thị dạng chuỗi ngăn cách bởi dấu phẩy
+                return names.join(', ');
+            }
         },
         {
             title: 'Nơi sử dụng',

@@ -92,7 +92,11 @@ export class DevicesService {
       .sort(sort)
       .populate(population)
       .populate({ path: 'usedLocation.room', select: 'name' })
-      .populate({ path: 'currentRoom', select: 'name' })
+      .populate({
+        path: 'currentRoom', select: 'name users', populate: {
+          path: 'users', select: 'name phone'
+        }
+      })
       .populate({ path: 'unit', select: 'name' })
       .exec()
     return {
@@ -110,7 +114,11 @@ export class DevicesService {
     return await this.deviceModel
       .findOne({ _id: id })
       .populate({ path: 'usedLocation.room', select: 'name' })
-      .populate({ path: 'currentRoom', select: 'name' })
+      .populate({
+        path: 'currentRoom', select: 'name users', populate: {
+          path: 'users', select: 'name phone'
+        }
+      })
       .populate({ path: 'unit', select: 'name' })
       .exec();
   }

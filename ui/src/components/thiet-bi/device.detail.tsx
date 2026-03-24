@@ -30,6 +30,17 @@ const DeviceDetail = ({ device }: IProps) => {
                 <Descriptions.Item label="Mã số/Mô tả" span={3}>
                     {device.description || '—'}
                 </Descriptions.Item>
+                <Descriptions.Item label="Giáo viên quản lý" span={3}>
+                    {device.currentRoom?.length
+                        ? [...new Map(
+                            device.currentRoom.flatMap(r => r.users || [])
+                                .filter(u => u?.name)
+                                .map(u => [u.name, u]) // key = name để lọc trùng
+                        ).values()]
+                            .map(u => u.phone ? `${u.name} (${u.phone})` : u.name)
+                            .join(', ') || '—'
+                        : '—'}
+                </Descriptions.Item>
                 <Descriptions.Item label="Đơn vị">
                     {device.unit?.name || '—'}
                 </Descriptions.Item>

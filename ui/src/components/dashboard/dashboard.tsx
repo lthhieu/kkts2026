@@ -20,6 +20,7 @@ import { getUserPermission } from '@/libs/getUserPermission';
 import { Action, DeviceSubject, RequestSubject, RoomSubject, SnapshotSubject, UnitSubject, UserSubject } from '@/libs/enum';
 import ChangePasswordModal from '@/components/dashboard/change-password-modal';
 import Image from 'next/image';
+import UpdateModal from '@/components/dashboard/update.info';
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -30,6 +31,7 @@ const Dashboard = ({
 }>) => {
     const [collapsed, setCollapsed] = useState(false);
     const [isModalOpen, SetIsModalOpen] = useState(false)
+    const [isModalInfoOpen, setIsModalInfoOpen] = useState(false)
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
@@ -41,6 +43,12 @@ const Dashboard = ({
             label: 'Đổi mật khẩu',
             icon: <LockOutlined />,
             onClick: () => { showModal() }
+        },
+        {
+            key: '4',
+            label: 'Cập nhật thông tin',
+            icon: <UserOutlined />,
+            onClick: () => { showModalInfo() }
         },
         {
             key: '2',
@@ -113,6 +121,9 @@ const Dashboard = ({
     const showModal = () => {
         SetIsModalOpen(true);
     }
+    const showModalInfo = () => {
+        setIsModalInfoOpen(true);
+    }
     return (
         <Layout style={{ height: '100%', minHeight: '100vh' }}>
             <Sider
@@ -179,6 +190,11 @@ const Dashboard = ({
             <ChangePasswordModal
                 isModalOpen={isModalOpen}
                 setIsModalOpen={SetIsModalOpen}
+                access_token={access_token}
+            />
+            <UpdateModal
+                isModalInfoOpen={isModalInfoOpen}
+                setIsModalInfoOpen={setIsModalInfoOpen}
                 access_token={access_token}
             />
         </Layout>

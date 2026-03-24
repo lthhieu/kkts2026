@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { Unit } from 'src/units/schemas/unit.schema';
+import { User } from 'src/users/schemas/user.schema';
 
 export type RoomDocument = HydratedDocument<Room>;
 
@@ -22,6 +23,9 @@ export class Room {
 
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Unit.name })
     currentUnit: Unit | null;
+
+    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: User.name }], default: null })
+    users: User[] | null;
 
 }
 

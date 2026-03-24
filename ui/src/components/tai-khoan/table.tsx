@@ -113,7 +113,7 @@ const TableUsers = (props: IProps) => {
             dataIndex: 'name',
             key: 'name',
             render: (_, record) => <Space>
-                <Typography.Text>
+                <Typography.Text copyable={{ text: record._id }}>
                     {record.name}
                 </Typography.Text>
                 {canUpdateUser(user as IUser) && (
@@ -153,6 +153,11 @@ const TableUsers = (props: IProps) => {
             title: 'Email',
             dataIndex: 'email',
             key: 'email',
+            render: (_, record) => (
+                <Typography.Text copyable={{ text: record.email }}>
+                    {record.email}
+                </Typography.Text>
+            )
         },
         {
             title: 'Quyền hạn',
@@ -162,6 +167,16 @@ const TableUsers = (props: IProps) => {
                 <Tag color={ROLE_COLOR_MAP[record.role] || 'default'} variant='outlined'>
                     {ROLE_LABEL_MAP[record.role] || record.role}
                 </Tag>
+            )
+        },
+        {
+            title: 'Số điện thoại',
+            dataIndex: 'phone',
+            key: 'phone',
+            render: (_, record) => (
+                <Typography.Text copyable={{ text: record.phone }}>
+                    {record.phone}
+                </Typography.Text>
             )
         },
         {

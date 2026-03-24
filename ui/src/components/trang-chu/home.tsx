@@ -50,35 +50,40 @@ const Home = (props: IProps) => {
             <Col xs={24} md={6}>
                 <Link href={CARD_ROUTES.devices} style={linkStyle}>
                     <Card hoverable style={cardStyle}>
-                        <Meta avatar={<ApiOutlined />} title="Tổng số thiết bị:" description={getData.devices} />
+                        <Meta avatar={<ApiOutlined />} title="Tổng số thiết bị:" />
+                        <p style={{ marginTop: 12, fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>{getData.devices}</p>
                     </Card>
                 </Link>
             </Col>
             <Col xs={24} md={6}>
                 <Link href={CARD_ROUTES.units} style={linkStyle}>
                     <Card hoverable style={cardStyle}>
-                        <Meta avatar={<ApartmentOutlined />} title="Tổng số đơn vị:" description={getData.units} />
+                        <Meta avatar={<ApartmentOutlined />} title="Tổng số đơn vị:" />
+                        <p style={{ marginTop: 12, fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>{getData.units}</p>
                     </Card>
                 </Link>
             </Col>
             <Col xs={24} md={6}>
                 <Link href={CARD_ROUTES.rooms} style={linkStyle}>
                     <Card hoverable style={cardStyle}>
-                        <Meta avatar={<DatabaseOutlined />} title="Tổng số phòng-kho:" description={getData.rooms} />
+                        <Meta avatar={<DatabaseOutlined />} title="Tổng số phòng-kho:" />
+                        <p style={{ marginTop: 12, fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>{getData.rooms}</p>
                     </Card>
                 </Link>
             </Col>
             <Col xs={24} md={6}>
                 <Link href={CARD_ROUTES.users} style={linkStyle}>
                     <Card hoverable style={cardStyle}>
-                        <Meta avatar={<UserOutlined />} title="Tổng số tài khoản:" description={getData.users} />
+                        <Meta avatar={<UserOutlined />} title="Tổng số tài khoản:" />
+                        <p style={{ marginTop: 12, fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>{getData.users}</p>
                     </Card>
                 </Link>
             </Col>
             <Col xs={24} md={6}>
                 <Link href={CARD_ROUTES.requests} style={linkStyle}>
                     <Card hoverable style={cardStyle}>
-                        <Meta avatar={<DiffOutlined />} title="Tổng số đề nghị:" description={getData.requests} />
+                        <Meta avatar={<DiffOutlined />} title="Tổng số đề nghị:" />
+                        <p style={{ marginTop: 12, fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>{getData.requests}</p>
                     </Card>
                 </Link>
             </Col>

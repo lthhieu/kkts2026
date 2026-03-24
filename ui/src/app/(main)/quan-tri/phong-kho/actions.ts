@@ -3,8 +3,8 @@ import { sendRequest } from '@/utils/api'
 import { updateTag } from 'next/cache'
 
 export const handleCreateOrUpdateRoom = async (data: any, access_token: string, status: string, dataUpdate?: null | IUnit) => {
-    const { name, info } = data
-    const body: any = { name, info }
+    const { name, info, users } = data
+    const body: any = { name, info, users }
 
     const res = await sendRequest<IBackendResponse<any>>({
         url: status === "CREATE" ? `${process.env.NEXT_PUBLIC_BACKEND_URI}/rooms` : `${process.env.NEXT_PUBLIC_BACKEND_URI}/rooms/${dataUpdate?._id}`,

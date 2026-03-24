@@ -1,6 +1,6 @@
 "use client"
 import { handleCreateOrUpdateRoom } from '@/app/(main)/quan-tri/phong-kho/actions';
-import { Modal, Form, Input, message, notification, Typography, InputNumber, Col, Row, Select } from 'antd';
+import { Modal, Form, Input, message, notification, Typography, InputNumber, Col, Row, Select, Divider } from 'antd';
 import React, { useEffect, useMemo } from 'react';
 
 interface IProps {
@@ -12,13 +12,14 @@ interface IProps {
     //update
     dataUpdate: null | IRoom,
     setDataUpdate: (value: null | IRoom) => void,
-    units: null | IUnit[]
+    units: null | IUnit[],
+    users: null | IUser[]
 }
 
 const Context = React.createContext({ name: 'Default' });
 
 const RoomModal = (props: IProps) => {
-    const { setIsModalOpen, isModalOpen, setStatus, status, access_token, setDataUpdate, dataUpdate, units } = props
+    const { setIsModalOpen, isModalOpen, setStatus, status, access_token, setDataUpdate, dataUpdate, units, users } = props
     const [form] = Form.useForm()
     const [messageApi, contextHolder] = message.useMessage();
     const [api, contextHolderNotification] = notification.useNotification();
@@ -32,7 +33,10 @@ const RoomModal = (props: IProps) => {
                 info: dataUpdate.info.map(i => ({
                     ...i,
                     unit: i.unit?._id  // 🔥 ÉP VỀ ID
-                }))
+                })),
+                users: dataUpdate?.users ? dataUpdate.users.map(i => (
+                    i._id  // 🔥 ÉP VỀ ID
+                )) : [""]
             })
         }
     }, [dataUpdate])
@@ -49,8 +53,8 @@ const RoomModal = (props: IProps) => {
     };
 
     const onFinish = async (values: IRoom) => {
-        const { name, info } = values
-        const data = { name, info }
+        const { name, info, users } = values
+        const data = { name, info, users }
         const response = await handleCreateOrUpdateRoom(data, access_token ?? '', status, dataUpdate)
 
         if (response.data) {
@@ -100,7 +104,8 @@ const RoomModal = (props: IProps) => {
                     onFinish={onFinish}
                     validateMessages={validateMessages}
                     initialValues={{
-                        info: [{}]   // 🔥 mặc định 1 phần tử
+                        info: [{}],
+                        users: [""]  // 🔥 mặc định 1 phần tử
                     }}
                 >
                     <Form.Item
@@ -112,6 +117,64 @@ const RoomModal = (props: IProps) => {
                         <Input />
                     </Form.Item>
 
+                    <Form.List name="users">
+                        {(fields, { add, remove }) => (
+                            <>
+                                {fields.map(({ key, name, ...restField }, index) => (
+                                    <div
+                                        key={key}
+                                        style={{
+                                            border: '1px solid #f0f0f0',
+                                            padding: 12,
+                                            marginBottom: 6,
+                                            borderRadius: 6
+                                        }}
+                                    >
+                                        <Typography.Text strong>
+                                            Thông tin giảng viên {index + 1}
+                                        </Typography.Text>
+
+                                        <Form.Item
+                                            {...restField}
+                                            label="Giảng viên"
+                                            name={[name]}
+                                            style={{ marginBottom: 6 }}
+                                            rules={[{ required: true }]}
+                                        >
+                                            <Select
+                                                style={{ width: '100%' }}
+                                                showSearch={{ optionFilterProp: 'label' }}
+                                                placeholder="Vui lòng chọn giảng viên"
+                                                onChange={onChange}
+                                                options={
+                                                    users && users.length > 0
+                                                        ? users.map(({ _id, name }) => ({
+                                                            value: _id,
+                                                            label: name
+                                                        }))
+                                                        : []
+                                                }
+                                            />
+                                        </Form.Item>
+
+                                        <Typography.Link
+                                            onClick={() => remove(name)}
+                                            style={{ color: 'red' }}
+                                        >
+                                            Xóa giảng viên này
+                                        </Typography.Link>
+                                    </div>
+                                ))}
+
+                                <Form.Item>
+                                    <Typography.Link onClick={() => add()}>
+                                        + Thêm giảng viên
+                                    </Typography.Link>
+                                </Form.Item>
+                            </>
+                        )}
+                    </Form.List>
+                    <Divider />
                     <Form.List name="info">
                         {(fields, { add, remove }) => (
                             <>
@@ -126,7 +189,7 @@ const RoomModal = (props: IProps) => {
                                         }}
                                     >
                                         <Typography.Text strong>
-                                            Thông tin {index + 1}
+                                            Thông tin phòng - kho {index + 1}
                                         </Typography.Text>
 
                                         <Form.Item
@@ -194,7 +257,6 @@ const RoomModal = (props: IProps) => {
                             </>
                         )}
                     </Form.List>
-
                 </Form>
             </Modal>
         </Context.Provider>

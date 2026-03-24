@@ -70,9 +70,6 @@ export class Device {
     @Prop({ default: null })
     deletedBy: string;
 
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name, default: null })
-    user: User | null;
-
 }
 
 export const DeviceSchema = SchemaFactory.createForClass(Device);

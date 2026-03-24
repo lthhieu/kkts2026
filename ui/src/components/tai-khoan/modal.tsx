@@ -35,7 +35,8 @@ const UserModal = (props: IProps) => {
                 _id: dataUpdate._id,
                 password: dataUpdate.password,
                 unit: dataUpdate.unit?._id,
-                role: dataUpdate.role
+                role: dataUpdate.role,
+                phone: dataUpdate.phone
             })
         }
     }, [dataUpdate])
@@ -52,8 +53,8 @@ const UserModal = (props: IProps) => {
     };
 
     const onFinish = async (values: IUser) => {
-        const { name, email, password, unit, role } = values
-        const data = { name, email, password, unit, role }
+        const { name, email, password, unit, role, phone } = values
+        const data = { name, email, password, unit, role, phone }
         const response = await handleCreateOrUpdateUser(data, access_token ?? '', status, dataUpdate)
 
         if (response.data) {
@@ -125,6 +126,14 @@ const UserModal = (props: IProps) => {
                         rules={[{
                             required: true,
                         }]}
+                    >
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        style={{ marginBottom: 8 }}
+                        label="Số điện thoại"
+                        name="phone"
                     >
                         <Input />
                     </Form.Item>

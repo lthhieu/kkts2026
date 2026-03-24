@@ -49,6 +49,7 @@ export class RoomsService {
       .populate(population)
       .populate({ path: 'info.unit', select: 'name' })
       .populate({ path: 'currentUnit', select: 'name' })
+      .populate({ path: 'users', select: 'name' })
       .exec()
     return {
       meta: {
@@ -63,7 +64,9 @@ export class RoomsService {
 
   async findOne(id: string) {
     return await this.roomModel.findOne({ _id: id })
-      .populate({ path: 'info.unit', select: 'name' });
+      .populate({ path: 'info.unit', select: 'name' })
+      .populate({ path: 'currentUnit', select: 'name' })
+      .populate({ path: 'users', select: 'name' });
   }
 
   async update(id: string, updateRoomDto: UpdateRoomDto) {

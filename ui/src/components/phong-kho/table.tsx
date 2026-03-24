@@ -18,13 +18,14 @@ interface IProps {
     units: IUnit[],
     access_token: string,
     meta: IMeta,
-    user: IUser | null
+    user: IUser | null,
+    users: IUser[] | null
 }
 
 const Context = React.createContext({ name: 'Default' });
 
 const TableRooms = (props: IProps) => {
-    const { rooms, access_token, meta, units, user } = props
+    const { rooms, access_token, meta, units, user, users } = props
     const [isModalOpen, SetIsModalOpen] = useState(false)
     const [isModalImportOpen, SetIsModalImportOpen] = useState(false)
     const [loading, setLoading] = useState(false);
@@ -269,6 +270,7 @@ const TableRooms = (props: IProps) => {
                 setDataUpdate={setDataUpdate}
                 dataUpdate={dataUpdate}
                 units={units}
+                users={users}
             />
 
             <ModalImport
