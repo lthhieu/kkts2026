@@ -113,7 +113,7 @@ const TableUsers = (props: IProps) => {
             dataIndex: 'name',
             key: 'name',
             render: (_, record) => <Space>
-                <Typography.Text copyable={{ text: record._id }}>
+                <Typography.Text copyable={{ text: record._id, tooltips: 'Sao chép' }}>
                     {record.name}
                 </Typography.Text>
                 {canUpdateUser(user as IUser) && (
@@ -154,7 +154,7 @@ const TableUsers = (props: IProps) => {
             dataIndex: 'email',
             key: 'email',
             render: (_, record) => (
-                <Typography.Text copyable={{ text: record.email }}>
+                <Typography.Text copyable={{ text: record.email, tooltips: 'Sao chép' }}>
                     {record.email}
                 </Typography.Text>
             )
@@ -174,7 +174,7 @@ const TableUsers = (props: IProps) => {
             dataIndex: 'phone',
             key: 'phone',
             render: (_, record) => (
-                <Typography.Text copyable={{ text: record.phone }}>
+                <Typography.Text copyable={{ text: record.phone, tooltips: 'Sao chép' }}>
                     {record.phone}
                 </Typography.Text>
             )
@@ -183,6 +183,7 @@ const TableUsers = (props: IProps) => {
             title: 'Đơn vị',
             dataIndex: ['unit', 'name'],
             key: 'unit',
+            render: (_, record) => <Typography.Text copyable={{ text: record.unit?._id || "", tooltips: 'Sao chép' }}>{record.unit?.name}</Typography.Text>
         },
     ];
     const handleOnChangePage = (current: number, pageSize: number) => {

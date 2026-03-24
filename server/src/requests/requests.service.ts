@@ -46,7 +46,11 @@ export class RequestsService {
       .limit(defaultLimit)
       .sort(sort)
       .populate(population)
-      .populate({ path: 'device', select: 'name' })
+      .populate({
+        path: 'device', select: 'name currentRoom', populate: {
+          path: 'currentRoom', select: 'name'
+        }
+      })
       .populate({ path: 'unit', select: 'name' })
       .exec()
     return {
@@ -63,7 +67,11 @@ export class RequestsService {
   async findOne(id: string) {
     return await this.requestModel
       .findOne({ _id: id })
-      .populate({ path: 'device', select: 'name' })
+      .populate({
+        path: 'device', select: 'name currentRoom', populate: {
+          path: 'currentRoom', select: 'name'
+        }
+      })
       .populate({ path: 'unit', select: 'name' })
       .exec();
   }

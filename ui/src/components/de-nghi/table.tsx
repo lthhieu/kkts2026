@@ -133,7 +133,7 @@ const TableRequests = (props: IProps) => {
             dataIndex: 'name',
             key: 'name',
             render: (_, record) => <Space>
-                <Typography.Text copyable={{ text: record._id }}>{record.name}</Typography.Text>
+                <Typography.Text copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.name}</Typography.Text>
                 {canReadRequest(user ?? {} as IUser) && (
                     <Tooltip title="Xem chi tiết">
                         <EyeOutlined
@@ -192,7 +192,7 @@ const TableRequests = (props: IProps) => {
             title: 'Đơn vị',
             dataIndex: ['unit', 'name'],
             key: 'unit',
-            render: (_, record) => <Typography.Text copyable={{ text: record.unit?._id || "" }}>{record.unit?.name}</Typography.Text>
+            render: (_, record) => <Typography.Text copyable={{ text: record.unit?._id || "", tooltips: 'Sao chép' }}>{record.unit?.name}</Typography.Text>
         },
     ];
     const handleOnChangePage = (current: number, pageSize: number) => {

@@ -118,7 +118,12 @@ declare global {
         "createdBy": string,
         "device": {
             "_id": string,
-            "name": string
+            "name": string,
+            "currentRoom":
+            {
+                "_id": string,
+                "name": string
+            }[]
         },
         "description": string,
         "image": string,

@@ -92,7 +92,7 @@ const TableUnits = (props: IProps) => {
             title: 'Tên đơn vị',
             dataIndex: 'name',
             key: 'name',
-            render: (_, record) => <Typography.Text copyable={{ text: record._id }}>{record.name}</Typography.Text>
+            render: (_, record) => <Typography.Text copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.name}</Typography.Text>
         },
         {
             title: '',

@@ -96,7 +96,7 @@ const TableRooms = (props: IProps) => {
             dataIndex: 'name',
             key: 'name',
             render: (_, record) => <Space>
-                <Typography.Text copyable={{ text: record._id }}>{record.name}</Typography.Text>
+                <Typography.Text copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.name}</Typography.Text>
                 {canUpdateRoom(user ?? {} as IUser) && (
                     <Tooltip title="Cập nhật">
                         <EditOutlined
@@ -139,7 +139,7 @@ const TableRooms = (props: IProps) => {
             title: 'Đơn vị',
             dataIndex: ['currentUnit', 'name'],
             key: 'unit',
-            render: (_, record) => <Typography.Text copyable={{ text: record.currentUnit?._id || "" }}>{record.currentUnit?.name}</Typography.Text>
+            render: (_, record) => <Typography.Text copyable={{ text: record.currentUnit?._id || "", tooltips: 'Sao chép' }}>{record.currentUnit?.name}</Typography.Text>
         },
     ];
     const handleOnChangePage = (current: number, pageSize: number) => {

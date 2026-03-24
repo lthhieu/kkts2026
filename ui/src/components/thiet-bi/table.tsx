@@ -233,7 +233,7 @@ const TableDevices = (props: IProps) => {
             dataIndex: 'name',
             key: 'name',
             render: (_, record) => <Space>
-                <Typography.Text copyable={{ text: record._id }}>
+                <Typography.Text copyable={{ text: record._id, tooltips: 'Sao chép' }}>
                     {record.name}
                 </Typography.Text>
 

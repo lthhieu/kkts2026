@@ -82,7 +82,10 @@ const RequestDetail = ({ request, access_token, onRefresh, user }: IProps) => {
                         {request.unit.name}
                     </Descriptions.Item>
 
-                    <Descriptions.Item span={2} label="Thiết bị">
+                    <Descriptions.Item span={2} label="Nơi sử dụng">
+                        {request.device.currentRoom.map(i => i.name).join(', ')}
+                    </Descriptions.Item>
+                    <Descriptions.Item span={3} label="Thiết  bị">
                         {request.device.name}
                     </Descriptions.Item>
 
