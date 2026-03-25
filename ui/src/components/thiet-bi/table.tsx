@@ -232,8 +232,8 @@ const TableDevices = (props: IProps) => {
             title: 'Tên thiết bị',
             dataIndex: 'name',
             key: 'name',
-            render: (_, record) => <Space>
-                <Typography.Text copyable={{ text: record._id, tooltips: 'Sao chép' }}>
+            render: (_, record) => <Space style={{ maxWidth: 250 }}>
+                <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>
                     {record.name}
                 </Typography.Text>
 
@@ -350,6 +350,11 @@ const TableDevices = (props: IProps) => {
             title: 'Thuộc đơn vị',
             dataIndex: ['unit', 'name'],
             key: 'unit',
+            render: (_, record) => <Space style={{ maxWidth: 150 }}>
+                <Typography.Text ellipsis copyable={{ text: record.unit._id, tooltips: 'Sao chép' }}>
+                    {record.unit.name}
+                </Typography.Text>
+            </Space>
         },
         {
             title: 'Năm sử dụng',

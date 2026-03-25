@@ -1,6 +1,5 @@
 'use client'
 import { Card, Col, Row, Typography } from 'antd';
-import { news } from '@/components/public/tin-tuc/fake.data.news';
 import Link from 'next/link';
 import Image from 'next/image';
 import PaginationTinTuc from '@/components/public/tin-tuc/pagination';
@@ -32,7 +31,7 @@ const TinTucComponent = (props: IProps) => {
                                     />
                                 }>
                                     <Paragraph
-                                        ellipsis={{ rows: 2, tooltip: item.title }}
+                                        ellipsis={{ rows: 2 }}
                                         style={{ margin: 0, fontWeight: 500, color: '#333' }}
                                     >
                                         {item.title}

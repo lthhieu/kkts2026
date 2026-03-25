@@ -50,6 +50,7 @@ a {
 .noi-dung img {
   width: 100%;
   border-radius: 12px;
+  height: auto;
   max-height: none;
   object-fit: cover;
   margin-bottom: 6px;
