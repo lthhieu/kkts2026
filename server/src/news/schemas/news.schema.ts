@@ -18,8 +18,8 @@ export class News {
     category: string;
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
     author: User | null;
-    @Prop()
-    postedAt: string;
+    // @Prop()
+    // postedAt: string;
 }
 
 export const NewsSchema = SchemaFactory.createForClass(News);

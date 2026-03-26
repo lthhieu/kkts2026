@@ -11,6 +11,6 @@ export class CreateNewsDto {
     thumbnail: string;
     @IsNotEmpty({ message: "Loại không được để trống" })
     category: string;
-    @IsNotEmpty({ message: "Ngày đăng không được để trống" })
-    postedAt: string;
+    // @IsNotEmpty({ message: "Ngày đăng không được để trống" })
+    // postedAt: string;
 }

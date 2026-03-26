@@ -85,8 +85,8 @@ const TableNews = (props: IProps) => {
             title: 'Tên tin tức',
             dataIndex: 'name',
             key: 'name',
-            render: (_, record) => <Space>
-                <Typography.Text copyable={{ text: record._id, tooltips: 'Sao chép' }}>
+            render: (_, record) => <Space style={{ maxWidth: 300 }}>
+                <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>
                     {record.title}
                 </Typography.Text>
                 {canUpdateNews(user as IUser) && (
@@ -104,7 +104,7 @@ const TableNews = (props: IProps) => {
 
                 {canDeleteNews(user as IUser) && (
                     <Popconfirm
-                        title="Xóa tài khoản này?"
+                        title="Xóa tin tức này?"
                         description={`Bạn thực sự muốn xóa tin tức ${record.title}`}
                         onConfirm={() => confirm(record._id)}
                         onCancel={cancel}
@@ -132,14 +132,6 @@ const TableNews = (props: IProps) => {
             dataIndex: ['author', 'name'],
             key: 'author',
         },
-        {
-            title: 'Ngày đăng',
-            dataIndex: 'postedAt',
-            key: 'postedAt',
-            render: (_, record) => (
-                dayjs(record.postedAt).format('DD/MM/YYYY')
-            )
-        }
     ];
     const handleOnChangePage = (current: number, pageSize: number) => {
         const params = new URLSearchParams()

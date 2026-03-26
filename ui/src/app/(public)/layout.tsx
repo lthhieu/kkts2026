@@ -140,8 +140,7 @@ const PublicLayout = ({
                             Email:{' '}
                             <a href="#" style={{ color: '#4275e4', textDecoration: 'none' }}>
                                 spktvl@vlute.edu.vn
-                            </a>{' '}
-                            | Fax: 02703 821 003
+                            </a>
                         </div>
                     </Footer>
                 </Layout>

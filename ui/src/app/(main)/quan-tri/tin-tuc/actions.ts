@@ -3,8 +3,8 @@ import { sendRequest } from '@/utils/api'
 import { updateTag } from 'next/cache'
 
 export const handleCreateOrUpdateNews = async (data: any, access_token: string, status: string, dataUpdate?: null | any) => {
-    const { title, thumbnail, slug, content, postedAt, category } = data
-    const body: any = { title, thumbnail, slug, content, postedAt, category }
+    const { title, thumbnail, slug, content, category } = data
+    const body: any = { title, thumbnail, slug, content, category }
 
     const res = await sendRequest<IBackendResponse<IUnit>>({
         url: status === "CREATE" ? `${process.env.NEXT_PUBLIC_BACKEND_URI}/news` : `${process.env.NEXT_PUBLIC_BACKEND_URI}/news/${dataUpdate?._id}`,

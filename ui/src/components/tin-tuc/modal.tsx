@@ -48,7 +48,6 @@ const NewsModal = (props: IProps) => {
                 content: dataUpdate.content,
                 thumbnail: dataUpdate.thumbnail,
                 category: dataUpdate.category,
-                postedAt: dayjs(dataUpdate.postedAt),
             })
         }
     }, [dataUpdate])
@@ -65,8 +64,8 @@ const NewsModal = (props: IProps) => {
     };
 
     const onFinish = async (values: INews) => {
-        const { title, slug, postedAt, content, category, thumbnail } = values
-        const data = { title, slug, postedAt: (postedAt as any).toISOString(), content, category, thumbnail }
+        const { title, slug, content, category, thumbnail } = values
+        const data = { title, slug, content, category, thumbnail }
         const response = await handleCreateOrUpdateNews(data, access_token ?? '', status, dataUpdate)
 
         if (response.data) {
@@ -85,10 +84,6 @@ const NewsModal = (props: IProps) => {
     const validateMessages = {
         required: '${label} không được để trống',
     }
-
-    const onChange: DatePickerProps['onChange'] = (date, dateString) => {
-        console.log(date, dateString);
-    };
 
     return (
         <Context.Provider value={contextValue}>
@@ -153,33 +148,18 @@ const NewsModal = (props: IProps) => {
                         <Input.TextArea autoSize />
                     </Form.Item>
 
-                    <Row gutter={16}>
-                        <Col span={12}>
-                            <Form.Item
-                                label="Loại tin tức"
-                                name="category"
-                                rules={[{ required: true }]}
-                            >
-                                <Select
-                                    style={{ width: '100%' }}
-                                    showSearch={{ optionFilterProp: 'label' }}
-                                    placeholder="Vui lòng chọn loại tin tức"
-                                    options={categoryArr}
-                                />
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item
-                                style={{ width: '100%' }}
-                                label="Ngày đăng"
-                                name="postedAt"
-                                rules={[{ required: true }]}
-                            >
-                                <DatePicker onChange={onChange} format={'DD/MM/YYYY'} />
-                            </Form.Item>
-
-                        </Col>
-                    </Row>
+                    <Form.Item
+                        label="Loại tin tức"
+                        name="category"
+                        rules={[{ required: true }]}
+                    >
+                        <Select
+                            style={{ width: '100%' }}
+                            showSearch={{ optionFilterProp: 'label' }}
+                            placeholder="Vui lòng chọn loại tin tức"
+                            options={categoryArr}
+                        />
+                    </Form.Item>
                 </Form>
             </Modal>
         </Context.Provider>

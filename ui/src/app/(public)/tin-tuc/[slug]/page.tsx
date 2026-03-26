@@ -43,7 +43,7 @@ export default async function Page({
     })
     return (
         <div style={{ marginTop: 32 }}>
-            <span style={{ color: '#343030' }}>Ngày đăng: {dayjs(res.data?.postedAt).add(1, 'day').format('DD/MM/YYYY')}</span>
+            {/* <span style={{ color: '#343030' }}>Ngày đăng: {dayjs(res.data?.postedAt).add(1, 'day').format('DD/MM/YYYY')}</span> */}
             <h2 style={{ marginTop: 8, color: '#1b4d85' }}>{res.data?.title}</h2>
             <NewsDetail content={res.data?.content} />
         </div>

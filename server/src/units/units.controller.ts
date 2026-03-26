@@ -21,6 +21,7 @@ export class UnitsController {
 
   @Post('/create-many')
   @ResponseMessage('Tạo đơn vị thành công')
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Create, UnitSubject))
   createMany(@Body() createUnitDto: CreateUnitDto[]) {
     return this.unitsService.createMany(createUnitDto);
   }

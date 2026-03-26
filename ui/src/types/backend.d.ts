@@ -243,7 +243,6 @@ declare global {
             "_id": string,
             "name": string
         },
-        "postedAt": string,
         "createdAt": string,
         "updatedAt": string,
         "__v": number
