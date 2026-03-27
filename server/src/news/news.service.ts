@@ -29,7 +29,7 @@ export class NewsService {
     const totalItems = await this.newsModel.countDocuments(filter)
     const totalPages = Math.ceil(totalItems / defaultLimit)
     if (isEmpty(sort)) {
-      sort = "-postedAt"
+      sort = "-createdAt"
     }
     let units = await this.newsModel.find(filter)
       .skip(offset)

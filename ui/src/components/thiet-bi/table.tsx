@@ -330,7 +330,14 @@ const TableDevices = (props: IProps) => {
                 if (names.length === 0) return <span style={{ color: '#999' }}>—</span>;
 
                 // Hiển thị dạng chuỗi ngăn cách bởi dấu phẩy
-                return names.join(', ');
+                return (
+                    <Space style={{ maxWidth: 150 }}>
+                        <Typography.Text ellipsis >
+                            {names.join(', ')}
+                        </Typography.Text>
+                    </Space>
+                )
+
             }
         },
         {
@@ -341,7 +348,14 @@ const TableDevices = (props: IProps) => {
                 // Kiểm tra nếu currentRooms là mảng và có phần tử
                 if (Array.isArray(currentRooms) && currentRooms.length > 0) {
                     // Lấy ra danh sách tên và nối chúng lại
-                    return currentRooms.map(room => room?.name).filter(Boolean).join(', ');
+                    return (
+                        <Space style={{ maxWidth: 150 }}>
+                            <Typography.Text ellipsis>
+                                {currentRooms.map(room => room?.name).filter(Boolean).join(', ')}
+                            </Typography.Text>
+                        </Space>
+                    )
+
                 }
                 return ""; // Trả về chuỗi rỗng nếu không có dữ liệu
             },

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 type Params = Promise<{ current: string; pageSize: string; title?: string }>
 const TinTuc = async ({ searchParams }: { searchParams: Params }) => {
-    const { pageSize = 3, current = 1 } = await searchParams
+    const { pageSize = 8, current = 1 } = await searchParams
     const res = await sendRequest<IBackendResponse<IModelPaginate<INews>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/news`,
         queryParams: {
