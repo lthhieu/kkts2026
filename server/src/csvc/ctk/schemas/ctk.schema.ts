@@ -5,6 +5,7 @@ import { Loaicongtrinhcsvc } from 'src/csvc/danhmuc/loaicongtrinhcsvc/schemas/lo
 import { Luachon } from 'src/csvc/danhmuc/luachon/schemas/luachon.schema';
 import { Mucdichsudungcsvc } from 'src/csvc/danhmuc/mucdichsudungcsvc/schemas/mucdichsudungcsvc.schema';
 import { Tinhtrangcsvc } from 'src/csvc/danhmuc/tinhtrangcsvc/schemas/tinhtrangcsvc.schema';
+import { Tinhtrangsudung } from 'src/csvc/danhmuc/tinhtrangsudung/schemas/tinhtrangsudung.schema';
 
 export type CtkDocument = HydratedDocument<Ctk>;
 
@@ -28,29 +29,38 @@ export class Ctk {
     @Prop()
     dt_sxd: number;
 
-    @Prop()
+    @Prop({ default: 0 })
     von_bd: number;
 
-    @Prop()
+    @Prop({ default: 0 })
     von_dt: number;
 
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Tinhtrangcsvc.name })
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Tinhtrangcsvc.name, default: null })
     tinhtrangcsvc: Tinhtrangcsvc | null;
 
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Hinhthucsohuu.name })
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Hinhthucsohuu.name, default: null })
     htsh: Hinhthucsohuu | null;
 
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Luachon.name })
     ct_csvc_trongnha: Luachon | null;
 
-    @Prop()
-    so_phong_o_cong_vu_cho_cb_gianday: number;
+    @Prop({ default: 0 })
+    so_phong_o_cong_vu_cho_cb_giangday: number;
 
-    @Prop()
-    so_cho_o_cho_cb_gianday: number;
+    @Prop({ default: 0 })
+    so_cho_o_cho_cb_giangday: number;
 
     @Prop()
     nam_sd: number;
+
+    @Prop({ default: null })
+    diachi: string;
+
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Tinhtrangsudung.name })
+    tinh_trang_sd: Tinhtrangsudung | null;
+
+    @Prop({ default: null })
+    ngay_chuyen_tt: string;
 
 }
 

@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { Ctk } from 'src/csvc/ctk/schemas/ctk.schema';
+import { Country } from 'src/csvc/danhmuc/countries/schemas/country.schema';
+import { Tinhtrangsudung } from 'src/csvc/danhmuc/tinhtrangsudung/schemas/tinhtrangsudung.schema';
 
 export type TbiptnDocument = HydratedDocument<Tbiptn>;
 
@@ -15,20 +17,26 @@ export class Tbiptn {
     @Prop()
     ten_tb: string;
 
-    @Prop()
+    @Prop({ default: 0 })
     nam_sx: number;
 
-    @Prop()
-    xuatxu: string;
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Country.name, default: null })
+    xuatxu: Country | null;
 
-    @Prop()
+    @Prop({ default: null })
     hang_sx: string;
 
-    @Prop()
+    @Prop({ default: 0 })
     sl_tb_cungloai: number;
 
     @Prop()
     nam_sd: number;
+
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Tinhtrangsudung.name })
+    tinh_trang_sd: Tinhtrangsudung | null;
+
+    @Prop({ default: null })
+    ngay_chuyen_tt: string;
 
 }
 

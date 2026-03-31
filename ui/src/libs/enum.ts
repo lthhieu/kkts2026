@@ -43,3 +43,9 @@ export class RequestSubject {
 export class SnapshotSubject {
     '_id': string;
 }
+export class CsvcSubject {
+    '_id': string;
+}
+export class DanhmucSubject {
+    '_id': string;
+}

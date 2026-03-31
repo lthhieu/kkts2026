@@ -6,6 +6,7 @@ import { Loaidean } from 'src/csvc/danhmuc/loaidean/schemas/loaidean.schema';
 import { Loaiphonghoc } from 'src/csvc/danhmuc/loaiphonghoc/schemas/loaiphonghoc.schema';
 import { Phanloai } from 'src/csvc/danhmuc/phanloai/schemas/phanloai.schema';
 import { Tinhtrangcsvc } from 'src/csvc/danhmuc/tinhtrangcsvc/schemas/tinhtrangcsvc.schema';
+import { Tinhtrangsudung } from 'src/csvc/danhmuc/tinhtrangsudung/schemas/tinhtrangsudung.schema';
 
 export type PhgdhtDocument = HydratedDocument<Phgdht>;
 
@@ -38,8 +39,17 @@ export class Phgdht {
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Loaidean.name })
     loaidean: Loaidean | null;
 
-    @Prop({ default: null })
+    @Prop({ default: 0 })
     nam_sd: number;
+
+    @Prop({ default: null })
+    diachi: string;
+
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Tinhtrangsudung.name })
+    tinh_trang_sd: Tinhtrangsudung | null;
+
+    @Prop({ default: null })
+    ngay_chuyen_tt: string;
 
 }
 

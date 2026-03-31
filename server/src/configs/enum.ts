@@ -43,3 +43,8 @@ export class RequestSubject {
 export class SnapshotSubject {
     '_id': string;
 }
+
+// CSVC Subject (datdai, toanha, phgdht, ktx, ctk, ptn, xth, tbiptn, thuvien)
+export class CsvcSubject { _id: string; }
+// Danhmuc Subject (16 modules trong csvc/danhmuc/)
+export class DanhmucSubject { _id: string; }

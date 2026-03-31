@@ -14,13 +14,13 @@ export class Toanha {
     ten_toanha: string;
 
     @Prop()
-    dtxd: string;
+    dtxd: number;
 
     @Prop()
-    tong_dt_sxd: string;
+    tong_dt_sxd: number;
 
     @Prop()
-    so_tang: string;
+    so_tang: number;
 
     @Prop()
     nam_sd: number;

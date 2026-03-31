@@ -1,13 +1,13 @@
 
-import { Action, DeviceSubject, NewsSubject, RequestSubject, RoomSubject, SnapshotSubject, UnitSubject, UploadSubject, UserSubject } from "@/libs/enum";
+import { Action, CsvcSubject, DanhmucSubject, DeviceSubject, NewsSubject, RequestSubject, RoomSubject, SnapshotSubject, UnitSubject, UploadSubject, UserSubject } from "@/libs/enum";
 import { AbilityBuilder, createMongoAbility, InferSubjects, MongoAbility } from "@casl/ability";
 
-type Subjects = InferSubjects<typeof DeviceSubject | typeof UserSubject | typeof RoomSubject | typeof UnitSubject | typeof NewsSubject | typeof UploadSubject | typeof RequestSubject> | 'all';
+type Subjects = InferSubjects<typeof DeviceSubject | typeof UserSubject | typeof RoomSubject | typeof UnitSubject | typeof NewsSubject | typeof UploadSubject | typeof RequestSubject | typeof SnapshotSubject | typeof CsvcSubject | typeof DanhmucSubject> | 'all';
 
 export type AppAbility = MongoAbility<[Action, Subjects]>;
 
-export function getUserPermission(user: any) {
-    const { can, cannot, build } = new AbilityBuilder(createMongoAbility)
+export function getUserPermission(user: any): AppAbility {
+    const { can, cannot, build } = new AbilityBuilder<AppAbility>(createMongoAbility)
     if (user.role === 'superadmin') {
         can(Action.Manage, 'all'); // read-write access to everything
     } else if (user.role === 'admin') {
@@ -19,6 +19,8 @@ export function getUserPermission(user: any) {
         can(Action.Read, RequestSubject);
         can(Action.Read, SnapshotSubject);
         cannot(Action.Manage, UploadSubject);
+        can(Action.Read, CsvcSubject);
+        can(Action.Read, DanhmucSubject);
     } else if (user.role === 'thukho') {
         cannot(Action.Manage, UserSubject);
         cannot(Action.Manage, NewsSubject);
@@ -28,6 +30,8 @@ export function getUserPermission(user: any) {
         can(Action.Manage, RoomSubject);
         can(Action.Manage, RequestSubject);
         can(Action.Manage, SnapshotSubject);
+        can(Action.Manage, CsvcSubject);
+        cannot(Action.Manage, DanhmucSubject);
     } else if (user.role === 'truongdv') {
         can(Action.Read, UserSubject);
         cannot(Action.Manage, NewsSubject);
@@ -39,6 +43,8 @@ export function getUserPermission(user: any) {
         can(Action.Create, RequestSubject);
         can(Action.Comment, RequestSubject);
         can(Action.Read, SnapshotSubject);
+        cannot(Action.Manage, CsvcSubject);
+        cannot(Action.Manage, DanhmucSubject);
     } else if (user.role === 'gv') {
         can(Action.Read, DeviceSubject);
         can(Action.Read, UnitSubject);
@@ -50,6 +56,8 @@ export function getUserPermission(user: any) {
         can(Action.Create, RequestSubject);
         can(Action.Comment, RequestSubject);
         can(Action.Read, SnapshotSubject);
+        cannot(Action.Manage, CsvcSubject);
+        cannot(Action.Manage, DanhmucSubject);
     } else if (user.role === 'guest') {
         cannot(Action.Manage, UserSubject);
         cannot(Action.Manage, DeviceSubject);
@@ -59,6 +67,8 @@ export function getUserPermission(user: any) {
         cannot(Action.Manage, RequestSubject);
         cannot(Action.Manage, SnapshotSubject);
         can(Action.Read, UnitSubject);
+        cannot(Action.Manage, CsvcSubject);
+        cannot(Action.Manage, DanhmucSubject);
     }
     return build()
 }

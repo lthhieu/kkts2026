@@ -17,6 +17,7 @@ import { RequestsModule } from './requests/requests.module';
 import { SnapshotModule } from './snapshot/snapshot.module';
 import { DatdaiModule } from './csvc/datdai/datdai.module';
 import { HinhthucsohuuModule } from './csvc/danhmuc/hinhthucsohuu/hinhthucsohuu.module';
+import { HinhthucsudungModule } from './csvc/danhmuc/hinhthucsudung/hinhthucsudung.module';
 import { TinhtrangsudungModule } from './csvc/danhmuc/tinhtrangsudung/tinhtrangsudung.module';
 import { TinhthanhphoModule } from './csvc/danhmuc/tinhthanhpho/tinhthanhpho.module';
 import { XaphuongModule } from './csvc/danhmuc/xaphuong/xaphuong.module';
@@ -56,6 +57,7 @@ import { ThuvienModule } from './csvc/thuvien/thuvien.module';
     SnapshotModule,
     DatdaiModule,
     HinhthucsohuuModule,
+    HinhthucsudungModule,
     TinhtrangsudungModule,
     TinhthanhphoModule,
     XaphuongModule,

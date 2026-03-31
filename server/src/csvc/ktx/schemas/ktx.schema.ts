@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { Hinhthucsohuu } from 'src/csvc/danhmuc/hinhthucsohuu/schemas/hinhthucsohuu.schema';
 import { Tinhtrangcsvc } from 'src/csvc/danhmuc/tinhtrangcsvc/schemas/tinhtrangcsvc.schema';
+import { Tinhtrangsudung } from 'src/csvc/danhmuc/tinhtrangsudung/schemas/tinhtrangsudung.schema';
 
 export type KtxDocument = HydratedDocument<Ktx>;
 
@@ -27,6 +28,15 @@ export class Ktx {
 
     @Prop()
     nam_sd: number;
+
+    @Prop({ default: null })
+    diachi: string;
+
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Tinhtrangsudung.name })
+    tinh_trang_sd: Tinhtrangsudung | null;
+
+    @Prop({ default: null })
+    ngay_chuyen_tt: string;
 
 }
 

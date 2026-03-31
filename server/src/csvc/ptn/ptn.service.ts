@@ -1,26 +1,70 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePtnDto } from './dto/create-ptn.dto';
 import { UpdatePtnDto } from './dto/update-ptn.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Ptn } from './schemas/ptn.schema';
+import { Model } from 'mongoose';
+import aqp from 'api-query-params';
+import { isEmpty } from 'class-validator';
 
 @Injectable()
 export class PtnService {
-  create(createPtnDto: CreatePtnDto) {
-    return 'This action adds a new ptn';
+  constructor(@InjectModel(Ptn.name) private ptnModel: Model<Ptn>) { }
+
+  async create(createPtnDto: CreatePtnDto) {
+    return await this.ptnModel.create({ ...createPtnDto });
   }
 
-  findAll() {
-    return `This action returns all ptn`;
+  async createMany(createPtnDto: CreatePtnDto[]) {
+    return await this.ptnModel.insertMany(createPtnDto);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} ptn`;
+  async findAll(current: number, pageSize: number, queryString: string) {
+    let { filter, population } = aqp(queryString);
+    let { sort }: { sort: any } = aqp(queryString);
+    delete filter.current;
+    delete filter.pageSize;
+    let defaultLimit = +pageSize ? +pageSize : 10;
+    let defaultCurrent = +current ? +current : 1;
+    let offset = (defaultCurrent - 1) * defaultLimit;
+    const totalItems = await this.ptnModel.countDocuments(filter);
+    const totalPages = Math.ceil(totalItems / defaultLimit);
+    if (isEmpty(sort)) {
+      sort = '-createdAt';
+    }
+    const result = await this.ptnModel
+      .find(filter)
+      .skip(offset)
+      .limit(defaultLimit)
+      .sort(sort)
+      .populate(population)
+      .exec();
+    return {
+      meta: {
+        current: defaultCurrent,
+        pageSize: defaultLimit,
+        pages: totalPages,
+        total: totalItems,
+      },
+      result,
+    };
   }
 
-  update(id: number, updatePtnDto: UpdatePtnDto) {
-    return `This action updates a #${id} ptn`;
+  async findOne(id: string) {
+    return await this.ptnModel
+      .findOne({ _id: id })
+      .populate(['ma_ct_csvc', 'loai_ptn', 'phuc_vu_nganh']);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} ptn`;
+  async update(id: string, updatePtnDto: UpdatePtnDto) {
+    return await this.ptnModel.updateOne({ _id: id }, updatePtnDto);
+  }
+
+  async remove(id: string) {
+    return await this.ptnModel.deleteOne({ _id: id });
+  }
+
+  async removeMany(ids: any[]) {
+    return await this.ptnModel.deleteMany({ _id: { $in: ids } });
   }
 }
