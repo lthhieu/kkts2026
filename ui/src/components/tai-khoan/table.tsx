@@ -70,6 +70,8 @@ const TableUsers = (props: IProps) => {
     const [selectedRole, setSelectedRole] = useState<string | undefined>(undefined);
 
     const [selectedEmail, setSelectedEmail] = useState<string | undefined>(undefined);
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
 
     useEffect(() => {
         const filteredData = users.map(({ _id, name, email, role, unit }) =>
@@ -275,7 +277,7 @@ const TableUsers = (props: IProps) => {
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {canDeleteUser(user ?? {} as IUser) && (<Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa {selectedRowKeys.length !== 0 && `(${selectedRowKeys.length})`}</Button>)}
                     {canCreateUser(user ?? {} as IUser) && <Button onClick={showModalImport} type='primary' icon={<CloudUploadOutlined />}>Import</Button>}
-                    {canReadUser(user ?? {} as IUser) && (<Button type='primary' icon={<CloudDownloadOutlined />}>
+                    {canReadUser(user ?? {} as IUser) && mounted && (<Button type='primary' icon={<CloudDownloadOutlined />}>
                         <CSVLink
                             data={dataExport}
                             filename={"tai-khoan.csv"}

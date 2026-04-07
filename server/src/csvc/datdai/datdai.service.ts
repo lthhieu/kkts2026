@@ -38,6 +38,11 @@ export class DatdaiService {
       .limit(defaultLimit)
       .sort(sort)
       .populate(population)
+      .populate({ path: 'htsd', select: 'name' })
+      .populate({ path: 'muc_dich_shd', select: 'name' })
+      .populate({ path: 'tinh_trang_sd', select: 'name' })
+      .populate({ path: 'tinhthanhpho', select: 'name' })
+      .populate({ path: 'xaphuong', select: 'name' })
       .exec();
     return {
       meta: {
@@ -53,7 +58,11 @@ export class DatdaiService {
   async findOne(id: string) {
     return await this.datdaiModel
       .findOne({ _id: id })
-      .populate(['htsd', 'tinh_trang_sd', 'tinhthanhpho', 'xaphuong']);
+      .populate({ path: 'htsd', select: 'name' })
+      .populate({ path: 'muc_dich_shd', select: 'name' })
+      .populate({ path: 'tinh_trang_sd', select: 'name' })
+      .populate({ path: 'tinhthanhpho', select: 'name' })
+      .populate({ path: 'xaphuong', select: 'name' })
   }
 
   async update(id: string, updateDatdaiDto: UpdateDatdaiDto) {

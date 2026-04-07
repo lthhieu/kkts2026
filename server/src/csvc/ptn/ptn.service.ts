@@ -38,6 +38,9 @@ export class PtnService {
       .limit(defaultLimit)
       .sort(sort)
       .populate(population)
+      .populate({ path: 'ma_ct_csvc', select: 'ten_ct' })
+      .populate({ path: 'loai_ptn', select: 'name' })
+      .populate({ path: 'phuc_vu_nganh', select: 'name' })
       .exec();
     return {
       meta: {
@@ -53,7 +56,9 @@ export class PtnService {
   async findOne(id: string) {
     return await this.ptnModel
       .findOne({ _id: id })
-      .populate(['ma_ct_csvc', 'loai_ptn', 'phuc_vu_nganh']);
+      .populate({ path: 'ma_ct_csvc', select: 'ten_ct' })
+      .populate({ path: 'loai_ptn', select: 'name' })
+      .populate({ path: 'phuc_vu_nganh', select: 'name' })
   }
 
   async update(id: string, updatePtnDto: UpdatePtnDto) {

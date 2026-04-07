@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find \"d:/vlute/kiemketaisan/ui/src/app/\\(main\\)/quan-tri/csvc\" -type f -name \"page.tsx\" -o -name \"actions.ts\")",
+      "Bash(find \"d:\\\\vlute\\\\kiemketaisan/ui/src/app/\\(main\\)/quan-tri/thiet-bi\" -type f -name \"*.tsx\" -o -name \"*.ts\" -o -name \"*.json\")",
+      "Bash(ls -la \"d:\\\\vlute\\\\kiemketaisan/ui/src/app/\\(main\\)/quan-tri/thiet-bi/\")"
+    ]
+  }
+}

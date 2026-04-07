@@ -42,7 +42,8 @@ const TableRooms = (props: IProps) => {
 
     const [selectedUnit, setSelectedUnit] = useState<string | undefined>(undefined);
     const [selectedName, setSelectedName] = useState<string | undefined>(undefined);
-
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
 
     useEffect(() => {
         const filteredData = rooms.map(({ _id, name, currentDescription, currentUnit, currentYear }) => ({ _id, name, currentDescription, currentUnit: currentUnit.name || "", currentYear }));
@@ -209,7 +210,7 @@ const TableRooms = (props: IProps) => {
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {canDeleteRoom(user ?? {} as IUser) && <Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa {selectedRowKeys.length !== 0 && `(${selectedRowKeys.length})`}</Button>}
                     {canCreateRoom(user ?? {} as IUser) && <Button onClick={showModalImport} type='primary' icon={<CloudUploadOutlined />}>Import</Button>}
-                    {canReadRoom(user ?? {} as IUser) && <Button type='primary' icon={<CloudDownloadOutlined />}>
+                    {canReadRoom(user ?? {} as IUser) && mounted && (<Button type='primary' icon={<CloudDownloadOutlined />}>
                         <CSVLink
                             data={dataExport}
                             filename={"phong-kho.csv"}
@@ -218,7 +219,7 @@ const TableRooms = (props: IProps) => {
                         >
                             Export
                         </CSVLink>
-                    </Button>}
+                    </Button>)}
                     {canCreateRoom(user ?? {} as IUser) && <Button onClick={showModal} type='primary' icon={<FolderAddOutlined />}>Thêm mới</Button>}
                 </div>
             </Flex>

@@ -38,6 +38,9 @@ export class ThuvienService {
       .limit(defaultLimit)
       .sort(sort)
       .populate(population)
+      .populate({ path: 'tinhtrangcsvc', select: 'name' })
+      .populate({ path: 'htsh', select: 'name' })
+      .populate({ path: 'tinh_trang_sd', select: 'name' })
       .exec();
     return {
       meta: {
@@ -53,7 +56,9 @@ export class ThuvienService {
   async findOne(id: string) {
     return await this.thuvienModel
       .findOne({ _id: id })
-      .populate(['tinhtrangcsvc', 'htsh']);
+      .populate({ path: 'tinhtrangcsvc', select: 'name' })
+      .populate({ path: 'htsh', select: 'name' })
+      .populate({ path: 'tinh_trang_sd', select: 'name' })
   }
 
   async update(id: string, updateThuvienDto: UpdateThuvienDto) {

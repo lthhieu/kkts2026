@@ -38,6 +38,8 @@ export class XthService {
       .limit(defaultLimit)
       .sort(sort)
       .populate(population)
+      .populate({ path: 'ma_ct_csvc', select: 'ten_ct' })
+      .populate({ path: 'phuc_vu_nganh', select: 'name' })
       .exec();
     return {
       meta: {
@@ -53,7 +55,8 @@ export class XthService {
   async findOne(id: string) {
     return await this.xthModel
       .findOne({ _id: id })
-      .populate(['ma_ct_csvc', 'phuc_vu_nganh']);
+      .populate({ path: 'ma_ct_csvc', select: 'ten_ct' })
+      .populate({ path: 'phuc_vu_nganh', select: 'name' })
   }
 
   async update(id: string, updateXthDto: UpdateXthDto) {

@@ -38,7 +38,8 @@ const TableUnits = (props: IProps) => {
     const screens = useBreakpoint();
     const isMobile = !screens.md;  // < 768px
     const [selectedName, setSelectedName] = useState<string | undefined>(undefined);
-
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
 
     useEffect(() => {
         const filteredData = units.map(({ _id, name }) => ({ _id, name }));
@@ -180,7 +181,7 @@ const TableUnits = (props: IProps) => {
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {canDeleteUnit(user ?? {} as IUser) && (<Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa {selectedRowKeys.length !== 0 && `(${selectedRowKeys.length})`}</Button>)}
                     {canCreateUnit(user ?? {} as IUser) && (<Button onClick={showModalImport} type='primary' icon={<CloudUploadOutlined />}>Import</Button>)}
-                    {canReadUnit(user ?? {} as IUser) && (<Button type='primary' icon={<CloudDownloadOutlined />}>
+                    {canReadUnit(user ?? {} as IUser) && mounted && (<Button type='primary' icon={<CloudDownloadOutlined />}>
                         <CSVLink
                             data={dataExport}
                             filename={"don-vi.csv"}

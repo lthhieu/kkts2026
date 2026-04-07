@@ -68,6 +68,8 @@ const TableSnapshot = (props: IProps) => {
     const [open, setOpen] = useState(false);
 
     const [treeData, setTreeData] = useState<ISnapshot[]>([])
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
     useEffect(() => {
         const standalone: ISnapshot[] = [];
         const groupMap: Record<string, ISnapshot[]> = {};
@@ -319,7 +321,7 @@ const TableSnapshot = (props: IProps) => {
 
                     {canDeleteSnapshot(user ?? {} as IUser) && snapshots.length > 0 && <Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start}>Xóa sổ kiểm kê</Button>}
 
-                    {canReadSnapshot(user ?? {} as IUser) && snapshots.length > 0 && <Button type='primary' icon={<CloudDownloadOutlined />}>
+                    {canReadSnapshot(user ?? {} as IUser) && snapshots.length > 0 && mounted && (<Button type='primary' icon={<CloudDownloadOutlined />}>
                         <CSVLink
                             data={dataExport}
                             filename={"kiem-ke.csv"}
@@ -328,7 +330,7 @@ const TableSnapshot = (props: IProps) => {
                         >
                             Export
                         </CSVLink>
-                    </Button>}
+                    </Button>)}
                     {canCreateSnapshot(user ?? {} as IUser) && <Button onClick={showModal} type='primary' icon={<FolderAddOutlined />}>Chốt sổ kiểm kê</Button>}
                 </div>
 

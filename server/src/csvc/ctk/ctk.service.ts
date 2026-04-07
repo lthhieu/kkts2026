@@ -38,6 +38,12 @@ export class CtkService {
       .limit(defaultLimit)
       .sort(sort)
       .populate(population)
+      .populate({ path: 'loaicongtrinhcsvc', select: 'name' })
+      .populate({ path: 'mucdichsudungcsvc', select: 'name' })
+      .populate({ path: 'tinhtrangcsvc', select: 'name' })
+      .populate({ path: 'htsh', select: 'name' })
+      .populate({ path: 'ct_csvc_trongnha', select: 'name' })
+      .populate({ path: 'tinh_trang_sd', select: 'name' })
       .exec();
     return {
       meta: {
@@ -53,7 +59,12 @@ export class CtkService {
   async findOne(id: string) {
     return await this.ctkModel
       .findOne({ _id: id })
-      .populate(['loaicongtrinhcsvc', 'mucdichsudungcsvc', 'tinhtrangcsvc', 'htsh', 'ct_csvc_trongnha']);
+      .populate({ path: 'loaicongtrinhcsvc', select: 'name' })
+      .populate({ path: 'mucdichsudungcsvc', select: 'name' })
+      .populate({ path: 'tinhtrangcsvc', select: 'name' })
+      .populate({ path: 'htsh', select: 'name' })
+      .populate({ path: 'ct_csvc_trongnha', select: 'name' })
+      .populate({ path: 'tinh_trang_sd', select: 'name' })
   }
 
   async update(id: string, updateCtkDto: UpdateCtkDto) {

@@ -1,0 +1,165 @@
+'use client'
+import { Modal, Form, Input, message, Select, Row, Col, InputNumber, notification, DatePicker } from 'antd';
+import React, { useEffect, useMemo } from 'react';
+import dayjs from 'dayjs';
+import { handleCreateOrUpdateTbiptn } from '@/app/(main)/quan-tri/csvc/tbiptn/actions';
+
+interface IProps {
+    access_token?: string;
+    isModalOpen: boolean;
+    setIsModalOpen: (value: boolean) => void;
+    status: string;
+    setStatus: (value: string) => void;
+    dataUpdate: null | ITbiptn;
+    setDataUpdate: (value: null | ITbiptn) => void;
+    ctk: ICtk[];
+    countries: ICountry[];
+    tinhtrangsudung: ITinhtrangsudung[];
+}
+
+const Context = React.createContext({ name: 'Default' });
+
+const TbiptnModal = (props: IProps) => {
+    const {
+        setIsModalOpen, isModalOpen, setStatus, status, access_token,
+        setDataUpdate, dataUpdate,
+        ctk, countries, tinhtrangsudung,
+    } = props;
+    const [form] = Form.useForm();
+    const [messageApi, contextHolder] = message.useMessage();
+    const [api, contextHolderNotification] = notification.useNotification();
+    const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
+
+    useEffect(() => {
+        if (dataUpdate) {
+            form.setFieldsValue({
+                ma_tb: dataUpdate.ma_tb,
+                ma_ct_csvc: dataUpdate.ma_ct_csvc?._id ?? null,
+                ten_tb: dataUpdate.ten_tb,
+                nam_sx: dataUpdate.nam_sx,
+                xuatxu: dataUpdate.xuatxu?._id ?? null,
+                hang_sx: dataUpdate.hang_sx,
+                sl_tb_cungloai: dataUpdate.sl_tb_cungloai,
+                nam_sd: dataUpdate.nam_sd,
+                tinh_trang_sd: dataUpdate.tinh_trang_sd?._id ?? null,
+                ngay_chuyen_tt: dataUpdate.ngay_chuyen_tt ? dayjs(dataUpdate.ngay_chuyen_tt, ['DD/MM/YYYY', 'YYYY-MM-DD']) : null,
+            });
+        }
+    }, [dataUpdate]);
+
+    const handleOk = () => { form.submit(); };
+
+    const handleCancel = () => {
+        form.resetFields();
+        setStatus('');
+        setDataUpdate(null);
+        setIsModalOpen(false);
+    };
+
+    const onFinish = async (values: any) => {
+        const payload = {
+            ...values,
+            ngay_chuyen_tt: values.ngay_chuyen_tt ? values.ngay_chuyen_tt.format('DD/MM/YYYY') : null,
+        };
+        const response = await handleCreateOrUpdateTbiptn(payload, access_token ?? '', status, dataUpdate);
+        if (response.data) {
+            messageApi.success(response.message);
+            handleCancel();
+        } else {
+            api.error({ title: 'Có lỗi xảy ra', description: response.message, placement: 'topRight' });
+        }
+    };
+
+    const validateMessages = { required: '${label} không được để trống' };
+
+    return (
+        <Context.Provider value={contextValue}>
+            {contextHolder}{contextHolderNotification}
+            <Modal
+                title={status === 'CREATE' ? 'Thêm thiết bị PTN' : 'Cập nhật thiết bị PTN'}
+                closable={{ 'aria-label': 'Custom Close Button' }}
+                open={isModalOpen}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                okText="Đồng ý"
+                cancelText="Hủy"
+                width={{ xs: '90%', sm: '80%', md: '70%', lg: '60%', xl: '50%', xxl: '40%' }}
+            >
+                <Form
+                    form={form}
+                    autoComplete="off"
+                    layout="vertical"
+                    name="tbiptn-modal"
+                    onFinish={onFinish}
+                    validateMessages={validateMessages}
+                    initialValues={{ nam_sd: new Date().getFullYear(), nam_sx: new Date().getFullYear(), sl_tb_cungloai: 0 }}
+                >
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="Mã thiết bị" name="ma_tb" rules={[{ required: true }]}>
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="Tên thiết bị" name="ten_tb" rules={[{ required: true }]}>
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+
+                    <Form.Item style={{ marginBottom: 8 }} label="Công trình CSVC" name="ma_ct_csvc">
+                        <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
+                            options={ctk.map(({ _id, ten_ct }) => ({ value: _id, label: ten_ct }))} />
+                    </Form.Item>
+
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="Năm sản xuất" name="nam_sx">
+                                <InputNumber style={{ width: '100%' }} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="Xuất xứ" name="xuatxu">
+                                <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
+                                    options={countries.map(({ _id, name }) => ({ value: _id, label: name }))} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="Hãng sản xuất" name="hang_sx">
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="SL thiết bị cùng loại" name="sl_tb_cungloai">
+                                <InputNumber style={{ width: '100%' }} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="Năm sử dụng" name="nam_sd">
+                                <InputNumber style={{ width: '100%' }} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="Tình trạng sử dụng" name="tinh_trang_sd">
+                                <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
+                                    options={tinhtrangsudung.map(({ _id, name }) => ({ value: _id, label: name }))} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+
+                    <Form.Item style={{ marginBottom: 8 }} label="Ngày chuyển tình trạng" name="ngay_chuyen_tt">
+                        <DatePicker style={{ width: '100%' }} format="DD/MM/YYYY" placeholder="DD/MM/YYYY" />
+                    </Form.Item>
+                </Form>
+            </Modal>
+        </Context.Provider>
+    );
+};
+
+export default TbiptnModal;

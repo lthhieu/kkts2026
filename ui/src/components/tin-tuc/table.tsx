@@ -5,7 +5,6 @@ import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { canCreateNews, canDeleteNews, canReadNews, canUpdateNews } from '@/libs/news';
-import dayjs from 'dayjs';
 import NewsModal from '@/components/tin-tuc/modal';
 import { handleDeleteNews, handleDeleteNewsMany } from '@/app/(main)/quan-tri/tin-tuc/actions';
 

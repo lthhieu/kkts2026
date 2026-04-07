@@ -81,6 +81,8 @@ const TableDevices = (props: IProps) => {
     const [open, setOpen] = useState(false);
 
     const [treeData, setTreeData] = useState<IDevice[]>([])
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
     useEffect(() => {
         const standalone: IDevice[] = [];
         const groupMap: Record<string, IDevice[]> = {};
@@ -484,7 +486,7 @@ const TableDevices = (props: IProps) => {
                         </Button>}
                     {canDeleteDevice(user ?? {} as IUser) && <Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa {selectedRowKeys.length !== 0 && `(${selectedRowKeys.length})`}</Button>}
                     {canCreateDevice(user ?? {} as IUser) && <Button onClick={showModalImport} type='primary' icon={<CloudUploadOutlined />}>Import</Button>}
-                    {canReadDevice(user ?? {} as IUser) && <Button type='primary' icon={<CloudDownloadOutlined />}>
+                    {canReadDevice(user ?? {} as IUser) && mounted && (<Button type='primary' icon={<CloudDownloadOutlined />}>
                         <CSVLink
                             data={dataExport}
                             filename={"thiet-bi.csv"}
@@ -493,7 +495,7 @@ const TableDevices = (props: IProps) => {
                         >
                             Export
                         </CSVLink>
-                    </Button>}
+                    </Button>)}
                     {canCreateDevice(user ?? {} as IUser) && <Button onClick={showModal} type='primary' icon={<FolderAddOutlined />}>Thêm mới</Button>}
                 </div>
 

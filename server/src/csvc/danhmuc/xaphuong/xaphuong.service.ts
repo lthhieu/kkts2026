@@ -39,6 +39,7 @@ export class XaphuongService {
       .limit(defaultLimit)
       .sort(sort)
       .populate(population)
+      .populate({ path: 'tinhthanhpho', select: 'name' })
       .exec()
     return {
       meta: {
@@ -52,7 +53,8 @@ export class XaphuongService {
   }
 
   async findOne(id: string) {
-    return await this.xaphuongModel.findOne({ _id: id });
+    return await this.xaphuongModel.findOne({ _id: id })
+      .populate({ path: 'tinhthanhpho', select: 'name' });
   }
 
   async update(id: string, updateXaphuongDto: UpdateXaphuongDto) {

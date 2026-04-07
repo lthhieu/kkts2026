@@ -38,6 +38,9 @@ export class TbiptnService {
       .limit(defaultLimit)
       .sort(sort)
       .populate(population)
+      .populate({ path: 'ma_ct_csvc', select: 'ten_ct' })
+      .populate({ path: 'xuatxu', select: 'name' })
+      .populate({ path: 'tinh_trang_sd', select: 'name' })
       .exec();
     return {
       meta: {
@@ -53,7 +56,9 @@ export class TbiptnService {
   async findOne(id: string) {
     return await this.tbiptnModel
       .findOne({ _id: id })
-      .populate(['ma_ct_csvc']);
+      .populate({ path: 'ma_ct_csvc', select: 'ten_ct' })
+      .populate({ path: 'xuatxu', select: 'name' })
+      .populate({ path: 'tinh_trang_sd', select: 'name' })
   }
 
   async update(id: string, updateTbiptnDto: UpdateTbiptnDto) {

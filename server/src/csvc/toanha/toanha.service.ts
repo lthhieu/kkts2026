@@ -38,6 +38,8 @@ export class ToanhaService {
       .limit(defaultLimit)
       .sort(sort)
       .populate(population)
+      .populate({ path: 'htsh', select: 'name' })
+      .populate({ path: 'tinh_trang_sd', select: 'name' })
       .exec();
     return {
       meta: {
@@ -53,7 +55,8 @@ export class ToanhaService {
   async findOne(id: string) {
     return await this.toanhaModel
       .findOne({ _id: id })
-      .populate(['htsh', 'tinh_trang_sd']);
+      .populate({ path: 'htsh', select: 'name' })
+      .populate({ path: 'tinh_trang_sd', select: 'name' })
   }
 
   async update(id: string, updateToanhaDto: UpdateToanhaDto) {
