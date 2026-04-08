@@ -36,6 +36,7 @@ const TableToanha = (props: IProps) => {
     const [api, contextHolderNotification] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
     const [selectedName, setSelectedName] = useState<string | undefined>(undefined);
+    const [selectedMa, setSelectedMa] = useState<string | undefined>(undefined);
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
 
@@ -49,21 +50,16 @@ const TableToanha = (props: IProps) => {
         deleteItem(_id);
     };
 
-    const cancel: PopconfirmProps['onCancel'] = () => {};
+    const cancel: PopconfirmProps['onCancel'] = () => { };
 
     const columns: TableProps<IToanha>['columns'] = [
         {
             title: 'Mã tòa nhà',
             dataIndex: 'ma_toanha',
             key: 'ma_toanha',
-        },
-        {
-            title: 'Tên tòa nhà',
-            dataIndex: 'ten_toanha',
-            key: 'ten_toanha',
             render: (_, record) => (
                 <Space>
-                    <Typography.Text>{record.ten_toanha}</Typography.Text>
+                    <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.ma_toanha}</Typography.Text>
                     {canUpdateCsvc(user ?? {} as IUser) && (
                         <Tooltip title="Cập nhật">
                             <EditOutlined
@@ -93,6 +89,11 @@ const TableToanha = (props: IProps) => {
                     )}
                 </Space>
             ),
+        },
+        {
+            title: 'Tên tòa nhà',
+            dataIndex: 'ten_toanha',
+            key: 'ten_toanha',
         },
         {
             title: 'Diện tích xây dựng (m²)',
@@ -134,6 +135,7 @@ const TableToanha = (props: IProps) => {
     const handleOnChangePage = (current: number, pageSize: number) => {
         const params = new URLSearchParams();
         if (selectedName) params.set('ten_toanha', selectedName);
+        if (selectedMa) params.set('ma_toanha', selectedMa);
         params.set('current', current.toString());
         params.set('pageSize', pageSize.toString());
         router.push(`/quan-tri/csvc/toa-nha?${params.toString()}`);
@@ -142,6 +144,7 @@ const TableToanha = (props: IProps) => {
     const handleFilter = () => {
         const params = new URLSearchParams();
         if (selectedName) params.set('ten_toanha', selectedName);
+        if (selectedMa) params.set('ma_toanha', selectedMa);
         params.set('current', '1');
         params.set('pageSize', meta.pageSize.toString());
         router.push(`/quan-tri/csvc/toa-nha?${params.toString()}`);
@@ -204,11 +207,17 @@ const TableToanha = (props: IProps) => {
                 <Space style={{ marginBottom: 16 }}>
                     <Input
                         allowClear
+                        placeholder="Tìm theo mã tòa nhà"
+                        onChange={(e) => setSelectedMa(e.target.value)}
+                        value={selectedMa}
+                    />
+                    <Input
+                        allowClear
                         placeholder="Tìm theo tên tòa nhà"
                         onChange={(e) => setSelectedName(e.target.value)}
                         value={selectedName}
                     />
-                    <Button icon={<ClearOutlined />} onClick={() => setSelectedName(undefined)}>Xóa bộ lọc</Button>
+                    <Button icon={<ClearOutlined />} onClick={() => { setSelectedName(undefined); setSelectedMa(undefined); }}>Xóa bộ lọc</Button>
                     <Button icon={<SearchOutlined />} type="primary" onClick={handleFilter}>Lọc</Button>
                 </Space>
             )}

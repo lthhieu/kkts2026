@@ -40,6 +40,7 @@ const TablePhgdht = (props: IProps) => {
     const [api, contextHolderNotification] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
     const [selectedName, setSelectedName] = useState<string | undefined>(undefined);
+    const [selectedMa, setSelectedMa] = useState<string | undefined>(undefined);
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
 
@@ -49,21 +50,16 @@ const TablePhgdht = (props: IProps) => {
         else messageApi.success(res.message);
     };
 
-    const cancel: PopconfirmProps['onCancel'] = () => {};
+    const cancel: PopconfirmProps['onCancel'] = () => { };
 
     const columns: TableProps<IPhgdht>['columns'] = [
         {
             title: 'Mã PHGDHT',
             dataIndex: 'ma_phgdht',
             key: 'ma_phgdht',
-        },
-        {
-            title: 'Tên phòng',
-            dataIndex: 'name',
-            key: 'name',
             render: (_, record) => (
                 <Space>
-                    <Typography.Text>{record.name}</Typography.Text>
+                    <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.ma_phgdht}</Typography.Text>
                     {canUpdateCsvc(user ?? {} as IUser) && (
                         <Tooltip title="Cập nhật">
                             <EditOutlined
@@ -89,6 +85,12 @@ const TablePhgdht = (props: IProps) => {
                     )}
                 </Space>
             ),
+        },
+        {
+            title: 'Tên phòng',
+            dataIndex: 'name',
+            key: 'name',
+
         },
         {
             title: 'Diện tích (m²)',
@@ -140,6 +142,7 @@ const TablePhgdht = (props: IProps) => {
     const handleOnChangePage = (current: number, pageSize: number) => {
         const params = new URLSearchParams();
         if (selectedName) params.set('name', selectedName);
+        if (selectedMa) params.set('ma_phgdht', selectedMa);
         params.set('current', current.toString());
         params.set('pageSize', pageSize.toString());
         router.push(`/quan-tri/csvc/phgdht?${params.toString()}`);
@@ -148,6 +151,7 @@ const TablePhgdht = (props: IProps) => {
     const handleFilter = () => {
         const params = new URLSearchParams();
         if (selectedName) params.set('name', selectedName);
+        if (selectedMa) params.set('ma_phgdht', selectedMa);
         params.set('current', '1');
         params.set('pageSize', meta.pageSize.toString());
         router.push(`/quan-tri/csvc/phgdht?${params.toString()}`);
@@ -208,8 +212,9 @@ const TablePhgdht = (props: IProps) => {
             </Flex>
             {canReadCsvc(user ?? {} as IUser) && (
                 <Space style={{ marginBottom: 16 }}>
+                    <Input allowClear placeholder="Tìm theo mã phòng" onChange={(e) => setSelectedMa(e.target.value)} value={selectedMa} />
                     <Input allowClear placeholder="Tìm theo tên phòng" onChange={(e) => setSelectedName(e.target.value)} value={selectedName} />
-                    <Button icon={<ClearOutlined />} onClick={() => setSelectedName(undefined)}>Xóa bộ lọc</Button>
+                    <Button icon={<ClearOutlined />} onClick={() => { setSelectedName(undefined); setSelectedMa(undefined); }}>Xóa bộ lọc</Button>
                     <Button icon={<SearchOutlined />} type="primary" onClick={handleFilter}>Lọc</Button>
                 </Space>
             )}

@@ -51,13 +51,13 @@ const ModalImportTbiptn = (props: IProps) => {
                         // F=sl_tb_cungloai, G=nam_sd, H=xuatxu(id), I=tinh_trang_sd(id), J=ngay_chuyen_tt
                         jsonData.push({
                             ma_tb: getVal(1) ? String(getVal(1)) : '',
-                            ten_tb: getVal(2) ? String(getVal(2)) : '',
-                            ma_ct_csvc: getVal(3) ? String(getVal(3)) : null,
+                            ma_ct_csvc: getVal(2) ? String(getVal(2)) : null,
+                            ten_tb: getVal(3) ? String(getVal(3)) : '',
                             nam_sx: Number(getVal(4)) || 0,
-                            hang_sx: getVal(5) ? String(getVal(5)) : '',
-                            sl_tb_cungloai: Number(getVal(6)) || 0,
-                            nam_sd: Number(getVal(7)) || 0,
-                            xuatxu: getVal(8) ? String(getVal(8)) : null,
+                            xuatxu: getVal(5) ? String(getVal(5)) : null,
+                            hang_sx: getVal(6) ? String(getVal(6)) : '',
+                            sl_tb_cungloai: Number(getVal(7)) || 0,
+                            nam_sd: Number(getVal(8)) || 0,
                             tinh_trang_sd: getVal(9) ? String(getVal(9)) : null,
                             ngay_chuyen_tt: getVal(10) ? String(getVal(10)) : null,
                         });

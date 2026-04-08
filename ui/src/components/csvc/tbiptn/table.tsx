@@ -46,7 +46,7 @@ const TableTbiptn = (props: IProps) => {
         else messageApi.success(res.message);
     };
 
-    const cancel: PopconfirmProps['onCancel'] = () => {};
+    const cancel: PopconfirmProps['onCancel'] = () => { };
 
     const columns: TableProps<ITbiptn>['columns'] = [
         { title: 'Mã thiết bị', dataIndex: 'ma_tb', key: 'ma_tb' },
@@ -55,8 +55,8 @@ const TableTbiptn = (props: IProps) => {
             dataIndex: 'ten_tb',
             key: 'ten_tb',
             render: (_, record) => (
-                <Space>
-                    <Typography.Text>{record.ten_tb}</Typography.Text>
+                <Space style={{ maxWidth: 300 }}>
+                    <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.ten_tb}</Typography.Text>
                     {canUpdateCsvc(user ?? {} as IUser) && (
                         <Tooltip title="Cập nhật">
                             <EditOutlined

@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Input, Popconfirm, Space, Table, Tooltip, Typography, message, notification } from 'antd';
+import { Button, Flex, Input, Popconfirm, Select, Space, Table, Tooltip, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
@@ -40,6 +40,9 @@ const TableCtk = (props: IProps) => {
     const [api, contextHolderNotification] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
     const [selectedMa, setSelectedMa] = useState<string | undefined>(undefined);
+    const [selectedName, setSelectedName] = useState<string | undefined>(undefined);
+    const [selectedLoai, setSelectedLoai] = useState<string | undefined>(undefined);
+    const [selectedMucDich, setSelectedMucDich] = useState<string | undefined>(undefined);
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
 
@@ -102,6 +105,9 @@ const TableCtk = (props: IProps) => {
     const handleOnChangePage = (current: number, pageSize: number) => {
         const params = new URLSearchParams();
         if (selectedMa) params.set('ma_ct', selectedMa);
+        if (selectedName) params.set('ten_ct', selectedName);
+        if (selectedLoai) params.set('loaicongtrinhcsvc', selectedLoai);
+        if (selectedMucDich) params.set('mucdichsudungcsvc', selectedMucDich);
         params.set('current', current.toString());
         params.set('pageSize', pageSize.toString());
         router.push(`/quan-tri/csvc/ctk?${params.toString()}`);
@@ -110,10 +116,20 @@ const TableCtk = (props: IProps) => {
     const handleFilter = () => {
         const params = new URLSearchParams();
         if (selectedMa) params.set('ma_ct', selectedMa);
+        if (selectedName) params.set('ten_ct', selectedName);
+        if (selectedLoai) params.set('loaicongtrinhcsvc', selectedLoai);
+        if (selectedMucDich) params.set('mucdichsudungcsvc', selectedMucDich);
         params.set('current', '1');
         params.set('pageSize', meta.pageSize.toString());
         router.push(`/quan-tri/csvc/ctk?${params.toString()}`);
     };
+
+    const clearFilter = () => {
+        setSelectedMa(undefined);
+        setSelectedName(undefined);
+        setSelectedLoai(undefined);
+        setSelectedMucDich(undefined);
+    }
 
     const deleteMany = async (ids: string[]) => {
         const res = await handleDeleteCtkMany(ids, access_token);
@@ -173,9 +189,30 @@ const TableCtk = (props: IProps) => {
                 </div>
             </Flex>
             {canReadCsvc(user ?? {} as IUser) && (
-                <Space style={{ marginBottom: 16 }}>
+                <Space style={{ marginBottom: 16 }} wrap>
                     <Input allowClear placeholder="Tìm theo mã công trình" onChange={(e) => setSelectedMa(e.target.value)} value={selectedMa} />
-                    <Button icon={<ClearOutlined />} onClick={() => setSelectedMa(undefined)}>Xóa bộ lọc</Button>
+                    <Input allowClear placeholder="Tìm theo tên công trình" onChange={(e) => setSelectedName(e.target.value)} value={selectedName} />
+                    <Select
+                        allowClear
+                        onClear={() => setSelectedLoai(undefined)}
+                        showSearch={{ optionFilterProp: 'label' }}
+                        placeholder="Loại công trình"
+                        style={{ minWidth: 200 }}
+                        value={selectedLoai}
+                        onChange={(val) => setSelectedLoai(val)}
+                        options={loaicongtrinhcsvc.map(i => ({ value: i._id, label: i.name }))}
+                    />
+                    <Select
+                        allowClear
+                        onClear={() => setSelectedMucDich(undefined)}
+                        showSearch={{ optionFilterProp: 'label' }}
+                        placeholder="Mục đích sử dụng"
+                        style={{ minWidth: 200 }}
+                        value={selectedMucDich}
+                        onChange={(val) => setSelectedMucDich(val)}
+                        options={mucdichsudungcsvc.map(i => ({ value: i._id, label: i.name }))}
+                    />
+                    <Button icon={<ClearOutlined />} onClick={clearFilter}>Xóa bộ lọc</Button>
                     <Button icon={<SearchOutlined />} type="primary" onClick={handleFilter}>Lọc</Button>
                 </Space>
             )}

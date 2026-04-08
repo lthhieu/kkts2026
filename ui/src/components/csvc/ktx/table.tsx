@@ -46,7 +46,7 @@ const TableKtx = (props: IProps) => {
         else messageApi.success(res.message);
     };
 
-    const cancel: PopconfirmProps['onCancel'] = () => {};
+    const cancel: PopconfirmProps['onCancel'] = () => { };
 
     const columns: TableProps<IKtx>['columns'] = [
         {
@@ -55,7 +55,7 @@ const TableKtx = (props: IProps) => {
             key: 'ma_ktx',
             render: (_, record) => (
                 <Space>
-                    <Typography.Text>{record.ma_ktx}</Typography.Text>
+                    <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.ma_ktx}</Typography.Text>
                     {canUpdateCsvc(user ?? {} as IUser) && (
                         <Tooltip title="Cập nhật">
                             <EditOutlined
