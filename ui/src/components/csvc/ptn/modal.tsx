@@ -91,13 +91,13 @@ const PtnModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Loại PTN" name="loai_ptn">
+                            <Form.Item style={{ marginBottom: 8 }} label="Loại PTN" name="loai_ptn" rules={[{ required: true }]}>
                                 <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
                                     options={loaiptn.map(({ _id, name }) => ({ value: _id, label: name }))} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Phục vụ ngành" name="phuc_vu_nganh">
+                            <Form.Item style={{ marginBottom: 8 }} label="Phục vụ ngành" name="phuc_vu_nganh" rules={[{ required: true }]}>
                                 <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
                                     options={linhvucdaotao.map(({ _id, name }) => ({ value: _id, label: name }))} />
                             </Form.Item>
@@ -106,12 +106,12 @@ const PtnModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Mức độ đáp ứng nhu cầu NCKH" name="muc_do_dap_ung_nhu_cau_nckh">
+                            <Form.Item style={{ marginBottom: 8 }} label="Mức độ đáp ứng nhu cầu NCKH" name="muc_do_dap_ung_nhu_cau_nckh" rules={[{ required: true }]}>
                                 <Input />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Năm sử dụng" name="nam_sd">
+                            <Form.Item style={{ marginBottom: 8 }} label="Năm sử dụng" name="nam_sd" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>

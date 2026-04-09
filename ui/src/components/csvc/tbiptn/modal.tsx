@@ -107,19 +107,19 @@ const TbiptnModal = (props: IProps) => {
                         </Col>
                     </Row>
 
-                    <Form.Item style={{ marginBottom: 8 }} label="Công trình CSVC" name="ma_ct_csvc">
+                    <Form.Item style={{ marginBottom: 8 }} label="Công trình CSVC" name="ma_ct_csvc" rules={[{ required: true }]}>
                         <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
                             options={ctk.map(({ _id, ten_ct }) => ({ value: _id, label: ten_ct }))} />
                     </Form.Item>
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Năm sản xuất" name="nam_sx">
+                            <Form.Item style={{ marginBottom: 8 }} label="Năm sản xuất" name="nam_sx" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Xuất xứ" name="xuatxu">
+                            <Form.Item style={{ marginBottom: 8 }} label="Xuất xứ" name="xuatxu" rules={[{ required: true }]}>
                                 <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
                                     options={countries.map(({ _id, name }) => ({ value: _id, label: name }))} />
                             </Form.Item>
@@ -128,12 +128,12 @@ const TbiptnModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Hãng sản xuất" name="hang_sx">
+                            <Form.Item style={{ marginBottom: 8 }} label="Hãng sản xuất" name="hang_sx" rules={[{ required: true }]}>
                                 <Input />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="SL thiết bị cùng loại" name="sl_tb_cungloai">
+                            <Form.Item style={{ marginBottom: 8 }} label="SL thiết bị cùng loại" name="sl_tb_cungloai" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
@@ -141,7 +141,7 @@ const TbiptnModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Năm sử dụng" name="nam_sd">
+                            <Form.Item style={{ marginBottom: 8 }} label="Năm sử dụng" name="nam_sd" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>

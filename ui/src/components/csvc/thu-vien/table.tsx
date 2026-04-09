@@ -37,6 +37,7 @@ const TableThuvien = (props: IProps) => {
     const [api, contextHolderNotification] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
     const [selectedName, setSelectedName] = useState<string | undefined>(undefined);
+    const [selectedMaThuvien, setSelectedMaThuvien] = useState<string | undefined>(undefined);
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
 
@@ -49,14 +50,11 @@ const TableThuvien = (props: IProps) => {
     const cancel: PopconfirmProps['onCancel'] = () => { };
 
     const columns: TableProps<IThuvien>['columns'] = [
-        { title: 'Mã thư viện', dataIndex: 'ma_thuvien', key: 'ma_thuvien' },
         {
-            title: 'Tên thư viện',
-            dataIndex: 'name',
-            key: 'name',
+            title: 'Mã thư viện', dataIndex: 'ma_thuvien', key: 'ma_thuvien',
             render: (_, record) => (
-                <Space>
-                    <Typography.Text>{record.name}</Typography.Text>
+                <Space style={{ maxWidth: 350 }}>
+                    <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.ma_thuvien}</Typography.Text>
                     {canUpdateCsvc(user ?? {} as IUser) && (
                         <Tooltip title="Cập nhật">
                             <EditOutlined
@@ -83,6 +81,12 @@ const TableThuvien = (props: IProps) => {
                 </Space>
             ),
         },
+        {
+            title: 'Tên thư viện',
+            dataIndex: 'name',
+            key: 'name',
+
+        },
         { title: 'Diện tích (m²)', dataIndex: 'dt', key: 'dt' },
         { title: 'DT phòng đọc (m²)', dataIndex: 'dt_phongdoc', key: 'dt_phongdoc' },
         { title: 'Số phòng đọc', dataIndex: 'so_phong_doc', key: 'so_phong_doc' },
@@ -101,6 +105,7 @@ const TableThuvien = (props: IProps) => {
     const handleOnChangePage = (current: number, pageSize: number) => {
         const params = new URLSearchParams();
         if (selectedName) params.set('name', selectedName);
+        if (selectedMaThuvien) params.set('ma_thuvien', selectedMaThuvien);
         params.set('current', current.toString());
         params.set('pageSize', pageSize.toString());
         router.push(`/quan-tri/csvc/thu-vien?${params.toString()}`);
@@ -109,9 +114,15 @@ const TableThuvien = (props: IProps) => {
     const handleFilter = () => {
         const params = new URLSearchParams();
         if (selectedName) params.set('name', selectedName);
+        if (selectedMaThuvien) params.set('ma_thuvien', selectedMaThuvien);
         params.set('current', '1');
         params.set('pageSize', meta.pageSize.toString());
         router.push(`/quan-tri/csvc/thu-vien?${params.toString()}`);
+    };
+
+    const handleReset = () => {
+        setSelectedName(undefined);
+        setSelectedMaThuvien(undefined);
     };
 
     const deleteMany = async (ids: string[]) => {
@@ -173,8 +184,9 @@ const TableThuvien = (props: IProps) => {
             </Flex>
             {canReadCsvc(user ?? {} as IUser) && (
                 <Space style={{ marginBottom: 16 }}>
+                    <Input allowClear placeholder="Tìm theo mã thư viện" onChange={(e) => setSelectedMaThuvien(e.target.value)} value={selectedMaThuvien} />
                     <Input allowClear placeholder="Tìm theo tên thư viện" onChange={(e) => setSelectedName(e.target.value)} value={selectedName} />
-                    <Button icon={<ClearOutlined />} onClick={() => setSelectedName(undefined)}>Xóa bộ lọc</Button>
+                    <Button icon={<ClearOutlined />} onClick={handleReset}>Xóa bộ lọc</Button>
                     <Button icon={<SearchOutlined />} type="primary" onClick={handleFilter}>Lọc</Button>
                 </Space>
             )}

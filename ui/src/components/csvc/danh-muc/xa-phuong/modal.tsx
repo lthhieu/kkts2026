@@ -1,10 +1,11 @@
 'use client'
-import { Modal, Form, Input, message, notification } from 'antd';
+import { Modal, Form, Input, message, notification, Select } from 'antd';
 import React, { useEffect, useMemo } from 'react';
 import { handleCreateOrUpdateXaphuong } from '@/app/(main)/quan-tri/csvc/danh-muc/xa-phuong/actions';
 
 interface IProps {
     access_token?: string;
+    tinhthanhpho: ITinhthanhpho[];
     isModalOpen: boolean;
     setIsModalOpen: (value: boolean) => void;
     status: string;
@@ -16,14 +17,14 @@ interface IProps {
 const Context = React.createContext({ name: 'Default' });
 
 const XaphuongModal = (props: IProps) => {
-    const { setIsModalOpen, isModalOpen, setStatus, status, access_token, setDataUpdate, dataUpdate } = props;
+    const { setIsModalOpen, isModalOpen, setStatus, status, access_token, setDataUpdate, dataUpdate, tinhthanhpho } = props;
     const [form] = Form.useForm();
     const [messageApi, contextHolder] = message.useMessage();
     const [api, contextHolderNotification] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
 
     useEffect(() => {
-        if (dataUpdate) form.setFieldsValue({ name: dataUpdate.name });
+        if (dataUpdate) form.setFieldsValue({ name: dataUpdate.name, tinhthanhpho: dataUpdate.tinhthanhpho._id });
     }, [dataUpdate]);
 
     const handleOk = () => form.submit();
@@ -45,6 +46,10 @@ const XaphuongModal = (props: IProps) => {
                     validateMessages={{ required: '${label} không được để trống' }}>
                     <Form.Item label="Tên" name="name" rules={[{ required: true }]}>
                         <Input />
+                    </Form.Item>
+                    <Form.Item style={{ marginBottom: 8 }} label="Tỉnh thành phố" name="tinhthanhpho">
+                        <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
+                            options={tinhthanhpho.map(({ _id, name }) => ({ value: _id, label: name }))} />
                     </Form.Item>
                 </Form>
             </Modal>

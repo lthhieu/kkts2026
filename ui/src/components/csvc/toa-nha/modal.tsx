@@ -132,6 +132,7 @@ const ToanhaModal = (props: IProps) => {
                                 style={{ marginBottom: 8 }}
                                 label="Diện tích xây dựng (m²)"
                                 name="dtxd"
+                                rules={[{ required: true }]}
                             >
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
@@ -141,6 +142,7 @@ const ToanhaModal = (props: IProps) => {
                                 style={{ marginBottom: 8 }}
                                 label="Tổng DT sàn xây dựng (m²)"
                                 name="tong_dt_sxd"
+                                rules={[{ required: true }]}
                             >
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
@@ -153,6 +155,7 @@ const ToanhaModal = (props: IProps) => {
                                 style={{ marginBottom: 8 }}
                                 label="Số tầng"
                                 name="so_tang"
+                                rules={[{ required: true }]}
                             >
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
@@ -162,6 +165,7 @@ const ToanhaModal = (props: IProps) => {
                                 style={{ marginBottom: 8 }}
                                 label="Năm sử dụng"
                                 name="nam_sd"
+                                rules={[{ required: true }]}
                             >
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
@@ -174,6 +178,7 @@ const ToanhaModal = (props: IProps) => {
                                 style={{ marginBottom: 8 }}
                                 label="Hình thức sở hữu"
                                 name="htsh"
+                                rules={[{ required: true }]}
                             >
                                 <Select
                                     style={{ width: '100%' }}
@@ -205,6 +210,7 @@ const ToanhaModal = (props: IProps) => {
                         style={{ marginBottom: 8 }}
                         label="Địa chỉ"
                         name="diachi"
+                        rules={[{ required: true }]}
                     >
                         <Input />
                     </Form.Item>

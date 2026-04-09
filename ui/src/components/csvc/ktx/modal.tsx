@@ -101,7 +101,7 @@ const KtxModal = (props: IProps) => {
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Hình thức sở hữu" name="htsh">
+                            <Form.Item style={{ marginBottom: 8 }} label="Hình thức sở hữu" name="htsh" rules={[{ required: true }]}>
                                 <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
                                     options={hinhthucsohuu.map(({ _id, name }) => ({ value: _id, label: name }))} />
                             </Form.Item>
@@ -110,12 +110,12 @@ const KtxModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Tổng số chỗ ở" name="tong_so_cho_o">
+                            <Form.Item style={{ marginBottom: 8 }} label="Tổng số chỗ ở" name="tong_so_cho_o" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Tổng diện tích (m²)" name="tong_dt">
+                            <Form.Item style={{ marginBottom: 8 }} label="Tổng diện tích (m²)" name="tong_dt" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
@@ -123,13 +123,13 @@ const KtxModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Tình trạng CSVC" name="tinhtrangcsvc">
+                            <Form.Item style={{ marginBottom: 8 }} label="Tình trạng CSVC" name="tinhtrangcsvc" rules={[{ required: true }]}>
                                 <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
                                     options={tinhtrangcsvc.map(({ _id, name }) => ({ value: _id, label: name }))} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Tổng số phòng ở SV" name="tong_so_phong_o_sv">
+                            <Form.Item style={{ marginBottom: 8 }} label="Tổng số phòng ở SV" name="tong_so_phong_o_sv" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
@@ -137,7 +137,7 @@ const KtxModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Năm sử dụng" name="nam_sd">
+                            <Form.Item style={{ marginBottom: 8 }} label="Năm sử dụng" name="nam_sd" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
@@ -156,7 +156,7 @@ const KtxModal = (props: IProps) => {
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Địa chỉ" name="diachi">
+                            <Form.Item style={{ marginBottom: 8 }} label="Địa chỉ" name="diachi" rules={[{ required: true }]}>
                                 <Input />
                             </Form.Item>
                         </Col>

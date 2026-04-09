@@ -48,7 +48,7 @@ const TableDatdai = (props: IProps) => {
         else messageApi.success(res.message);
     };
 
-    const cancel: PopconfirmProps['onCancel'] = () => {};
+    const cancel: PopconfirmProps['onCancel'] = () => { };
 
     const columns: TableProps<IDatdai>['columns'] = [
         {
@@ -57,7 +57,7 @@ const TableDatdai = (props: IProps) => {
             key: 'ma_giay_cnqsh',
             render: (_, record) => (
                 <Space>
-                    <Typography.Text>{record.ma_giay_cnqsh}</Typography.Text>
+                    <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.ma_giay_cnqsh}</Typography.Text>
                     {canUpdateCsvc(user ?? {} as IUser) && (
                         <Tooltip title="Cập nhật">
                             <EditOutlined

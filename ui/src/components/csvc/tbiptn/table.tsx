@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Input, Popconfirm, Space, Table, Tooltip, Typography, message, notification } from 'antd';
+import { Button, Flex, Input, Popconfirm, Select, Space, Table, Tooltip, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
@@ -37,6 +37,8 @@ const TableTbiptn = (props: IProps) => {
     const [api, contextHolderNotification] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
     const [selectedName, setSelectedName] = useState<string | undefined>(undefined);
+    const [selectedMaCt, setSelectedMaCt] = useState<string | undefined>(undefined);
+    const [selectedMaTB, setSelectedMaTB] = useState<string | undefined>(undefined);
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
 
@@ -49,11 +51,8 @@ const TableTbiptn = (props: IProps) => {
     const cancel: PopconfirmProps['onCancel'] = () => { };
 
     const columns: TableProps<ITbiptn>['columns'] = [
-        { title: 'Mã thiết bị', dataIndex: 'ma_tb', key: 'ma_tb' },
         {
-            title: 'Tên thiết bị',
-            dataIndex: 'ten_tb',
-            key: 'ten_tb',
+            title: 'Mã thiết bị', dataIndex: 'ma_tb', key: 'ma_tb',
             render: (_, record) => (
                 <Space style={{ maxWidth: 300 }}>
                     <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.ten_tb}</Typography.Text>
@@ -83,6 +82,16 @@ const TableTbiptn = (props: IProps) => {
                 </Space>
             ),
         },
+        {
+            title: 'Tên thiết bị',
+            dataIndex: 'ten_tb',
+            key: 'ten_tb',
+            render: (_, record) => (
+                <Space style={{ maxWidth: 300 }}>
+                    <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.ten_tb}</Typography.Text>
+                </Space>
+            ),
+        },
         { title: 'Công trình CSVC', key: 'ma_ct_csvc', render: (_, record) => record.ma_ct_csvc?.ten_ct ?? '' },
         { title: 'Năm sản xuất', dataIndex: 'nam_sx', key: 'nam_sx' },
         { title: 'Xuất xứ', key: 'xuatxu', render: (_, record) => record.xuatxu?.name ?? '' },
@@ -95,6 +104,8 @@ const TableTbiptn = (props: IProps) => {
     const handleOnChangePage = (current: number, pageSize: number) => {
         const params = new URLSearchParams();
         if (selectedName) params.set('ten_tb', selectedName);
+        if (selectedMaCt) params.set('ma_ct_csvc', selectedMaCt);
+        if (selectedMaTB) params.set('ma_tb', selectedMaTB);
         params.set('current', current.toString());
         params.set('pageSize', pageSize.toString());
         router.push(`/quan-tri/csvc/tbiptn?${params.toString()}`);
@@ -103,9 +114,17 @@ const TableTbiptn = (props: IProps) => {
     const handleFilter = () => {
         const params = new URLSearchParams();
         if (selectedName) params.set('ten_tb', selectedName);
+        if (selectedMaCt) params.set('ma_ct_csvc', selectedMaCt);
+        if (selectedMaTB) params.set('ma_tb', selectedMaTB);
         params.set('current', '1');
         params.set('pageSize', meta.pageSize.toString());
         router.push(`/quan-tri/csvc/tbiptn?${params.toString()}`);
+    };
+
+    const clearFilter = () => {
+        setSelectedName(undefined);
+        setSelectedMaCt(undefined);
+        setSelectedMaTB(undefined);
     };
 
     const deleteMany = async (ids: string[]) => {
@@ -163,8 +182,19 @@ const TableTbiptn = (props: IProps) => {
             </Flex>
             {canReadCsvc(user ?? {} as IUser) && (
                 <Space style={{ marginBottom: 16 }}>
+                    <Input allowClear placeholder="Tìm theo mã thiết bị" onChange={(e) => setSelectedMaTB(e.target.value)} value={selectedMaTB} />
                     <Input allowClear placeholder="Tìm theo tên thiết bị" onChange={(e) => setSelectedName(e.target.value)} value={selectedName} />
-                    <Button icon={<ClearOutlined />} onClick={() => setSelectedName(undefined)}>Xóa bộ lọc</Button>
+                    <Select
+                        allowClear
+                        onClear={() => setSelectedMaCt(undefined)}
+                        showSearch={{ optionFilterProp: 'label' }}
+                        placeholder="Công trình CSVC"
+                        style={{ minWidth: 200 }}
+                        value={selectedMaCt}
+                        onChange={(val) => setSelectedMaCt(val)}
+                        options={ctk.map(i => ({ value: i._id, label: i.ten_ct }))}
+                    />
+                    <Button icon={<ClearOutlined />} onClick={clearFilter}>Xóa bộ lọc</Button>
                     <Button icon={<SearchOutlined />} type="primary" onClick={handleFilter}>Lọc</Button>
                 </Space>
             )}

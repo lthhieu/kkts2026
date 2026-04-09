@@ -126,12 +126,12 @@ const PhgdhtModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Diện tích (m²)" name="dt">
+                            <Form.Item style={{ marginBottom: 8 }} label="Diện tích (m²)" name="dt" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Quy mô chỗ ngồi" name="qui_mo_cho_ngoi">
+                            <Form.Item style={{ marginBottom: 8 }} label="Quy mô chỗ ngồi" name="qui_mo_cho_ngoi" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
@@ -139,7 +139,7 @@ const PhgdhtModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Hình thức sở hữu" name="htsh">
+                            <Form.Item style={{ marginBottom: 8 }} label="Hình thức sở hữu" name="htsh" rules={[{ required: true }]}>
                                 <Select
                                     allowClear
                                     showSearch={{ optionFilterProp: 'label' }}
@@ -149,7 +149,7 @@ const PhgdhtModal = (props: IProps) => {
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Tình trạng CSVC" name="tinhtrangcsvc">
+                            <Form.Item style={{ marginBottom: 8 }} label="Tình trạng CSVC" name="tinhtrangcsvc" rules={[{ required: true }]}>
                                 <Select
                                     allowClear
                                     showSearch={{ optionFilterProp: 'label' }}
@@ -162,7 +162,7 @@ const PhgdhtModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Phân loại" name="phanloai">
+                            <Form.Item style={{ marginBottom: 8 }} label="Phân loại" name="phanloai" rules={[{ required: true }]}>
                                 <Select
                                     allowClear
                                     showSearch={{ optionFilterProp: 'label' }}
@@ -172,7 +172,7 @@ const PhgdhtModal = (props: IProps) => {
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Loại phòng học" name="loaiphonghoc">
+                            <Form.Item style={{ marginBottom: 8 }} label="Loại phòng học" name="loaiphonghoc" rules={[{ required: true }]}>
                                 <Select
                                     allowClear
                                     showSearch={{ optionFilterProp: 'label' }}
@@ -185,7 +185,7 @@ const PhgdhtModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Loại đề án" name="loaidean">
+                            <Form.Item style={{ marginBottom: 8 }} label="Loại đề án" name="loaidean" rules={[{ required: true }]}>
                                 <Select
                                     allowClear
                                     showSearch={{ optionFilterProp: 'label' }}
@@ -195,7 +195,7 @@ const PhgdhtModal = (props: IProps) => {
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Năm sử dụng" name="nam_sd">
+                            <Form.Item style={{ marginBottom: 8 }} label="Năm sử dụng" name="nam_sd" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
@@ -219,7 +219,7 @@ const PhgdhtModal = (props: IProps) => {
                         </Col>
                     </Row>
 
-                    <Form.Item style={{ marginBottom: 8 }} label="Địa chỉ" name="diachi">
+                    <Form.Item style={{ marginBottom: 8 }} label="Địa chỉ" name="diachi" rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
                 </Form>

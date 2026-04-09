@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Input, Popconfirm, Space, Table, Tooltip, Typography, message, notification } from 'antd';
+import { Button, Flex, Input, Popconfirm, Select, Space, Table, Tooltip, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
@@ -35,7 +35,8 @@ const TableXth = (props: IProps) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [api, contextHolderNotification] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
-    const [selectedName, setSelectedName] = useState<string | undefined>(undefined);
+    const [selectedMaCt, setSelectedMaCt] = useState<string | undefined>(undefined);
+    const [selectedPhucVuNganh, setSelectedPhucVuNganh] = useState<string | undefined>(undefined);
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
 
@@ -45,7 +46,7 @@ const TableXth = (props: IProps) => {
         else messageApi.success(res.message);
     };
 
-    const cancel: PopconfirmProps['onCancel'] = () => {};
+    const cancel: PopconfirmProps['onCancel'] = () => { };
 
     const columns: TableProps<IXth>['columns'] = [
         {
@@ -53,7 +54,7 @@ const TableXth = (props: IProps) => {
             key: 'ma_ct_csvc',
             render: (_, record) => (
                 <Space>
-                    <Typography.Text>{record.ma_ct_csvc?.ten_ct ?? ''}</Typography.Text>
+                    <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.ma_ct_csvc?.ten_ct ?? ''}</Typography.Text>
                     {canUpdateCsvc(user ?? {} as IUser) && (
                         <Tooltip title="Cập nhật">
                             <EditOutlined
@@ -87,7 +88,8 @@ const TableXth = (props: IProps) => {
 
     const handleOnChangePage = (current: number, pageSize: number) => {
         const params = new URLSearchParams();
-        if (selectedName) params.set('muc_do_dap_ung_nhu_cau_nckh', selectedName);
+        if (selectedMaCt) params.set('ma_ct_csvc', selectedMaCt);
+        if (selectedPhucVuNganh) params.set('phuc_vu_nganh', selectedPhucVuNganh);
         params.set('current', current.toString());
         params.set('pageSize', pageSize.toString());
         router.push(`/quan-tri/csvc/xth?${params.toString()}`);
@@ -95,11 +97,17 @@ const TableXth = (props: IProps) => {
 
     const handleFilter = () => {
         const params = new URLSearchParams();
-        if (selectedName) params.set('muc_do_dap_ung_nhu_cau_nckh', selectedName);
+        if (selectedMaCt) params.set('ma_ct_csvc', selectedMaCt);
+        if (selectedPhucVuNganh) params.set('phuc_vu_nganh', selectedPhucVuNganh);
         params.set('current', '1');
         params.set('pageSize', meta.pageSize.toString());
         router.push(`/quan-tri/csvc/xth?${params.toString()}`);
     };
+
+    const clearFilter = () => {
+        setSelectedMaCt(undefined);
+        setSelectedPhucVuNganh(undefined);
+    }
 
     const deleteMany = async (ids: string[]) => {
         const res = await handleDeleteXthMany(ids, access_token);
@@ -151,8 +159,28 @@ const TableXth = (props: IProps) => {
             </Flex>
             {canReadCsvc(user ?? {} as IUser) && (
                 <Space style={{ marginBottom: 16 }}>
-                    <Input allowClear placeholder="Tìm theo mức độ đáp ứng NCKH" onChange={(e) => setSelectedName(e.target.value)} value={selectedName} />
-                    <Button icon={<ClearOutlined />} onClick={() => setSelectedName(undefined)}>Xóa bộ lọc</Button>
+                    <Select
+                        allowClear
+                        onClear={() => setSelectedMaCt(undefined)}
+                        showSearch={{ optionFilterProp: 'label' }}
+                        placeholder="Công trình CSVC"
+                        style={{ minWidth: 200 }}
+                        value={selectedMaCt}
+                        onChange={(val) => setSelectedMaCt(val)}
+                        options={ctk.map(i => ({ value: i._id, label: i.ten_ct }))}
+                    />
+
+                    <Select
+                        allowClear
+                        onClear={() => setSelectedPhucVuNganh(undefined)}
+                        showSearch={{ optionFilterProp: 'label' }}
+                        placeholder="Phục vụ ngành"
+                        style={{ minWidth: 200 }}
+                        value={selectedPhucVuNganh}
+                        onChange={(val) => setSelectedPhucVuNganh(val)}
+                        options={linhvucdaotao.map(i => ({ value: i._id, label: i.name }))}
+                    />
+                    <Button icon={<ClearOutlined />} onClick={clearFilter}>Xóa bộ lọc</Button>
                     <Button icon={<SearchOutlined />} type="primary" onClick={handleFilter}>Lọc</Button>
                 </Space>
             )}

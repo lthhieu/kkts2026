@@ -167,6 +167,7 @@ const TableXaphuong = (props: IProps) => {
             />
             <XaphuongModal setStatus={setStatus} status={status} access_token={access_token}
                 isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}
+                tinhthanhpho={tinhthanhpho}
                 setDataUpdate={setDataUpdate} dataUpdate={dataUpdate} />
             <ModalImport access_token={access_token} isModalImportOpen={isModalImportOpen} setIsModalImportOpen={setIsModalImportOpen} />
         </Context.Provider>

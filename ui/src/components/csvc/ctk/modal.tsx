@@ -119,13 +119,13 @@ const CtkModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Loại công trình CSVC" name="loaicongtrinhcsvc">
+                            <Form.Item style={{ marginBottom: 8 }} label="Loại công trình CSVC" name="loaicongtrinhcsvc" rules={[{ required: true }]}>
                                 <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
                                     options={loaicongtrinhcsvc.map(({ _id, name }) => ({ value: _id, label: name }))} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Mục đích sử dụng CSVC" name="mucdichsudungcsvc">
+                            <Form.Item style={{ marginBottom: 8 }} label="Mục đích sử dụng CSVC" name="mucdichsudungcsvc" rules={[{ required: true }]}>
                                 <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
                                     options={mucdichsudungcsvc.map(({ _id, name }) => ({ value: _id, label: name }))} />
                             </Form.Item>
@@ -134,12 +134,12 @@ const CtkModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Đối tượng sử dụng" name="doi_tuong_sd">
+                            <Form.Item style={{ marginBottom: 8 }} label="Đối tượng sử dụng" name="doi_tuong_sd" rules={[{ required: true }]}>
                                 <Input />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="DT xây dựng (m²)" name="dt_sxd">
+                            <Form.Item style={{ marginBottom: 8 }} label="DT xây dựng (m²)" name="dt_sxd" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
@@ -160,7 +160,7 @@ const CtkModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Tình trạng CSVC" name="tinhtrangcsvc">
+                            <Form.Item style={{ marginBottom: 8 }} label="Tình trạng CSVC" name="tinhtrangcsvc" rules={[{ required: true }]}>
                                 <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
                                     options={tinhtrangcsvc.map(({ _id, name }) => ({ value: _id, label: name }))} />
                             </Form.Item>
@@ -175,13 +175,13 @@ const CtkModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="CT CSVC trong nhà" name="ct_csvc_trongnha">
+                            <Form.Item style={{ marginBottom: 8 }} label="Công trình CSVC trong nhà" name="ct_csvc_trongnha" rules={[{ required: true }]}>
                                 <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
                                     options={luachon.map(({ _id, name }) => ({ value: _id, label: name }))} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Năm sử dụng" name="nam_sd">
+                            <Form.Item style={{ marginBottom: 8 }} label="Năm sử dụng" name="nam_sd" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
@@ -214,7 +214,7 @@ const CtkModal = (props: IProps) => {
                         </Col>
                     </Row>
 
-                    <Form.Item style={{ marginBottom: 8 }} label="Địa chỉ" name="diachi">
+                    <Form.Item style={{ marginBottom: 8 }} label="Địa chỉ" name="diachi" rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
                 </Form>

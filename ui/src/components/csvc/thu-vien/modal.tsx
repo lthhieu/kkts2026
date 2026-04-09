@@ -137,25 +137,12 @@ const ThuvienModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Năm sử dụng" name="nam_sd">
+                            <Form.Item style={{ marginBottom: 8 }} label="Năm sử dụng" name="nam_sd" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Diện tích (m²)" name="dt">
-                                <InputNumber style={{ width: '100%' }} />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-
-                    <Row gutter={16}>
-                        <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="DT phòng đọc (m²)" name="dt_phongdoc">
-                                <InputNumber style={{ width: '100%' }} />
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Số phòng đọc" name="so_phong_doc">
+                            <Form.Item style={{ marginBottom: 8 }} label="Diện tích (m²)" name="dt" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
@@ -163,25 +150,12 @@ const ThuvienModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="SL máy tính" name="soluong_maytinh">
+                            <Form.Item style={{ marginBottom: 8 }} label="DT phòng đọc (m²)" name="dt_phongdoc" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="SL chỗ ngồi đọc sách" name="soluong_cho_ngoi_doc_sach">
-                                <InputNumber style={{ width: '100%' }} />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-
-                    <Row gutter={16}>
-                        <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="SL sách" name="soluong_sach">
-                                <InputNumber style={{ width: '100%' }} />
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="SL tạp chí" name="soluong_tapchi">
+                            <Form.Item style={{ marginBottom: 8 }} label="Số phòng đọc" name="so_phong_doc" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
@@ -189,25 +163,12 @@ const ThuvienModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="SL sách điện tử" name="soluong_sach_dien_tu">
+                            <Form.Item style={{ marginBottom: 8 }} label="SL máy tính" name="soluong_maytinh" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="SL tạp chí điện tử" name="soluong_tapchi_dien_tu">
-                                <InputNumber style={{ width: '100%' }} />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-
-                    <Row gutter={16}>
-                        <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="SL TV liên kết trong nước" name="soluong_thu_vien_lien_ket_trong_nuoc">
-                                <InputNumber style={{ width: '100%' }} />
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="SL TV điện tử LK nước ngoài" name="soluong_thu_vien_dien_tu_lien_ket_nuoc_ngoai">
+                            <Form.Item style={{ marginBottom: 8 }} label="SL chỗ ngồi đọc sách" name="soluong_cho_ngoi_doc_sach" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
@@ -215,13 +176,52 @@ const ThuvienModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Tình trạng CSVC" name="tinhtrangcsvc">
+                            <Form.Item style={{ marginBottom: 8 }} label="SL sách" name="soluong_sach" rules={[{ required: true }]}>
+                                <InputNumber style={{ width: '100%' }} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="SL tạp chí" name="soluong_tapchi" rules={[{ required: true }]}>
+                                <InputNumber style={{ width: '100%' }} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="SL sách điện tử" name="soluong_sach_dien_tu" rules={[{ required: true }]}>
+                                <InputNumber style={{ width: '100%' }} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="SL tạp chí điện tử" name="soluong_tapchi_dien_tu" rules={[{ required: true }]}>
+                                <InputNumber style={{ width: '100%' }} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="SL TV liên kết trong nước" name="soluong_thu_vien_lien_ket_trong_nuoc" rules={[{ required: true }]}>
+                                <InputNumber style={{ width: '100%' }} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="SL TV điện tử LK nước ngoài" name="soluong_thu_vien_dien_tu_lien_ket_nuoc_ngoai" rules={[{ required: true }]}>
+                                <InputNumber style={{ width: '100%' }} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="Tình trạng CSVC" name="tinhtrangcsvc" rules={[{ required: true }]}>
                                 <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
                                     options={tinhtrangcsvc.map(({ _id, name }) => ({ value: _id, label: name }))} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Hình thức sở hữu" name="htsh">
+                            <Form.Item style={{ marginBottom: 8 }} label="Hình thức sở hữu" name="htsh" rules={[{ required: true }]}>
                                 <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
                                     options={hinhthucsohuu.map(({ _id, name }) => ({ value: _id, label: name }))} />
                             </Form.Item>
@@ -230,12 +230,12 @@ const ThuvienModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="SL đầu sách" name="soluong_dau_sach">
+                            <Form.Item style={{ marginBottom: 8 }} label="SL đầu sách" name="soluong_dau_sach" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="SL đầu tạp chí" name="soluong_dau_tap_chi">
+                            <Form.Item style={{ marginBottom: 8 }} label="SL đầu tạp chí" name="soluong_dau_tap_chi" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
@@ -243,12 +243,12 @@ const ThuvienModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="SL đầu sách điện tử" name="soluong_dau_sach_dien_tu">
+                            <Form.Item style={{ marginBottom: 8 }} label="SL đầu sách điện tử" name="soluong_dau_sach_dien_tu" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="SL đầu tạp chí điện tử" name="soluong_dau_tap_chi_dien_tu">
+                            <Form.Item style={{ marginBottom: 8 }} label="SL đầu tạp chí điện tử" name="soluong_dau_tap_chi_dien_tu" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>

@@ -116,7 +116,7 @@ const DatdaiModal = (props: IProps) => {
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Diện tích (m²)" name="dt">
+                            <Form.Item style={{ marginBottom: 8 }} label="Diện tích (m²)" name="dt" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
@@ -124,13 +124,13 @@ const DatdaiModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Hình thức sử dụng" name="htsd">
+                            <Form.Item style={{ marginBottom: 8 }} label="Hình thức sử dụng" name="htsd" rules={[{ required: true }]}>
                                 <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
                                     options={hinhthucsudung.map(({ _id, name }) => ({ value: _id, label: name }))} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Cơ quan sở hữu" name="cqsh">
+                            <Form.Item style={{ marginBottom: 8 }} label="Cơ quan sở hữu" name="cqsh" rules={[{ required: true }]}>
                                 <Input />
                             </Form.Item>
                         </Col>
@@ -138,7 +138,7 @@ const DatdaiModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Minh chứng QSHD" name="minh_chung_qshd">
+                            <Form.Item style={{ marginBottom: 8 }} label="Minh chứng QSHD" name="minh_chung_qshd" rules={[{ required: true }]}>
                                 <Input />
                             </Form.Item>
                         </Col>
@@ -152,12 +152,12 @@ const DatdaiModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Năm bắt đầu SDD" name="nam_bd_sdd">
+                            <Form.Item style={{ marginBottom: 8 }} label="Năm bắt đầu SDD" name="nam_bd_sdd" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Thời gian SDD (năm)" name="tg_sdd">
+                            <Form.Item style={{ marginBottom: 8 }} label="Thời gian SDD (năm)" name="tg_sdd" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
@@ -165,7 +165,7 @@ const DatdaiModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Diện tích đã SD (m²)" name="dtd_da_sd">
+                            <Form.Item style={{ marginBottom: 8 }} label="Diện tích đã SD (m²)" name="dtd_da_sd" rules={[{ required: true }]}>
                                 <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
@@ -179,7 +179,7 @@ const DatdaiModal = (props: IProps) => {
 
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Tỉnh / Thành phố" name="tinhthanhpho">
+                            <Form.Item style={{ marginBottom: 8 }} label="Tỉnh / Thành phố" name="tinhthanhpho" rules={[{ required: true }]}>
                                 <Select
                                     allowClear
                                     showSearch={{ optionFilterProp: 'label' }}
@@ -197,7 +197,7 @@ const DatdaiModal = (props: IProps) => {
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Xã / Phường" name="xaphuong">
+                            <Form.Item style={{ marginBottom: 8 }} label="Xã / Phường" name="xaphuong" rules={[{ required: true }]}>
                                 <Select
                                     allowClear
                                     showSearch={{ optionFilterProp: 'label' }}
