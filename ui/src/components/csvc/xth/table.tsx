@@ -129,6 +129,8 @@ const TableXth = (props: IProps) => {
     const rowSelection: TableRowSelection<IXth> = { selectedRowKeys, onChange: onSelectChange };
 
     const headers = [
+        { label: 'Công trình CSVC', key: 'ma_ct_csvc.ten_ct' },
+        { label: 'Phục vụ ngành', key: 'phuc_vu_nganh.name' },
         { label: 'Mức độ đáp ứng NCKH', key: 'muc_do_dap_ung_nhu_cau_nckh' },
         { label: 'Năm sử dụng', key: 'nam_sd' },
     ];

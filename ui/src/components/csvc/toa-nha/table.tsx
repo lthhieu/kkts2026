@@ -176,7 +176,10 @@ const TableToanha = (props: IProps) => {
         { label: 'Tổng diện tích sàn (m²)', key: 'tong_dt_sxd' },
         { label: 'Số tầng', key: 'so_tang' },
         { label: 'Năm sử dụng', key: 'nam_sd' },
+        { label: 'Hình thức sở hữu', key: 'htsh.name' },
+        { label: 'Tình trạng sử dụng', key: 'tinh_trang_sd.name' },
         { label: 'Địa chỉ', key: 'diachi' },
+        { label: 'Ngày chuyển tình trạng', key: 'ngay_chuyen_tt' }
     ];
 
     return (

@@ -129,10 +129,13 @@ const TableKtx = (props: IProps) => {
 
     const headers = [
         { label: 'Mã KTX', key: 'ma_ktx' },
+        { label: 'Hình thức sở hữu', key: 'htsh.name' },
         { label: 'Tổng số chỗ ở', key: 'tong_so_cho_o' },
         { label: 'Tổng diện tích (m²)', key: 'tong_dt' },
+        { label: 'Tình trạng CSVC', key: 'tinhtrangcsvc.name' },
         { label: 'Tổng số phòng ở SV', key: 'tong_so_phong_o_sv' },
         { label: 'Năm sử dụng', key: 'nam_sd' },
+        { label: 'Tình trạng sử dụng', key: 'tinh_trang_sd.name' },
         { label: 'Địa chỉ', key: 'diachi' },
         { label: 'Ngày chuyển tình trạng', key: 'ngay_chuyen_tt' },
     ];

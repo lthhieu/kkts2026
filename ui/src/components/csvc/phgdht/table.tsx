@@ -181,7 +181,13 @@ const TablePhgdht = (props: IProps) => {
         { label: 'Tên phòng', key: 'name' },
         { label: 'Diện tích (m²)', key: 'dt' },
         { label: 'Quy mô chỗ ngồi', key: 'qui_mo_cho_ngoi' },
+        { label: 'Hình thức sở hữu', key: 'htsh.name' },
+        { label: 'Tình trạng CSVC', key: 'tinhtrangcsvc.name' },
+        { label: 'Phân loại', key: 'phanloai.name' },
+        { label: 'Loại phòng học', key: 'loaiphonghoc.name' },
+        { label: 'Loại đề án', key: 'loaidean.name' },
         { label: 'Năm sử dụng', key: 'nam_sd' },
+        { label: 'Tình trạng sử dụng', key: 'tinh_trang_sd.name' },
         { label: 'Địa chỉ', key: 'diachi' },
         { label: 'Ngày chuyển tình trạng', key: 'ngay_chuyen_tt' },
     ];

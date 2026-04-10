@@ -135,11 +135,16 @@ const TableDatdai = (props: IProps) => {
     const headers = [
         { label: 'Mã giấy CNQSH', key: 'ma_giay_cnqsh' },
         { label: 'Diện tích (m²)', key: 'dt' },
+        { label: 'Hình thức sử dụng', key: 'htsd.name' },
         { label: 'Cơ quan sở hữu', key: 'cqsh' },
         { label: 'Minh chứng QSHD', key: 'minh_chung_qshd' },
+        { label: 'Mục đích sử dụng đất', key: 'muc_dich_shd.name' },
         { label: 'Năm bắt đầu SDD', key: 'nam_bd_sdd' },
         { label: 'Thời gian SDD', key: 'tg_sdd' },
         { label: 'Diện tích đã SD', key: 'dtd_da_sd' },
+        { label: 'Tình trạng SD', key: 'tinh_trang_sd.name' },
+        { label: 'Tỉnh / Thành phố', key: 'tinhthanhpho.name' },
+        { label: 'Xã / Phường', key: 'xaphuong.name' },
         { label: 'Địa chỉ', key: 'diachi' },
         { label: 'Ngày chuyển tình trạng', key: 'ngay_chuyen_tt' },
     ];

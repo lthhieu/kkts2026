@@ -155,7 +155,22 @@ const TableThuvien = (props: IProps) => {
         { label: 'SL chỗ ngồi đọc sách', key: 'soluong_cho_ngoi_doc_sach' },
         { label: 'SL sách', key: 'soluong_sach' },
         { label: 'SL tạp chí', key: 'soluong_tapchi' },
+        { label: 'SL sách điện tử', key: 'soluong_sach_dien_tu' },
+        { label: 'SL tạp chí điện tử', key: 'soluong_tapchi_dien_tu' },
+        { label: 'SL TV điện tử liên kết nước ngoài', key: 'soluong_thu_vien_dien_tu_lien_ket_nuoc_ngoai' },
+        { label: 'SL TV liên kết trong nước', key: 'soluong_thu_vien_lien_ket_trong_nuoc' },
+        { label: 'Tình trạng CSVC', key: 'tinhtrangcsvc.name' },
+        { label: 'Hình thức sở hữu', key: 'htsh.name' },
+        { label: 'SL đầu sách', key: 'soluong_dau_sach' },
+        { label: 'SL đầu tạp chí', key: 'soluong_dau_tap_chi' },
+        { label: 'SL đầu sách điện tử', key: 'soluong_dau_sach_dien_tu' },
+        { label: 'SL đầu tạp chí điện tử', key: 'soluong_dau_tap_chi_dien_tu' },
         { label: 'Địa chỉ', key: 'diachi' },
+        { label: 'Tình trạng SD', key: 'tinh_trang_sd.name' },
+        { label: 'Ngày chuyển tình trạng', key: 'ngay_chuyen_tt' },
+        { label: 'SL đầu sách điện tử có truy cập trực tuyến', key: 'so_dau_sach_dien_tu_co_truy_cap_truc_tuyen' },
+        { label: 'SL đầu sách có bản in', key: 'so_dau_sach_co_ban_in' },
+        { label: 'SL đầu sách in có thể mượn trực tiếp', key: 'so_dau_sach_in_co_the_muon_truc_tiep' },
     ];
 
     return (

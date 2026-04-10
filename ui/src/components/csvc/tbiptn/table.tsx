@@ -149,10 +149,13 @@ const TableTbiptn = (props: IProps) => {
     const headers = [
         { label: 'Mã thiết bị', key: 'ma_tb' },
         { label: 'Tên thiết bị', key: 'ten_tb' },
+        { label: 'Công trình CSVC', key: 'ma_ct_csvc.ten_ct' },
         { label: 'Năm sản xuất', key: 'nam_sx' },
+        { label: 'Xuất xứ', key: 'xuatxu.name' },
         { label: 'Hãng sản xuất', key: 'hang_sx' },
         { label: 'SL cùng loại', key: 'sl_tb_cungloai' },
         { label: 'Năm sử dụng', key: 'nam_sd' },
+        { label: 'Tình trạng SD', key: 'tinh_trang_sd.name' },
         { label: 'Ngày chuyển tình trạng', key: 'ngay_chuyen_tt' },
     ];
 

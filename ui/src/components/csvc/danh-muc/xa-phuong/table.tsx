@@ -112,7 +112,9 @@ const TableXaphuong = (props: IProps) => {
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => setSelectedRowKeys(newSelectedRowKeys);
     const hasSelected = selectedRowKeys.length > 0;
     const rowSelection: TableRowSelection<IXaphuong> = { selectedRowKeys, onChange: onSelectChange };
-    const headers = [{ label: 'Tên', key: 'name' }];
+    const headers = [{ label: 'Tên', key: 'name' },
+    { label: 'Tỉnh thành phố', key: 'tinhthanhpho.name' },
+    ];
 
     return (
         <Context.Provider value={contextValue}>
