@@ -1,8 +1,9 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Input, Popconfirm, Space, Table, Tooltip, Typography, message, notification } from 'antd';
+import { Button, Drawer, Flex, Input, Popconfirm, Space, Table, Tooltip, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
-import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
+import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
+import ToanhaDetail from '@/components/csvc/toa-nha/detail';
 import { useRouter } from 'next/navigation';
 import { handleDeleteToanha, handleDeleteToanhaMany } from '@/app/(main)/quan-tri/csvc/toa-nha/actions';
 import ToanhaModal from '@/components/csvc/toa-nha/modal';
@@ -31,7 +32,10 @@ const TableToanha = (props: IProps) => {
     const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [dataUpdate, setDataUpdate] = useState<null | IToanha>(null);
+    const [selectedRecord, setSelectedRecord] = useState<null | IToanha>(null);
+    const [openDrawer, setOpenDrawer] = useState(false);
     const router = useRouter();
+
     const [messageApi, contextHolder] = message.useMessage();
     const [api, contextHolderNotification] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
@@ -39,6 +43,9 @@ const TableToanha = (props: IProps) => {
     const [selectedMa, setSelectedMa] = useState<string | undefined>(undefined);
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
+
+    const showDrawer = (record: IToanha) => { setSelectedRecord(record); setOpenDrawer(true); };
+    const onClose = () => setOpenDrawer(false);
 
     const deleteItem = async (_id: string) => {
         const res = await handleDeleteToanha(_id, access_token);
@@ -60,6 +67,9 @@ const TableToanha = (props: IProps) => {
             render: (_, record) => (
                 <Space>
                     <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.ma_toanha}</Typography.Text>
+                    <Tooltip title="Xem chi tiết">
+                        <EyeOutlined style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => showDrawer(record)} />
+                    </Tooltip>
                     {canUpdateCsvc(user ?? {} as IUser) && (
                         <Tooltip title="Cập nhật">
                             <EditOutlined
@@ -257,6 +267,23 @@ const TableToanha = (props: IProps) => {
                 isModalImportOpen={isModalImportOpen}
                 setIsModalImportOpen={setIsModalImportOpen}
             />
+            <Drawer
+                title="Chi tiết Tòa nhà"
+                closable={{ 'aria-label': 'Close Button' }}
+                onClose={onClose}
+                open={openDrawer}
+                size="large"
+                extra={
+                    canUpdateCsvc(user ?? {} as IUser) && (
+                        <Button type="primary" icon={<EditOutlined />}
+                            onClick={() => { onClose(); setDataUpdate(selectedRecord); setStatus('UPDATE'); setIsModalOpen(true); }}>
+                            Chỉnh sửa
+                        </Button>
+                    )
+                }
+            >
+                <ToanhaDetail data={selectedRecord} />
+            </Drawer>
         </Context.Provider>
     );
 };

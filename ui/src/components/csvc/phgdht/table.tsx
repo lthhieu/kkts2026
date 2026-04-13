@@ -1,8 +1,9 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Input, Popconfirm, Space, Table, Tooltip, Typography, message, notification } from 'antd';
+import { Button, Drawer, Flex, Input, Popconfirm, Space, Table, Tooltip, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
-import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
+import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
+import PhgdhtDetail from '@/components/csvc/phgdht/detail';
 import { useRouter } from 'next/navigation';
 import { handleDeletePhgdht, handleDeletePhgdhtMany } from '@/app/(main)/quan-tri/csvc/phgdht/actions';
 import PhgdhtModal from '@/components/csvc/phgdht/modal';
@@ -35,6 +36,8 @@ const TablePhgdht = (props: IProps) => {
     const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [dataUpdate, setDataUpdate] = useState<null | IPhgdht>(null);
+    const [selectedRecord, setSelectedRecord] = useState<null | IPhgdht>(null);
+    const [openDrawer, setOpenDrawer] = useState(false);
     const router = useRouter();
     const [messageApi, contextHolder] = message.useMessage();
     const [api, contextHolderNotification] = notification.useNotification();
@@ -43,6 +46,9 @@ const TablePhgdht = (props: IProps) => {
     const [selectedMa, setSelectedMa] = useState<string | undefined>(undefined);
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
+
+    const showDrawer = (record: IPhgdht) => { setSelectedRecord(record); setOpenDrawer(true); };
+    const onClose = () => setOpenDrawer(false);
 
     const deleteItem = async (_id: string) => {
         const res = await handleDeletePhgdht(_id, access_token);
@@ -60,6 +66,9 @@ const TablePhgdht = (props: IProps) => {
             render: (_, record) => (
                 <Space>
                     <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.ma_phgdht}</Typography.Text>
+                    <Tooltip title="Xem chi tiết">
+                        <EyeOutlined style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => showDrawer(record)} />
+                    </Tooltip>
                     {canUpdateCsvc(user ?? {} as IUser) && (
                         <Tooltip title="Cập nhật">
                             <EditOutlined
@@ -261,6 +270,23 @@ const TablePhgdht = (props: IProps) => {
                 isModalImportOpen={isModalImportOpen}
                 setIsModalImportOpen={setIsModalImportOpen}
             />
+            <Drawer
+                title="Chi tiết Phòng học / Giảng đường / Hội trường"
+                closable={{ 'aria-label': 'Close Button' }}
+                onClose={onClose}
+                open={openDrawer}
+                size="large"
+                extra={
+                    canUpdateCsvc(user ?? {} as IUser) && (
+                        <Button type="primary" icon={<EditOutlined />}
+                            onClick={() => { onClose(); setDataUpdate(selectedRecord); setStatus('UPDATE'); setIsModalOpen(true); }}>
+                            Chỉnh sửa
+                        </Button>
+                    )
+                }
+            >
+                <PhgdhtDetail data={selectedRecord} />
+            </Drawer>
         </Context.Provider>
     );
 };

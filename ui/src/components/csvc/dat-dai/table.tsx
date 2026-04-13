@@ -1,8 +1,9 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Input, Popconfirm, Space, Table, Tooltip, Typography, message, notification } from 'antd';
+import { Button, Drawer, Flex, Input, Popconfirm, Space, Table, Tooltip, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
-import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
+import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
+import DatdaiDetail from '@/components/csvc/dat-dai/detail';
 import { useRouter } from 'next/navigation';
 import { handleDeleteDatdai, handleDeleteDatdaiMany } from '@/app/(main)/quan-tri/csvc/dat-dai/actions';
 import DatdaiModal from '@/components/csvc/dat-dai/modal';
@@ -34,6 +35,8 @@ const TableDatdai = (props: IProps) => {
     const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [dataUpdate, setDataUpdate] = useState<null | IDatdai>(null);
+    const [selectedRecord, setSelectedRecord] = useState<null | IDatdai>(null);
+    const [openDrawer, setOpenDrawer] = useState(false);
     const router = useRouter();
     const [messageApi, contextHolder] = message.useMessage();
     const [api, contextHolderNotification] = notification.useNotification();
@@ -41,6 +44,9 @@ const TableDatdai = (props: IProps) => {
     const [selectedName, setSelectedName] = useState<string | undefined>(undefined);
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
+
+    const showDrawer = (record: IDatdai) => { setSelectedRecord(record); setOpenDrawer(true); };
+    const onClose = () => setOpenDrawer(false);
 
     const deleteItem = async (_id: string) => {
         const res = await handleDeleteDatdai(_id, access_token);
@@ -58,6 +64,9 @@ const TableDatdai = (props: IProps) => {
             render: (_, record) => (
                 <Space>
                     <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.ma_giay_cnqsh}</Typography.Text>
+                    <Tooltip title="Xem chi tiết">
+                        <EyeOutlined style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => showDrawer(record)} />
+                    </Tooltip>
                     {canUpdateCsvc(user ?? {} as IUser) && (
                         <Tooltip title="Cập nhật">
                             <EditOutlined
@@ -216,6 +225,23 @@ const TableDatdai = (props: IProps) => {
                 isModalImportOpen={isModalImportOpen}
                 setIsModalImportOpen={setIsModalImportOpen}
             />
+            <Drawer
+                title="Chi tiết Đất đai"
+                closable={{ 'aria-label': 'Close Button' }}
+                onClose={onClose}
+                open={openDrawer}
+                size="large"
+                extra={
+                    canUpdateCsvc(user ?? {} as IUser) && (
+                        <Button type="primary" icon={<EditOutlined />}
+                            onClick={() => { onClose(); setDataUpdate(selectedRecord); setStatus('UPDATE'); setIsModalOpen(true); }}>
+                            Chỉnh sửa
+                        </Button>
+                    )
+                }
+            >
+                <DatdaiDetail data={selectedRecord} />
+            </Drawer>
         </Context.Provider>
     );
 };

@@ -1,8 +1,9 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Input, Popconfirm, Space, Table, Tooltip, Typography, message, notification } from 'antd';
+import { Button, Drawer, Flex, Input, Popconfirm, Space, Table, Tooltip, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
-import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
+import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
+import KtxDetail from '@/components/csvc/ktx/detail';
 import { useRouter } from 'next/navigation';
 import { handleDeleteKtx, handleDeleteKtxMany } from '@/app/(main)/quan-tri/csvc/ktx/actions';
 import KtxModal from '@/components/csvc/ktx/modal';
@@ -32,6 +33,8 @@ const TableKtx = (props: IProps) => {
     const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [dataUpdate, setDataUpdate] = useState<null | IKtx>(null);
+    const [selectedRecord, setSelectedRecord] = useState<null | IKtx>(null);
+    const [openDrawer, setOpenDrawer] = useState(false);
     const router = useRouter();
     const [messageApi, contextHolder] = message.useMessage();
     const [api, contextHolderNotification] = notification.useNotification();
@@ -39,6 +42,9 @@ const TableKtx = (props: IProps) => {
     const [selectedName, setSelectedName] = useState<string | undefined>(undefined);
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
+
+    const showDrawer = (record: IKtx) => { setSelectedRecord(record); setOpenDrawer(true); };
+    const onClose = () => setOpenDrawer(false);
 
     const deleteItem = async (_id: string) => {
         const res = await handleDeleteKtx(_id, access_token);
@@ -56,6 +62,9 @@ const TableKtx = (props: IProps) => {
             render: (_, record) => (
                 <Space>
                     <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.ma_ktx}</Typography.Text>
+                    <Tooltip title="Xem chi tiết">
+                        <EyeOutlined style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => showDrawer(record)} />
+                    </Tooltip>
                     {canUpdateCsvc(user ?? {} as IUser) && (
                         <Tooltip title="Cập nhật">
                             <EditOutlined
@@ -205,6 +214,23 @@ const TableKtx = (props: IProps) => {
                 isModalImportOpen={isModalImportOpen}
                 setIsModalImportOpen={setIsModalImportOpen}
             />
+            <Drawer
+                title="Chi tiết Ký túc xá"
+                closable={{ 'aria-label': 'Close Button' }}
+                onClose={onClose}
+                open={openDrawer}
+                size="large"
+                extra={
+                    canUpdateCsvc(user ?? {} as IUser) && (
+                        <Button type="primary" icon={<EditOutlined />}
+                            onClick={() => { onClose(); setDataUpdate(selectedRecord); setStatus('UPDATE'); setIsModalOpen(true); }}>
+                            Chỉnh sửa
+                        </Button>
+                    )
+                }
+            >
+                <KtxDetail data={selectedRecord} />
+            </Drawer>
         </Context.Provider>
     );
 };

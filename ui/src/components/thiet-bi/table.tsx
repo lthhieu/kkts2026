@@ -608,7 +608,15 @@ const TableDevices = (props: IProps) => {
                 closable={{ 'aria-label': 'Close Button' }}
                 onClose={onClose}
                 open={open}
-                size={'65%'}
+                size={'large'}
+                extra={
+                    canUpdateDevice(user ?? {} as IUser) && selectedDevice?.status !== 'daxoa' && (
+                        <Button type="primary" icon={<EditOutlined />}
+                            onClick={() => { onClose(); setDataUpdate(selectedDevice); setStatus('UPDATE'); SetIsModalOpen(true); }}>
+                            Chỉnh sửa
+                        </Button>
+                    )
+                }
             >
                 <DeviceDetail device={selectedDevice} />
             </Drawer>
