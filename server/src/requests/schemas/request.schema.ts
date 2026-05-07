@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { Device } from 'src/devices/schemas/device.schema';
 import { Unit } from 'src/units/schemas/unit.schema';
+import { User } from 'src/users/schemas/user.schema';
 
 export type RequestDocument = HydratedDocument<Request>;
 
@@ -16,8 +17,8 @@ export class Request {
     @Prop({ default: 'approved' })
     status: string;
 
-    @Prop()
-    createdBy: string;
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
+    createdBy: User | null;
 
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Device.name })
     device: Device | null;
@@ -37,7 +38,7 @@ export class Request {
     @Prop({
         type: [{
             content: String,          // Nội dung bình luận
-            createdBy: String, // Người viết
+            createdBy: { type: mongoose.Schema.Types.ObjectId, ref: User.name }, // Người viết
             createdAt: Date,          // Thời gian
         }], default: []
     })

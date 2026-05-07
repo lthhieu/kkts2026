@@ -3,7 +3,7 @@ import { Modal, Form, Input, message, notification, Select, Upload, UploadProps,
 import React, { useEffect, useMemo, useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import { handleUploadImage } from '@/app/(main)/quan-tri/actions';
-import { handleCreateRequest } from '@/app/(main)/quan-tri/de-nghi/actions';
+import { handleCreateRequest, handleSendMail } from '@/app/(main)/quan-tri/de-nghi/actions';
 import { typeArr } from '@/components/de-nghi/table';
 
 const { Dragger } = Upload;
@@ -93,6 +93,7 @@ const RequestModal = (props: IProps) => {
         const response = await handleCreateRequest(values, access_token ?? '')
 
         if (response.data) {
+            await handleSendMail(response.data)
             messageApi.success(response.message);
             handleCancel()
         } else {

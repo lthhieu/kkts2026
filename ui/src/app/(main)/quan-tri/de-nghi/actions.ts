@@ -81,3 +81,15 @@ export const handleGetRequestById = async (_id: string, access_token: string) =>
     });
     return res;
 }
+
+export const handleSendMail = async (data: any) => {
+    const body: any = data
+
+    const res = await sendRequest<IBackendResponse<IUnit>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/mail`,
+        method: "POST",
+        body
+    })
+    updateTag('mail')
+    return res
+}

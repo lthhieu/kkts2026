@@ -2,9 +2,9 @@
 import React, { useMemo, useState } from 'react';
 import { Button, Drawer, Flex, Grid, Input, Popconfirm, Select, Space, Table, Tag, Tooltip, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
-import { ClearOutlined, EyeOutlined, DeleteOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
+import { ClearOutlined, EyeOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
-import { canCreateRequest, canDeleteRequest, canReadRequest, canUpdateRequest } from '@/libs/request';
+import { canDeleteRequest, canReadRequest, canUpdateRequest } from '@/libs/request';
 import { handleDeleteRequest, handleDeleteRequestMany, handleGetRequestById } from '@/app/(main)/quan-tri/de-nghi/actions';
 import RequestModal from '@/components/de-nghi/modal';
 import RequestDetail from '@/components/de-nghi/request.detail';

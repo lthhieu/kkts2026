@@ -40,6 +40,7 @@ import { PtnModule } from './csvc/ptn/ptn.module';
 import { XthModule } from './csvc/xth/xth.module';
 import { TbiptnModule } from './csvc/tbiptn/tbiptn.module';
 import { ThuvienModule } from './csvc/thuvien/thuvien.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true, }),
@@ -80,6 +81,7 @@ import { ThuvienModule } from './csvc/thuvien/thuvien.module';
     XthModule,
     TbiptnModule,
     ThuvienModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

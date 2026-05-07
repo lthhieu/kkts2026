@@ -13,11 +13,21 @@ export class RequestsService {
   constructor(@InjectModel(Request.name) private requestModel: Model<Request>) { }
 
   async create(createRequestDto: CreateRequestDto, user: IUser) {
-    return await this.requestModel.create({
+    const newRequest = await this.requestModel.create({
       ...createRequestDto,
-      createdBy: user.email,
+      createdBy: user._id as any,
       unit: user.unit
-    })
+    });
+
+    return await this.requestModel.findById(newRequest._id)
+      .populate({
+        path: 'device', select: 'name currentRoom', populate: {
+          path: 'currentRoom', select: 'name'
+        }
+      })
+      .populate({ path: 'unit', select: 'name' })
+      .populate({ path: 'createdBy', select: 'name email' })
+      .exec();
   }
 
   async findAll(current: number, pageSize: number, queryString: string, user: IUser) {
@@ -27,8 +37,6 @@ export class RequestsService {
     delete filter.pageSize
 
     let defaultLimit = +pageSize ? +pageSize : 10
-    let defaultCurrent = +current ? +current : 1
-    let offset = (+defaultCurrent - 1) * (+defaultLimit)
 
     if (user.role === 'gv' || user.role === 'truongdv') {
       filter = {
@@ -38,6 +46,8 @@ export class RequestsService {
     }
     const totalItems = await this.requestModel.countDocuments(filter)
     const totalPages = Math.ceil(totalItems / defaultLimit)
+    let defaultCurrent = +current ? +current : totalPages
+    let offset = (+defaultCurrent - 1) * (+defaultLimit)
     if (isEmpty(sort)) {
       sort = { createdAt: 1 };
     }
@@ -98,7 +108,7 @@ export class RequestsService {
     // Thêm comment vào mảng
     const newComment = {
       content: dto.content,
-      createdBy: user.email,
+      createdBy: user._id.toString(),
       createdAt: new Date(),
     };
 

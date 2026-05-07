@@ -115,7 +115,11 @@ declare global {
         "name": string,
         "type": string,
         "status": string,
-        "createdBy": string,
+        "createdBy": {
+            "_id": string,
+            "name": string,
+            "email": string
+        },
         "device": {
             "_id": string,
             "name": string,
@@ -133,14 +137,18 @@ declare global {
         },
         "comments": {
             "content": string,
-            "createdBy": string,
+            "createdBy": {
+                "_id": string,
+                "name": string,
+                "email": string
+            },
             "createdAt": string,
             "_id": string
         }[],
         "createdAt": string,
         "updatedAt": string,
         "__v": number,
-        "reason": null | string
+        "reason"?: null | string
     }
 
     interface IRoom {

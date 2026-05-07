@@ -75,7 +75,7 @@ const RequestDetail = ({ request, access_token, onRefresh, user }: IProps) => {
                     </Descriptions.Item>
 
                     <Descriptions.Item label="Người gửi">
-                        {request.createdBy}
+                        {request.createdBy.name}
                     </Descriptions.Item>
 
                     <Descriptions.Item label="Đơn vị">
@@ -143,7 +143,7 @@ const RequestDetail = ({ request, access_token, onRefresh, user }: IProps) => {
                         items={request.comments.map(comment => ({
                             children: <>
                                 <div style={{ marginBottom: 4 }}>
-                                    <Typography.Text strong>{comment.createdBy}</Typography.Text>
+                                    <Typography.Text strong>{comment.createdBy.name}</Typography.Text>
                                     &nbsp;&nbsp;
                                     <Typography.Text type="secondary">
                                         {dayjs(comment.createdAt).format('HH:mm DD/MM/YYYY')}
