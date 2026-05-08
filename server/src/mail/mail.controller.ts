@@ -1,17 +1,20 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Public, ResponseMessage } from 'src/configs/my.decorator';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('mail')
 export class MailController {
-  constructor(private readonly mailerService: MailerService) { }
+  constructor(private readonly mailerService: MailerService,
+    private configService: ConfigService
+  ) { }
 
 
   @Post()
   @Public()
   @ResponseMessage("Gửi email thành công")
   async handleTestEmail(@Body() data: any,) {
-    console.log(data)
+    const url = this.configService.get<string>('FRONTEND_URI');
 
     await this.mailerService.sendMail({
       to: ["lyhieu2024@gmail.com"],
@@ -27,7 +30,7 @@ export class MailController {
         device: data.device.name,
         currentRoom: data.device.currentRoom[data.device.currentRoom.length - 1].name,
         unit: data.unit.name,
-        image: data.image,
+        image: `${url}${data.image}`,
       }
     });
   }

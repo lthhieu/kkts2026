@@ -185,7 +185,7 @@ const TableRequests = (props: IProps) => {
         },
         {
             title: 'Người đề nghị',
-            dataIndex: 'createdBy',
+            dataIndex: ['createdBy', 'name'],
             key: 'createdBy',
         },
         {
