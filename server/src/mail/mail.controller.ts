@@ -17,8 +17,8 @@ export class MailController {
     const url = this.configService.get<string>('FRONTEND_URI');
 
     await this.mailerService.sendMail({
-      to: ["lyhieu2024@gmail.com"],
-      from: '"Support Team" <support@example.com>', // override default from
+      to: ["lyhieu2024@gmail.com", "hoangnt@vlute.edu.vn", data.createdBy.email],
+      from: '"QTTB - Thông báo" <support@example.com>', // override default from
       subject: 'QTTB - Thông báo',
       template: "mail",
       context: {
