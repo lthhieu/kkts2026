@@ -27,6 +27,11 @@ const DatDaiPage = async ({ searchParams }: { searchParams: Params }) => {
         headers: { Authorization: `Bearer ${session?.access_token}` },
         nextOption: { next: { tags: ['datdai'] } }
     })
+    const resSummary = await sendRequest<IBackendResponse<ISummary>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/datdai/summary`,
+        headers: { Authorization: `Bearer ${session?.access_token}` },
+        nextOption: { next: { tags: ['datdai'] } }
+    })
     const resHinhthucsudung = await sendRequest<IBackendResponse<IModelPaginate<IHinhthucsudung>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/hinhthucsudung`,
         queryParams: { current: 1, pageSize: 100000 },
@@ -70,6 +75,7 @@ const DatDaiPage = async ({ searchParams }: { searchParams: Params }) => {
                 tinhtrangsudung={resTinhtrangsudung?.data?.result ?? []}
                 tinhthanhpho={resTinhthanhpho?.data?.result ?? []}
                 xaphuong={resXaphuong?.data?.result ?? []}
+                summary={resSummary?.data ?? { totalArea: 0, revokedArea: 0 }}
             />
         </div>
     )

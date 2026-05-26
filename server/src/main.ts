@@ -8,6 +8,8 @@ import cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import dns from "node:dns/promises";
+dns.setServers(["1.1.1.1"]);
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);

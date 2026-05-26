@@ -285,6 +285,7 @@ declare global {
     interface IDatdai {
         _id: string;
         ma_giay_cnqsh: string;
+        thua?: number;
         dt: number;
         htsd: { _id: string; name: string } | null;
         cqsh: string | null;
@@ -298,10 +299,15 @@ declare global {
         tinhthanhpho: { _id: string; name: string } | null;
         xaphuong: { _id: string; name: string } | null;
         diachi: string | null;
+        ghichu?: string | null;
         createdAt?: string;
         updatedAt?: string;
     }
 
+    interface ISummary {
+        totalArea: number;
+        revokedArea: number;
+    }
     interface IToanha {
         _id: string;
         ma_toanha: string;

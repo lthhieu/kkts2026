@@ -14,6 +14,9 @@ export class Datdai {
     ma_giay_cnqsh: string;
 
     @Prop()
+    thua: number;
+
+    @Prop()
     dt: number;
 
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Hinhthucsudung.name })
@@ -51,6 +54,9 @@ export class Datdai {
 
     @Prop({ default: null })
     diachi: string;
+
+    @Prop({ default: null })
+    ghichu: string;
 
 }
 

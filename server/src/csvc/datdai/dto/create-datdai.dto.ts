@@ -42,4 +42,7 @@ export class CreateDatdaiDto {
 
     @IsOptional()
     diachi?: string;
+
+    @IsOptional()
+    ghichu?: string;
 }

@@ -3,7 +3,7 @@ import { CreateDatdaiDto } from './dto/create-datdai.dto';
 import { UpdateDatdaiDto } from './dto/update-datdai.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Datdai } from './schemas/datdai.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import aqp from 'api-query-params';
 import { isEmpty } from 'class-validator';
 
@@ -17,6 +17,31 @@ export class DatdaiService {
 
   async createMany(createDatdaiDto: CreateDatdaiDto[]) {
     return await this.datdaiModel.insertMany(createDatdaiDto);
+  }
+
+  async summary() {
+    const result = await this.datdaiModel.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalArea: { $sum: '$dt' },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          totalArea: 1,
+          revokedArea: {
+            $subtract: ['$totalArea', 388.6],
+          },
+        },
+      },
+    ]);
+
+    return result[0] || {
+      totalArea: 0,
+      revokedArea: 0,
+    };
   }
 
   async findAll(current: number, pageSize: number, queryString: string) {

@@ -57,6 +57,7 @@ const DatdaiModal = (props: IProps) => {
                 tinhthanhpho: tinhId ?? null,
                 xaphuong: dataUpdate.xaphuong?._id ?? null,
                 diachi: dataUpdate.diachi,
+                ghichu: dataUpdate.ghichu,
             });
         }
     }, [dataUpdate]);
@@ -217,6 +218,31 @@ const DatdaiModal = (props: IProps) => {
                         </Col>
                         <Col span={12}>
                             <Form.Item style={{ marginBottom: 8 }} label="Địa chỉ" name="diachi">
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="Ngày chuyển tình trạng" name="ngay_chuyen_tt">
+                                <DatePicker style={{ width: '100%' }} format="DD/MM/YYYY" placeholder="DD/MM/YYYY" />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="Địa chỉ" name="diachi">
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="Thửa" name="thua">
+                                <InputNumber style={{ width: '100%' }} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="Ghi chú" name="ghichu">
                                 <Input />
                             </Form.Item>
                         </Col>

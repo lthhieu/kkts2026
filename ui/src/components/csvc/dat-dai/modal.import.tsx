@@ -63,6 +63,8 @@ const ModalImportDatdai = (props: IProps) => {
                             tinhthanhpho: getVal(12) ? String(getVal(12)) : null,
                             xaphuong: getVal(13) ? String(getVal(13)) : null,
                             diachi: getVal(14) ? String(getVal(14)) : '',
+                            ghichu: getVal(15) ? String(getVal(15)) : '',
+                            thua: Number(getVal(16)) || 0,
                         });
                     });
                     setDataImport(jsonData);

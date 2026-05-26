@@ -10,7 +10,7 @@ import { Action, CsvcSubject } from 'src/configs/enum';
 @UseGuards(PoliciesGuard)
 @Controller('datdai')
 export class DatdaiController {
-  constructor(private readonly datdaiService: DatdaiService) {}
+  constructor(private readonly datdaiService: DatdaiService) { }
 
   @Post()
   @ResponseMessage('Tạo đất đai thành công')
@@ -35,6 +35,13 @@ export class DatdaiController {
     @Query() queryString: string,
   ) {
     return this.datdaiService.findAll(+current, +pageSize, queryString);
+  }
+
+  @Get('/summary')
+  @ResponseMessage('Tải tổng quan đất đai thành công')
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Read, CsvcSubject))
+  summary() {
+    return this.datdaiService.summary();
   }
 
   @Get(':id')

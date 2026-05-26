@@ -23,12 +23,14 @@ interface IProps {
     tinhtrangsudung: ITinhtrangsudung[];
     tinhthanhpho: ITinhthanhpho[];
     xaphuong: IXaphuong[];
+    summary: ISummary;
 }
 
 const Context = React.createContext({ name: 'Default' });
+const { Text } = Typography;
 
 const TableDatdai = (props: IProps) => {
-    const { data, access_token, meta, user, hinhthucsudung, mucdichsudungdat, tinhtrangsudung, tinhthanhpho, xaphuong } = props;
+    const { data, access_token, meta, user, hinhthucsudung, mucdichsudungdat, tinhtrangsudung, tinhthanhpho, xaphuong, summary } = props;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalImportOpen, setIsModalImportOpen] = useState(false);
     const [status, setStatus] = useState('');
@@ -93,17 +95,11 @@ const TableDatdai = (props: IProps) => {
                 </Space>
             ),
         },
+        { title: 'Thửa', dataIndex: 'thua', key: 'thua' },
         { title: 'Diện tích (m²)', dataIndex: 'dt', key: 'dt' },
-        { title: 'Hình thức sử dụng', key: 'htsd', render: (_, record) => record.htsd?.name ?? '' },
-        { title: 'Cơ quan sở hữu', dataIndex: 'cqsh', key: 'cqsh' },
-        { title: 'Mục đích SHD', key: 'muc_dich_shd', render: (_, record) => record.muc_dich_shd?.name ?? '' },
         { title: 'Năm bắt đầu SDD', dataIndex: 'nam_bd_sdd', key: 'nam_bd_sdd' },
-        { title: 'Thời gian SDD (năm)', dataIndex: 'tg_sdd', key: 'tg_sdd' },
-        { title: 'Diện tích đã SD (m²)', dataIndex: 'dtd_da_sd', key: 'dtd_da_sd' },
-        { title: 'Tình trạng SD', key: 'tinh_trang_sd', render: (_, record) => record.tinh_trang_sd?.name ?? '' },
-        { title: 'Tỉnh / Thành phố', key: 'tinhthanhpho', render: (_, record) => record.tinhthanhpho?.name ?? '' },
-        { title: 'Xã / Phường', key: 'xaphuong', render: (_, record) => record.xaphuong?.name ?? '' },
         { title: 'Địa chỉ', dataIndex: 'diachi', key: 'diachi' },
+        { title: 'Ghi chú', dataIndex: 'ghichu', key: 'ghichu' },
     ];
 
     const handleOnChangePage = (current: number, pageSize: number) => {
@@ -143,6 +139,7 @@ const TableDatdai = (props: IProps) => {
 
     const headers = [
         { label: 'Mã giấy CNQSH', key: 'ma_giay_cnqsh' },
+        { label: 'Thửa', key: 'thua' },
         { label: 'Diện tích (m²)', key: 'dt' },
         { label: 'Hình thức sử dụng', key: 'htsd.name' },
         { label: 'Cơ quan sở hữu', key: 'cqsh' },
@@ -189,6 +186,10 @@ const TableDatdai = (props: IProps) => {
                     <Button icon={<SearchOutlined />} type="primary" onClick={handleFilter}>Lọc</Button>
                 </Space>
             )}
+            <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 24, marginBottom: 12 }}>
+                <Text strong>- Tổng diện tích đất của trường: {summary.totalArea.toLocaleString('vi-VN')} m²</Text>
+                <Text strong>- Tổng diện tích đất đã bị thu hồi: {summary.revokedArea.toLocaleString('vi-VN')} m²</Text>
+            </div>
             <Table<IDatdai>
                 scroll={{ x: 'max-content' }}
                 pagination={{

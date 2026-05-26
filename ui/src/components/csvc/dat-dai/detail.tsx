@@ -15,6 +15,7 @@ const DatdaiDetail = ({ data }: IProps) => {
                 column={{ xs: 1, sm: 3 }}
             >
                 <Descriptions.Item label="Mã giấy CNQSH">{data.ma_giay_cnqsh ?? '—'}</Descriptions.Item>
+                <Descriptions.Item label="Thửa">{data.thua ?? '—'}</Descriptions.Item>
                 <Descriptions.Item label="Diện tích (m²)">{data.dt ?? '—'}</Descriptions.Item>
                 <Descriptions.Item label="Hình thức sử dụng">{data.htsd?.name ?? '—'}</Descriptions.Item>
                 <Descriptions.Item span={3} label="Cơ quan sở hữu">{data.cqsh ?? '—'}</Descriptions.Item>
@@ -28,6 +29,7 @@ const DatdaiDetail = ({ data }: IProps) => {
                 <Descriptions.Item span={3} label="Tỉnh / Thành phố">{data.tinhthanhpho?.name ?? '—'}</Descriptions.Item>
                 <Descriptions.Item span={3} label="Xã / Phường">{data.xaphuong?.name ?? '—'}</Descriptions.Item>
                 <Descriptions.Item span={3} label="Địa chỉ">{data.diachi ?? '—'}</Descriptions.Item>
+                <Descriptions.Item span={3} label="Ghi chú">{data.ghichu ?? '—'}</Descriptions.Item>
             </Descriptions>
         </div>
     )
