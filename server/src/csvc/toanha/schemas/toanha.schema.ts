@@ -37,6 +37,9 @@ export class Toanha {
     @Prop({ default: null })
     ngay_chuyen_tt: string;
 
+    @Prop({ default: 0 })
+    place: number;
+
 }
 
 export const ToanhaSchema = SchemaFactory.createForClass(Toanha);

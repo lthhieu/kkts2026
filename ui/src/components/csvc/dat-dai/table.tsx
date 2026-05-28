@@ -188,7 +188,7 @@ const TableDatdai = (props: IProps) => {
             )}
             <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 24, marginBottom: 12 }}>
                 <Text strong>- Tổng diện tích đất của trường: {summary.totalArea.toLocaleString('vi-VN')} m²</Text>
-                <Text strong>- Tổng diện tích đất đã bị thu hồi: {summary.revokedArea.toLocaleString('vi-VN')} m²</Text>
+                <Text strong>- Tổng diện tích trừ phần thu hồi làm đường: {summary.revokedArea.toLocaleString('vi-VN')} m²</Text>
             </div>
             <Table<IDatdai>
                 scroll={{ x: 'max-content' }}

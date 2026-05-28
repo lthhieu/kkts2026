@@ -1,12 +1,12 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Drawer, Flex, Input, Popconfirm, Space, Table, Tooltip, Typography, message, notification } from 'antd';
+import { Button, Drawer, Flex, Input, Popconfirm, Select, Space, Table, Tooltip, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import ToanhaDetail from '@/components/csvc/toa-nha/detail';
 import { useRouter } from 'next/navigation';
 import { handleDeleteToanha, handleDeleteToanhaMany } from '@/app/(main)/quan-tri/csvc/toa-nha/actions';
-import ToanhaModal from '@/components/csvc/toa-nha/modal';
+import ToanhaModal, { placeOptions } from '@/components/csvc/toa-nha/modal';
 import ModalImport from '@/components/csvc/toa-nha/modal.import';
 import { canCreateCsvc, canDeleteCsvc, canReadCsvc, canUpdateCsvc } from '@/libs/csvc';
 import { CSVLink } from 'react-csv';
@@ -20,12 +20,14 @@ interface IProps {
     user: IUser | null;
     hinhthucsohuu: IHinhthucsohuu[];
     tinhtrangsudung: ITinhtrangsudung[];
+    summary: ISummaryToanha[] | null;
 }
 
 const Context = React.createContext({ name: 'Default' });
+const { Text } = Typography;
 
 const TableToanha = (props: IProps) => {
-    const { data, access_token, meta, user, hinhthucsohuu, tinhtrangsudung } = props;
+    const { data, access_token, meta, user, hinhthucsohuu, tinhtrangsudung, summary } = props;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalImportOpen, setIsModalImportOpen] = useState(false);
     const [status, setStatus] = useState('');
@@ -41,6 +43,8 @@ const TableToanha = (props: IProps) => {
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
     const [selectedName, setSelectedName] = useState<string | undefined>(undefined);
     const [selectedMa, setSelectedMa] = useState<string | undefined>(undefined);
+    const [selectedPlace, setSelectedPlace] = useState<number | undefined>(undefined);
+
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
 
@@ -146,6 +150,7 @@ const TableToanha = (props: IProps) => {
         const params = new URLSearchParams();
         if (selectedName) params.set('ten_toanha', selectedName);
         if (selectedMa) params.set('ma_toanha', selectedMa);
+        if (selectedPlace) params.set('place', selectedPlace.toString());
         params.set('current', current.toString());
         params.set('pageSize', pageSize.toString());
         router.push(`/quan-tri/csvc/toa-nha?${params.toString()}`);
@@ -155,8 +160,11 @@ const TableToanha = (props: IProps) => {
         const params = new URLSearchParams();
         if (selectedName) params.set('ten_toanha', selectedName);
         if (selectedMa) params.set('ma_toanha', selectedMa);
-        params.set('current', '1');
+        if (selectedPlace !== undefined && selectedPlace !== null) {
+            params.set('place', selectedPlace.toString());
+        } params.set('current', '1');
         params.set('pageSize', meta.pageSize.toString());
+        console.log(params.toString());
         router.push(`/quan-tri/csvc/toa-nha?${params.toString()}`);
     };
 
@@ -230,10 +238,54 @@ const TableToanha = (props: IProps) => {
                         onChange={(e) => setSelectedName(e.target.value)}
                         value={selectedName}
                     />
-                    <Button icon={<ClearOutlined />} onClick={() => { setSelectedName(undefined); setSelectedMa(undefined); }}>Xóa bộ lọc</Button>
+                    <Select
+                        allowClear
+                        onClear={() => setSelectedPlace(undefined)}
+                        showSearch={{ optionFilterProp: 'label' }}
+                        placeholder="Chọn vị trí"
+                        style={{ minWidth: 200 }}
+                        value={selectedPlace}
+                        onChange={(val) => {
+                            setSelectedPlace(val)
+
+                        }}
+                        options={placeOptions.map(({ value, label }) => ({ value, label }))}
+                    />
+                    <Button icon={<ClearOutlined />} onClick={() => { setSelectedName(undefined); setSelectedMa(undefined); setSelectedPlace(undefined); }}>Xóa bộ lọc</Button>
                     <Button icon={<SearchOutlined />} type="primary" onClick={handleFilter}>Lọc</Button>
                 </Space>
             )}
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    marginLeft: 24,
+                    marginBottom: 12,
+                    gap: 4,
+                }}
+            >
+                {summary?.map((item) => (
+                    <div key={item.place}>
+                        <Text strong>
+                            - {item.place === 0 ? 'Trường SPKT' : 'KTX'}:
+                        </Text>
+
+                        <div style={{ marginLeft: 16 }}>
+                            <Text>
+                                + Tổng diện tích xây dựng:{' '}
+                                {item.totalDTXD.toLocaleString('vi-VN')} m²
+                            </Text>
+
+                            <br />
+
+                            <Text>
+                                + Tổng diện tích sàn xây dựng:{' '}
+                                {item.totalTongDTSXD.toLocaleString('vi-VN')} m²
+                            </Text>
+                        </div>
+                    </div>
+                ))}
+            </div>
             <Table<IToanha>
                 scroll={{ x: 'max-content' }}
                 pagination={{

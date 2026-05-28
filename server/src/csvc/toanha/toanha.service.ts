@@ -19,6 +19,38 @@ export class ToanhaService {
     return await this.toanhaModel.insertMany(createToanhaDto);
   }
 
+  async summary() {
+    const result = await this.toanhaModel.aggregate([
+      {
+        $group: {
+          _id: '$place',
+
+          totalDTXD: {
+            $sum: '$dtxd',
+          },
+
+          totalTongDTSXD: {
+            $sum: '$tong_dt_sxd',
+          },
+        },
+      },
+
+      {
+        $project: {
+          _id: 0,
+          place: '$_id',
+
+          totalDTXD: 1,
+
+          totalTongDTSXD: 1,
+
+        },
+      },
+    ]);
+
+    return result;
+  }
+
   async findAll(current: number, pageSize: number, queryString: string) {
     let { filter, population } = aqp(queryString);
     let { sort }: { sort: any } = aqp(queryString);

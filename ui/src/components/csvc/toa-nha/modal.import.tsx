@@ -55,7 +55,7 @@ const ModalImportToanha = (props: IProps) => {
                     const jsonData: any[] = [];
 
                     worksheet.eachRow((row, rowNumber) => {
-                        if (rowNumber <= 2) return;
+                        if (rowNumber <= 1) return;
 
                         const getVal = (colIndex: number) => {
                             const cell = row.getCell(colIndex);
@@ -74,7 +74,7 @@ const ModalImportToanha = (props: IProps) => {
                             diachi: getVal(8) ? String(getVal(8)) : null,
                             tinh_trang_sd: getVal(9) ? String(getVal(9)) : null,
                             ngay_chuyen_tt: getVal(10) ? String(getVal(10)) : null,
-
+                            place: Number(getVal(11)) || 0,
                         };
 
                         jsonData.push(obj);

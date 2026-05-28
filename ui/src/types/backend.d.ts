@@ -308,6 +308,11 @@ declare global {
         totalArea: number;
         revokedArea: number;
     }
+    interface ISummaryToanha {
+        "totalDTXD": number,
+        "totalTongDTSXD": number,
+        "place": number
+    }
     interface IToanha {
         _id: string;
         ma_toanha: string;
@@ -322,6 +327,7 @@ declare global {
         ngay_chuyen_tt: string | null;
         createdAt?: string;
         updatedAt?: string;
+        place?: number;
     }
 
     interface IPhgdht {

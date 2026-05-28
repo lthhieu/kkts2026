@@ -10,7 +10,7 @@ import { Action, CsvcSubject } from 'src/configs/enum';
 @UseGuards(PoliciesGuard)
 @Controller('toanha')
 export class ToanhaController {
-  constructor(private readonly toanhaService: ToanhaService) {}
+  constructor(private readonly toanhaService: ToanhaService) { }
 
   @Post()
   @ResponseMessage('Tạo toà nhà thành công')
@@ -24,6 +24,13 @@ export class ToanhaController {
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Create, CsvcSubject))
   createMany(@Body() createToanhaDto: CreateToanhaDto[]) {
     return this.toanhaService.createMany(createToanhaDto);
+  }
+
+  @Get('/summary')
+  @ResponseMessage('Tải tổng quan toà nhà thành công')
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Read, CsvcSubject))
+  summary() {
+    return this.toanhaService.summary();
   }
 
   @Get()

@@ -16,6 +16,11 @@ interface IProps {
     tinhtrangsudung: ITinhtrangsudung[];
 }
 
+export const placeOptions = [
+    { value: 0, label: `Trường SPKT` },
+    { value: 1, label: `KTX SPKT` }
+]
+
 const Context = React.createContext({ name: 'Default' });
 
 const ToanhaModal = (props: IProps) => {
@@ -24,6 +29,7 @@ const ToanhaModal = (props: IProps) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [api, contextHolderNotification] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
+
 
     useEffect(() => {
         if (dataUpdate) {
@@ -38,6 +44,7 @@ const ToanhaModal = (props: IProps) => {
                 diachi: dataUpdate.diachi ?? null,
                 tinh_trang_sd: dataUpdate.tinh_trang_sd?._id ?? null,
                 ngay_chuyen_tt: dataUpdate.ngay_chuyen_tt ? dayjs(dataUpdate.ngay_chuyen_tt, ['DD/MM/YYYY', 'YYYY-MM-DD']) : null,
+                place: dataUpdate.place || 0,
             });
         }
     }, [dataUpdate]);
@@ -215,13 +222,34 @@ const ToanhaModal = (props: IProps) => {
                         <Input />
                     </Form.Item>
 
-                    <Form.Item
-                        style={{ marginBottom: 8 }}
-                        label="Ngày chuyển tình trạng"
-                        name="ngay_chuyen_tt"
-                    >
-                        <DatePicker style={{ width: '100%' }} format="DD/MM/YYYY" placeholder="DD/MM/YYYY" />
-                    </Form.Item>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item
+                                style={{ marginBottom: 8 }}
+                                label="Ngày chuyển tình trạng"
+                                name="ngay_chuyen_tt"
+                            >
+                                <DatePicker style={{ width: '100%' }} format="DD/MM/YYYY" placeholder="DD/MM/YYYY" />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+                                style={{ marginBottom: 8 }}
+                                label="Vị trí"
+                                name="place"
+                            >
+                                <Select
+                                    style={{ width: '100%' }}
+                                    showSearch={{ optionFilterProp: 'label' }}
+                                    placeholder="Chọn vị trí"
+                                    allowClear
+                                    options={placeOptions.map(({ value, label }) => ({ value, label }))}
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+
+
                 </Form>
             </Modal>
         </Context.Provider>
