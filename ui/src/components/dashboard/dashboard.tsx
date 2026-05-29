@@ -20,6 +20,12 @@ import {
     FormOutlined,
     GlobalOutlined,
     EnvironmentOutlined,
+    AlertOutlined,
+    CompassOutlined,
+    CameraOutlined,
+    NodeIndexOutlined,
+    FireOutlined,
+    DeploymentUnitOutlined,
 } from '@ant-design/icons';
 import { Button, Layout, Menu, Space, theme, Dropdown, MenuProps } from 'antd';
 import Link from 'next/link';
@@ -232,9 +238,49 @@ const Dashboard = ({
                     label: <Link href="/quan-tri/csvc/toa-nha">Tòa nhà</Link>,
                 },
                 {
-                    key: '/quan-tri/csvc/phgdht',
+                    key: '/quan-tri/csvc/ly-thuyet',
+                    icon: <AlertOutlined />,
+                    label: <Link href="/quan-tri/csvc/ly-thuyet">Lý thuyết</Link>,
+                },
+                {
+                    key: '/quan-tri/csvc/hoi-truong',
+                    icon: <CompassOutlined />,
+                    label: <Link href="/quan-tri/csvc/hoi-truong">Hội trường</Link>,
+                },
+                {
+                    key: '/quan-tri/csvc/da-phuong-tien',
+                    icon: <CameraOutlined />,
+                    label: <Link href="/quan-tri/csvc/da-phuong-tien">Đa phương tiện</Link>,
+                },
+                {
+                    key: '/quan-tri/csvc/thuc-hanh',
+                    icon: <ToolOutlined />,
+                    label: <Link href="/quan-tri/csvc/thuc-hanh">Thực hành</Link>,
+                },
+                {
+                    key: '/quan-tri/csvc/thi-nghiem',
+                    icon: <ExperimentOutlined />,
+                    label: <Link href="/quan-tri/csvc/thi-nghiem">Thí nghiệm</Link>,
+                },
+                {
+                    key: '/quan-tri/csvc/nghien-cuu',
+                    icon: <NodeIndexOutlined />,
+                    label: <Link href="/quan-tri/csvc/nghien-cuu">Nghiên cứu</Link>,
+                },
+                {
+                    key: '/quan-tri/csvc/pgs-gs',
+                    icon: <FireOutlined />,
+                    label: <Link href="/quan-tri/csvc/pgs-gs">PGS-GS</Link>,
+                },
+                {
+                    key: '/quan-tri/csvc/cho-lam-viec-cua-gv',
+                    icon: <BankOutlined />,
+                    label: <Link href="/quan-tri/csvc/cho-lam-viec-cua-gv">Chỗ làm việc của GV</Link>,
+                },
+                {
+                    key: '/quan-tri/csvc/thu-vien',
                     icon: <ReadOutlined />,
-                    label: <Link href="/quan-tri/csvc/phgdht">Phòng học/GĐ/HT</Link>,
+                    label: <Link href="/quan-tri/csvc/thu-vien">Thư viện</Link>,
                 },
                 {
                     key: '/quan-tri/csvc/ktx',
@@ -242,30 +288,45 @@ const Dashboard = ({
                     label: <Link href="/quan-tri/csvc/ktx">Ký túc xá</Link>,
                 },
                 {
-                    key: '/quan-tri/csvc/ctk',
-                    icon: <BuildOutlined />,
-                    label: <Link href="/quan-tri/csvc/ctk">Công trình</Link>,
+                    key: '/quan-tri/csvc/nha-xuong',
+                    icon: <DeploymentUnitOutlined />,
+                    label: <Link href="/quan-tri/csvc/nha-xuong">Nhà xưởng</Link>,
                 },
-                {
-                    key: '/quan-tri/csvc/ptn',
-                    icon: <ExperimentOutlined />,
-                    label: <Link href="/quan-tri/csvc/ptn">Phòng thí nghiệm</Link>,
-                },
-                {
-                    key: '/quan-tri/csvc/xth',
-                    icon: <ToolOutlined />,
-                    label: <Link href="/quan-tri/csvc/xth">Xưởng thực hành</Link>,
-                },
-                {
-                    key: '/quan-tri/csvc/tbiptn',
-                    icon: <ApiOutlined />,
-                    label: <Link href="/quan-tri/csvc/tbiptn">Thiết bị PTN</Link>,
-                },
-                {
-                    key: '/quan-tri/csvc/thu-vien',
-                    icon: <ReadOutlined />,
-                    label: <Link href="/quan-tri/csvc/thu-vien">Thư viện</Link>,
-                },
+                // {
+                //     key: '/quan-tri/csvc/phgdht',
+                //     icon: <ReadOutlined />,
+                //     label: <Link href="/quan-tri/csvc/phgdht">Phòng học/GĐ/HT</Link>,
+                // },
+                // {
+                //     key: '/quan-tri/csvc/ktx',
+                //     icon: <HomeOutlined />,
+                //     label: <Link href="/quan-tri/csvc/ktx">Ký túc xá</Link>,
+                // },
+                // {
+                //     key: '/quan-tri/csvc/ctk',
+                //     icon: <BuildOutlined />,
+                //     label: <Link href="/quan-tri/csvc/ctk">Công trình</Link>,
+                // },
+                // {
+                //     key: '/quan-tri/csvc/ptn',
+                //     icon: <ExperimentOutlined />,
+                //     label: <Link href="/quan-tri/csvc/ptn">Phòng thí nghiệm</Link>,
+                // },
+                // {
+                //     key: '/quan-tri/csvc/xth',
+                //     icon: <ToolOutlined />,
+                //     label: <Link href="/quan-tri/csvc/xth">Xưởng thực hành</Link>,
+                // },
+                // {
+                //     key: '/quan-tri/csvc/tbiptn',
+                //     icon: <ApiOutlined />,
+                //     label: <Link href="/quan-tri/csvc/tbiptn">Thiết bị PTN</Link>,
+                // },
+                // {
+                //     key: '/quan-tri/csvc/thu-vien',
+                //     icon: <ReadOutlined />,
+                //     label: <Link href="/quan-tri/csvc/thu-vien">Thư viện</Link>,
+                // },
             ],
         },
         {

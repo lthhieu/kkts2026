@@ -41,6 +41,14 @@ import { XthModule } from './csvc/xth/xth.module';
 import { TbiptnModule } from './csvc/tbiptn/tbiptn.module';
 import { ThuvienModule } from './csvc/thuvien/thuvien.module';
 import { MailModule } from './mail/mail.module';
+import { LythuyetModule } from 'src/csvc/lythuyet/lythuyet.module';
+import { HoitruongModule } from 'src/csvc/hoitruong/hoitruong.module';
+import { DaphuongtienModule } from 'src/csvc/daphuongtien/daphuongtien.module';
+import { ThuchanhModule } from 'src/csvc/thuchanh/thuchanh.module';
+import { ThinghiemModule } from 'src/csvc/thinghiem/thinghiem.module';
+import { NghiencuuModule } from 'src/csvc/nghiencuu/nghiencuu.module';
+import { PgsgsModule } from 'src/csvc/pgsgs/pgsgs.module';
+import { NhaxuongModule } from 'src/csvc/nhaxuong/nhaxuong.module';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true, }),
@@ -82,6 +90,14 @@ import { MailModule } from './mail/mail.module';
     TbiptnModule,
     ThuvienModule,
     MailModule,
+    LythuyetModule,
+    HoitruongModule,
+    DaphuongtienModule,
+    ThuchanhModule,
+    ThinghiemModule,
+    NghiencuuModule,
+    PgsgsModule,
+    NhaxuongModule
   ],
   controllers: [AppController],
   providers: [AppService],

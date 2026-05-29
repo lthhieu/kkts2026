@@ -313,6 +313,9 @@ declare global {
         "totalTongDTSXD": number,
         "place": number
     }
+    interface ISummaryCsvc {
+        "totalDT": number,
+    }
     interface IToanha {
         _id: string;
         ma_toanha: string;
@@ -328,6 +331,15 @@ declare global {
         createdAt?: string;
         updatedAt?: string;
         place?: number;
+    }
+
+    interface ICsvcSubject {
+        _id: string;
+        ma: string;
+        name: string;
+        dt: number;
+        qui_mo_cho_ngoi: number;
+        nam_sd: number;
     }
 
     interface IPhgdht {
