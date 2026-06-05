@@ -40,9 +40,19 @@ const ModalImport = (props: IProps) => {
                     if (!worksheet) return;
                     const jsonData: { name: string }[] = [];
                     worksheet.eachRow((row, rowNumber) => {
-                        if (rowNumber <= 2) return;
-                        const name = row.getCell(1).value;
-                        if (name) jsonData.push({ name: String(name) });
+                        if (rowNumber <= 1) return;
+                        const getVal = (colIndex: number) => {
+                            const cell = row.getCell(colIndex);
+                            return cell.value;
+                        };
+
+                        // A=ma_toanha, B=ten_toanha, C=dtxd, D=tong_dt_sxd, E=so_tang, F=nam_sd, G=diachi
+                        const obj = {
+                            name: getVal(1) ? String(getVal(1)) : '',
+                            tinhthanhpho: getVal(2) ? String(getVal(2)) : '',
+                        };
+
+                        jsonData.push(obj);
                     });
                     setDataImport(jsonData);
                 } catch (e) { message.error('Có lỗi khi đọc file Excel'); }
@@ -72,13 +82,18 @@ const ModalImport = (props: IProps) => {
                 <Dragger {...uploadProps}>
                     <p className="ant-upload-drag-icon"><InboxOutlined /></p>
                     <p className="ant-upload-text">Chọn hoặc kéo thả file để tải dữ liệu</p>
-                    <p className="ant-upload-hint">Chỉ hỗ trợ file excel và csv</p>
+                    <p className="ant-upload-hint">
+                        Chỉ hỗ trợ file excel và csv
+                        &nbsp;<a onClick={(e) => e.stopPropagation()} href={`${process.env.NEXT_PUBLIC_FRONTEND_URI}sample/sample-xaphuong.xlsx`} download>Tải file mẫu</a>
+                    </p>
                 </Dragger>
-                <Table<{ name: string }>
+                <Table<{ name: string; }>
                     scroll={{ x: 'max-content' }}
                     title={() => <span>Dữ liệu:</span>}
                     dataSource={dataImport} rowKey={() => crypto.randomUUID()}
-                    columns={[{ dataIndex: 'name', title: 'Tên' }]} />
+                    columns={[{ dataIndex: 'name', title: 'Tên' },
+                    { dataIndex: 'tinhthanhpho', title: 'Tỉnh thành phố' }
+                    ]} />
             </Modal>
         </Context.Provider>
     );

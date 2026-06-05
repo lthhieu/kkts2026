@@ -40,7 +40,7 @@ const ModalImport = (props: IProps) => {
                     if (!worksheet) return;
                     const jsonData: { name: string }[] = [];
                     worksheet.eachRow((row, rowNumber) => {
-                        if (rowNumber <= 2) return;
+                        if (rowNumber <= 1) return;
                         const name = row.getCell(1).value;
                         if (name) jsonData.push({ name: String(name) });
                     });
@@ -72,7 +72,10 @@ const ModalImport = (props: IProps) => {
                 <Dragger {...uploadProps}>
                     <p className="ant-upload-drag-icon"><InboxOutlined /></p>
                     <p className="ant-upload-text">Chọn hoặc kéo thả file để tải dữ liệu</p>
-                    <p className="ant-upload-hint">Chỉ hỗ trợ file excel và csv</p>
+                    <p className="ant-upload-hint">
+                        Chỉ hỗ trợ file excel và csv
+                        &nbsp;<a onClick={(e) => e.stopPropagation()} href={`${process.env.NEXT_PUBLIC_FRONTEND_URI}sample/sample-danhmuc.xlsx`} download>Tải file mẫu</a>
+                    </p>
                 </Dragger>
                 <Table<{ name: string }>
                     scroll={{ x: 'max-content' }}

@@ -49,6 +49,11 @@ import { ThinghiemModule } from 'src/csvc/thinghiem/thinghiem.module';
 import { NghiencuuModule } from 'src/csvc/nghiencuu/nghiencuu.module';
 import { PgsgsModule } from 'src/csvc/pgsgs/pgsgs.module';
 import { NhaxuongModule } from 'src/csvc/nhaxuong/nhaxuong.module';
+import { CholamvieccuagvModule } from 'src/csvc/cholamvieccuagv/cholamvieccuagv.module';
+import { MaytoantruongModule } from './csvc/maytoantruong/maytoantruong.module';
+import { LoaiphongModule } from 'src/csvc/danhmuc/loaiphong/loaiphong.module';
+import { PhongchucnangModule } from 'src/csvc/phongchucnang/phongchucnang.module';
+import { Tbtren500trModule } from './csvc/tbtren500tr/tbtren500tr.module';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true, }),
@@ -97,7 +102,12 @@ import { NhaxuongModule } from 'src/csvc/nhaxuong/nhaxuong.module';
     ThinghiemModule,
     NghiencuuModule,
     PgsgsModule,
-    NhaxuongModule
+    NhaxuongModule,
+    CholamvieccuagvModule,
+    MaytoantruongModule,
+    LoaiphongModule,
+    PhongchucnangModule,
+    Tbtren500trModule
   ],
   controllers: [AppController],
   providers: [AppService],

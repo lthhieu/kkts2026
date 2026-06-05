@@ -10,13 +10,20 @@ import { Action, CsvcSubject } from 'src/configs/enum';
 @UseGuards(PoliciesGuard)
 @Controller('thuvien')
 export class ThuvienController {
-  constructor(private readonly thuvienService: ThuvienService) {}
+  constructor(private readonly thuvienService: ThuvienService) { }
 
   @Post()
   @ResponseMessage('Tạo thư viện thành công')
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Create, CsvcSubject))
   create(@Body() createThuvienDto: CreateThuvienDto) {
     return this.thuvienService.create(createThuvienDto);
+  }
+
+  @Get('/summary')
+  @ResponseMessage('Tải tổng quan thư viện thành công')
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Read, CsvcSubject))
+  summary() {
+    return this.thuvienService.summary();
   }
 
   @Post('/create-many')

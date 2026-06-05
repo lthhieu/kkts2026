@@ -12,9 +12,6 @@ interface IProps {
     setStatus: (value: string) => void;
     dataUpdate: null | IKtx;
     setDataUpdate: (value: null | IKtx) => void;
-    hinhthucsohuu: IHinhthucsohuu[];
-    tinhtrangcsvc: ITinhtrangcsvc[];
-    tinhtrangsudung: ITinhtrangsudung[];
 }
 
 const Context = React.createContext({ name: 'Default' });
@@ -23,7 +20,6 @@ const KtxModal = (props: IProps) => {
     const {
         setIsModalOpen, isModalOpen, setStatus, status, access_token,
         setDataUpdate, dataUpdate,
-        hinhthucsohuu, tinhtrangcsvc, tinhtrangsudung,
     } = props;
     const [form] = Form.useForm();
     const [messageApi, contextHolder] = message.useMessage();
@@ -33,16 +29,11 @@ const KtxModal = (props: IProps) => {
     useEffect(() => {
         if (dataUpdate) {
             form.setFieldsValue({
-                ma_ktx: dataUpdate.ma_ktx,
-                htsh: dataUpdate.htsh?._id ?? null,
-                tong_so_cho_o: dataUpdate.tong_so_cho_o,
-                tong_dt: dataUpdate.tong_dt,
-                tinhtrangcsvc: dataUpdate.tinhtrangcsvc?._id ?? null,
-                tong_so_phong_o_sv: dataUpdate.tong_so_phong_o_sv,
+                ma_ktx: dataUpdate.ma,
+                name: dataUpdate.name,
+                dt: dataUpdate.dt,
+                sc: dataUpdate.sc,
                 nam_sd: dataUpdate.nam_sd,
-                diachi: dataUpdate.diachi,
-                tinh_trang_sd: dataUpdate.tinh_trang_sd?._id ?? null,
-                ngay_chuyen_tt: dataUpdate.ngay_chuyen_tt ? dayjs(dataUpdate.ngay_chuyen_tt, ['DD/MM/YYYY', 'YYYY-MM-DD']) : null,
             });
         }
     }, [dataUpdate]);
@@ -59,7 +50,6 @@ const KtxModal = (props: IProps) => {
     const onFinish = async (values: any) => {
         const payload = {
             ...values,
-            ngay_chuyen_tt: values.ngay_chuyen_tt ? values.ngay_chuyen_tt.format('DD/MM/YYYY') : null,
         };
         const response = await handleCreateOrUpdateKtx(payload, access_token ?? '', status, dataUpdate);
         if (response.data) {
@@ -92,75 +82,37 @@ const KtxModal = (props: IProps) => {
                     name="ktx-modal"
                     onFinish={onFinish}
                     validateMessages={validateMessages}
-                    initialValues={{ nam_sd: new Date().getFullYear(), tong_so_cho_o: 0, tong_dt: 0, tong_so_phong_o_sv: 0 }}
+                    initialValues={{ nam_sd: new Date().getFullYear() }}
                 >
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Mã KTX" name="ma_ktx" rules={[{ required: true }]}>
+                            <Form.Item style={{ marginBottom: 8 }} label="Mã KTX" name="ma" rules={[{ required: true }]}>
                                 <Input />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Hình thức sở hữu" name="htsh" rules={[{ required: true }]}>
-                                <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
-                                    options={hinhthucsohuu.map(({ _id, name }) => ({ value: _id, label: name }))} />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-
-                    <Row gutter={16}>
-                        <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Tổng số chỗ ở" name="tong_so_cho_o" rules={[{ required: true }]}>
-                                <InputNumber style={{ width: '100%' }} />
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Tổng diện tích (m²)" name="tong_dt" rules={[{ required: true }]}>
-                                <InputNumber style={{ width: '100%' }} />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-
-                    <Row gutter={16}>
-                        <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Tình trạng CSVC" name="tinhtrangcsvc" rules={[{ required: true }]}>
-                                <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
-                                    options={tinhtrangcsvc.map(({ _id, name }) => ({ value: _id, label: name }))} />
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Tổng số phòng ở SV" name="tong_so_phong_o_sv" rules={[{ required: true }]}>
-                                <InputNumber style={{ width: '100%' }} />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-
-                    <Row gutter={16}>
-                        <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Năm sử dụng" name="nam_sd" rules={[{ required: true }]}>
-                                <InputNumber style={{ width: '100%' }} />
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Tình trạng sử dụng" name="tinh_trang_sd">
-                                <Select allowClear showSearch={{ optionFilterProp: 'label' }} placeholder="Vui lòng chọn"
-                                    options={tinhtrangsudung.map(({ _id, name }) => ({ value: _id, label: name }))} />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-
-                    <Row gutter={16}>
-                        <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Ngày chuyển tình trạng" name="ngay_chuyen_tt">
-                                <DatePicker style={{ width: '100%' }} format="DD/MM/YYYY" placeholder="DD/MM/YYYY" />
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item style={{ marginBottom: 8 }} label="Địa chỉ" name="diachi" rules={[{ required: true }]}>
+                            <Form.Item style={{ marginBottom: 8 }} label="Tên" name="name" rules={[{ required: true }]}>
                                 <Input />
                             </Form.Item>
                         </Col>
                     </Row>
+
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="Diện tích (m²)" name="dt" rules={[{ required: true }]}>
+                                <InputNumber style={{ width: '100%' }} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item style={{ marginBottom: 8 }} label="Sức chứa" name="sc" rules={[{ required: true }]}>
+                                <InputNumber style={{ width: '100%' }} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Form.Item style={{ marginBottom: 8 }} label="Năm sử dụng" name="nam_sd" rules={[{ required: true }]}>
+                        <InputNumber style={{ width: '100%' }} />
+                    </Form.Item>
+
                 </Form>
             </Modal>
         </Context.Provider>

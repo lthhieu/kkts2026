@@ -1,19 +1,19 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button, Flex, Input, Popconfirm, Space, Table, Tooltip, Typography, message, notification } from 'antd';
-import type { PopconfirmProps, TableProps } from 'antd';
+import type { TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
-import { handleDeleteLoaiptn, handleDeleteLoaiptnMany } from '@/app/(main)/quan-tri/csvc/danh-muc/loai-ptn/actions';
-import LoaiptnModal from '@/components/csvc/danh-muc/loai-ptn/modal';
-import ModalImport from '@/components/csvc/danh-muc/loai-ptn/modal.import';
+import { handleDeleteLoaiphong, handleDeleteLoaiphongMany } from '@/app/(main)/quan-tri/csvc/danh-muc/loai-phong/actions';
+import ModalImport from '@/components/csvc/danh-muc/loai-phong/modal.import';
 import { canCreateDanhmuc, canDeleteDanhmuc, canReadDanhmuc, canUpdateDanhmuc } from '@/libs/danhmuc';
 import { CSVLink } from 'react-csv';
+import LoaiphongModal from '@/components/csvc/danh-muc/loai-phong/modal';
 
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
 
 interface IProps {
-    data: ILoaiptn[];
+    data: ILoaiphong[];
     access_token: string;
     meta: IMeta;
     user: IUser | null;
@@ -21,14 +21,14 @@ interface IProps {
 
 const Context = React.createContext({ name: 'Default' });
 
-const TableLoaiptn = (props: IProps) => {
+const TableLoaiphong = (props: IProps) => {
     const { data, access_token, meta, user } = props;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalImportOpen, setIsModalImportOpen] = useState(false);
     const [status, setStatus] = useState('');
     const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-    const [dataUpdate, setDataUpdate] = useState<null | ILoaiptn>(null);
+    const [dataUpdate, setDataUpdate] = useState<null | ILoaiphong>(null);
     const router = useRouter();
     const [messageApi, contextHolder] = message.useMessage();
     const [api, contextHolderNotification] = notification.useNotification();
@@ -38,12 +38,12 @@ const TableLoaiptn = (props: IProps) => {
     useEffect(() => setMounted(true), []);
 
     const deleteItem = async (_id: string) => {
-        const res = await handleDeleteLoaiptn(_id, access_token);
+        const res = await handleDeleteLoaiphong(_id, access_token);
         if (!res.data) api.error({ title: 'Có lỗi xảy ra', description: res.message, placement: 'topRight' });
         else messageApi.success(res.message);
     };
 
-    const columns: TableProps<ILoaiptn>['columns'] = [
+    const columns: TableProps<ILoaiphong>['columns'] = [
         {
             title: 'Tên',
             dataIndex: 'name',
@@ -73,7 +73,7 @@ const TableLoaiptn = (props: IProps) => {
         if (selectedName) params.set('name', selectedName);
         params.set('current', current.toString());
         params.set('pageSize', pageSize.toString());
-        router.push(`/quan-tri/csvc/danh-muc/loai-ptn?${params.toString()}`);
+        router.push(`/quan-tri/csvc/danh-muc/loai-phong?${params.toString()}`);
     };
 
     const handleFilter = () => {
@@ -81,11 +81,11 @@ const TableLoaiptn = (props: IProps) => {
         if (selectedName) params.set('name', selectedName);
         params.set('current', '1');
         params.set('pageSize', meta.pageSize.toString());
-        router.push(`/quan-tri/csvc/danh-muc/loai-ptn?${params.toString()}`);
+        router.push(`/quan-tri/csvc/danh-muc/loai-phong?${params.toString()}`);
     };
 
     const deleteMany = async (ids: string[]) => {
-        const res = await handleDeleteLoaiptnMany(ids, access_token);
+        const res = await handleDeleteLoaiphongMany(ids, access_token);
         if (!res.data) api.error({ title: 'Có lỗi xảy ra', description: res.message, placement: 'topRight' });
         else messageApi.success(res.message);
     };
@@ -97,14 +97,14 @@ const TableLoaiptn = (props: IProps) => {
 
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => setSelectedRowKeys(newSelectedRowKeys);
     const hasSelected = selectedRowKeys.length > 0;
-    const rowSelection: TableRowSelection<ILoaiptn> = { selectedRowKeys, onChange: onSelectChange };
+    const rowSelection: TableRowSelection<ILoaiphong> = { selectedRowKeys, onChange: onSelectChange };
     const headers = [{ label: 'Tên', key: 'name' }];
 
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
             <Flex style={{ marginBottom: 16 }} justify="space-between" align="center">
-                <h2>Danh sách loại PTN</h2>
+                <h2>Danh sách loại phòng</h2>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {canDeleteDanhmuc(user ?? {} as IUser) && (
                         <Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>
@@ -131,7 +131,7 @@ const TableLoaiptn = (props: IProps) => {
                     <Button icon={<SearchOutlined />} type="primary" onClick={handleFilter}>Lọc</Button>
                 </Space>
             )}
-            <Table<ILoaiptn>
+            <Table<ILoaiphong>
                 scroll={{ x: 'max-content' }}
                 pagination={{
                     current: meta.current, pageSize: meta.pageSize, total: meta.total,
@@ -141,7 +141,7 @@ const TableLoaiptn = (props: IProps) => {
                 rowSelection={rowSelection}
                 columns={columns} dataSource={data} rowKey="_id"
             />
-            <LoaiptnModal setStatus={setStatus} status={status} access_token={access_token}
+            <LoaiphongModal setStatus={setStatus} status={status} access_token={access_token}
                 isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}
                 setDataUpdate={setDataUpdate} dataUpdate={dataUpdate} />
             <ModalImport access_token={access_token} isModalImportOpen={isModalImportOpen} setIsModalImportOpen={setIsModalImportOpen} />
@@ -149,4 +149,4 @@ const TableLoaiptn = (props: IProps) => {
     );
 };
 
-export default TableLoaiptn;
+export default TableLoaiphong

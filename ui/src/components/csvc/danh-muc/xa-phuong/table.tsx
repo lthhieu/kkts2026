@@ -74,7 +74,7 @@ const TableXaphuong = (props: IProps) => {
             key: 'tinhthanhpho',
             render: (_, record) => (
                 <Space>
-                    <Typography.Text copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.tinhthanhpho.name}</Typography.Text>
+                    <Typography.Text copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.tinhthanhpho?.name ?? ''}</Typography.Text>
                 </Space>
             ),
         },

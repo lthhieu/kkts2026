@@ -130,16 +130,6 @@ const TableToanha = (props: IProps) => {
             key: 'nam_sd',
         },
         {
-            title: 'Hình thức sở hữu',
-            key: 'htsh',
-            render: (_, record) => record.htsh?.name ?? '',
-        },
-        {
-            title: 'Tình trạng sử dụng',
-            key: 'tinh_trang_sd',
-            render: (_, record) => record.tinh_trang_sd?.name ?? '',
-        },
-        {
             title: 'Địa chỉ',
             dataIndex: 'diachi',
             key: 'diachi',

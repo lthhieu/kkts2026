@@ -26,6 +26,9 @@ import {
     NodeIndexOutlined,
     FireOutlined,
     DeploymentUnitOutlined,
+    BookOutlined,
+    LaptopOutlined,
+    CoffeeOutlined,
 } from '@ant-design/icons';
 import { Button, Layout, Menu, Space, theme, Dropdown, MenuProps } from 'antd';
 import Link from 'next/link';
@@ -149,7 +152,7 @@ const Dashboard = ({
         {
             key: 'csvc-group',
             icon: <BuildOutlined />,
-            label: 'CSVC',
+            label: 'Cơ sở vật chất',
             permission: { action: Action.Read, subject: new CsvcSubject() },
             children: [
                 {
@@ -187,8 +190,8 @@ const Dashboard = ({
                             label: <Link href="/quan-tri/csvc/danh-muc/loai-cong-trinh">Loại công trình</Link>,
                         },
                         {
-                            key: '/quan-tri/csvc/danh-muc/loai-ptn',
-                            label: <Link href="/quan-tri/csvc/danh-muc/loai-ptn">Loại PTN</Link>,
+                            key: '/quan-tri/csvc/danh-muc/loai-phong',
+                            label: <Link href="/quan-tri/csvc/danh-muc/loai-phong">Loại phòng</Link>,
                         },
                         {
                             key: '/quan-tri/csvc/danh-muc/loai-de-an',
@@ -273,9 +276,9 @@ const Dashboard = ({
                     label: <Link href="/quan-tri/csvc/pgs-gs">PGS-GS</Link>,
                 },
                 {
-                    key: '/quan-tri/csvc/cho-lam-viec-cua-gv',
-                    icon: <BankOutlined />,
-                    label: <Link href="/quan-tri/csvc/cho-lam-viec-cua-gv">Chỗ làm việc của GV</Link>,
+                    key: '/quan-tri/csvc/cho-lam-viec-cua-giang-vien',
+                    icon: <BookOutlined />,
+                    label: <Link href="/quan-tri/csvc/cho-lam-viec-cua-giang-vien">Chỗ làm việc của GV</Link>,
                 },
                 {
                     key: '/quan-tri/csvc/thu-vien',
@@ -291,6 +294,22 @@ const Dashboard = ({
                     key: '/quan-tri/csvc/nha-xuong',
                     icon: <DeploymentUnitOutlined />,
                     label: <Link href="/quan-tri/csvc/nha-xuong">Nhà xưởng</Link>,
+                },
+
+                {
+                    key: '/quan-tri/csvc/danh-sach-may-toan-truong',
+                    icon: <LaptopOutlined />,
+                    label: <Link href="/quan-tri/csvc/danh-sach-may-toan-truong">Danh sách máy toàn trường</Link>,
+                },
+                {
+                    key: '/quan-tri/csvc/phong-chucnang',
+                    icon: <CoffeeOutlined />,
+                    label: <Link href="/quan-tri/csvc/phong-chucnang">Phòng chức năng</Link>,
+                },
+                {
+                    key: '/quan-tri/csvc/thiet-bi-tren-500-trieu',
+                    icon: <CoffeeOutlined />,
+                    label: <Link href="/quan-tri/csvc/thiet-bi-tren-500-trieu">Thiết bị trên 500 triệu</Link>,
                 },
                 // {
                 //     key: '/quan-tri/csvc/phgdht',

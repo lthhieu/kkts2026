@@ -10,13 +10,20 @@ import { Action, CsvcSubject } from 'src/configs/enum';
 @UseGuards(PoliciesGuard)
 @Controller('ktx')
 export class KtxController {
-  constructor(private readonly ktxService: KtxService) {}
+  constructor(private readonly ktxService: KtxService) { }
 
   @Post()
   @ResponseMessage('Tạo KTX thành công')
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Create, CsvcSubject))
   create(@Body() createKtxDto: CreateKtxDto) {
     return this.ktxService.create(createKtxDto);
+  }
+
+  @Get('/summary')
+  @ResponseMessage('Tải tổng quan KTX thành công')
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Read, CsvcSubject))
+  summary() {
+    return this.ktxService.summary();
   }
 
   @Post('/create-many')

@@ -45,20 +45,15 @@ const ModalImportKtx = (props: IProps) => {
 
                     const jsonData: any[] = [];
                     worksheet.eachRow((row, rowNumber) => {
-                        if (rowNumber <= 2) return;
+                        if (rowNumber <= 1) return;
                         const getVal = (col: number) => row.getCell(col).value;
                         // A=ma_ktx, B=tong_so_cho_o, C=tong_dt, D=tong_so_phong_o_sv, E=nam_sd, F=diachi
                         jsonData.push({
-                            ma_ktx: getVal(1) ? String(getVal(1)) : '',
-                            htsh: getVal(2) ? String(getVal(2)) : null,
-                            tong_so_cho_o: Number(getVal(3)) || 0,
-                            tong_dt: Number(getVal(4)) || 0,
-                            tinhtrangcsvc: getVal(5) ? String(getVal(5)) : null,
-                            tong_so_phong_o_sv: Number(getVal(6)) || 0,
-                            nam_sd: Number(getVal(7)) || 0,
-                            tinh_trang_sd: getVal(8) ? String(getVal(8)) : null,
-                            ngay_chuyen_tt: getVal(9) ? String(getVal(9)) : null,
-                            diachi: getVal(10) ? String(getVal(10)) : '',
+                            ma: getVal(1) ? String(getVal(1)) : '',
+                            name: getVal(2) ? String(getVal(2)) : null,
+                            dt: Number(getVal(3)) || 0,
+                            sc: Number(getVal(4)) || 0,
+                            nam_sd: Number(getVal(5)) || 0,
                         });
                     });
                     setDataImport(jsonData);
@@ -122,8 +117,10 @@ const ModalImportKtx = (props: IProps) => {
                         dataSource={dataImport}
                         rowKey={() => crypto.randomUUID()}
                         columns={[
-                            { dataIndex: 'ma_ktx', title: 'Mã KTX' },
-                            { dataIndex: 'tong_so_cho_o', title: 'Tổng số chỗ ở' },
+                            { dataIndex: 'ma', title: 'Mã KTX' },
+                            { dataIndex: 'name', title: 'Tên KTX' },
+                            { dataIndex: 'dt', title: 'Diện tích (m²)' },
+                            { dataIndex: 'sc', title: 'Sức chứa' },
                             { dataIndex: 'nam_sd', title: 'Năm sử dụng' },
                         ]}
                     />

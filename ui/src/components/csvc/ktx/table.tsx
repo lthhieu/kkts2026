@@ -18,15 +18,14 @@ interface IProps {
     access_token: string;
     meta: IMeta;
     user: IUser | null;
-    hinhthucsohuu: IHinhthucsohuu[];
-    tinhtrangcsvc: ITinhtrangcsvc[];
-    tinhtrangsudung: ITinhtrangsudung[];
+    summary: ISummaryCsvc[] | null;
 }
 
 const Context = React.createContext({ name: 'Default' });
+const { Text } = Typography;
 
 const TableKtx = (props: IProps) => {
-    const { data, access_token, meta, user, hinhthucsohuu, tinhtrangcsvc, tinhtrangsudung } = props;
+    const { data, access_token, meta, user, summary } = props;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalImportOpen, setIsModalImportOpen] = useState(false);
     const [status, setStatus] = useState('');
@@ -40,6 +39,7 @@ const TableKtx = (props: IProps) => {
     const [api, contextHolderNotification] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
     const [selectedName, setSelectedName] = useState<string | undefined>(undefined);
+    const [selectedMa, setSelectedMa] = useState<string | undefined>(undefined);
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
 
@@ -57,11 +57,11 @@ const TableKtx = (props: IProps) => {
     const columns: TableProps<IKtx>['columns'] = [
         {
             title: 'Mã KTX',
-            dataIndex: 'ma_ktx',
-            key: 'ma_ktx',
+            dataIndex: 'ma',
+            key: 'ma',
             render: (_, record) => (
                 <Space>
-                    <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.ma_ktx}</Typography.Text>
+                    <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.ma}</Typography.Text>
                     <Tooltip title="Xem chi tiết">
                         <EyeOutlined style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => showDrawer(record)} />
                     </Tooltip>
@@ -76,7 +76,7 @@ const TableKtx = (props: IProps) => {
                     {canDeleteCsvc(user ?? {} as IUser) && (
                         <Popconfirm
                             title="Xóa ký túc xá này?"
-                            description={`Bạn thực sự muốn xóa "${record.ma_ktx}"`}
+                            description={`Bạn thực sự muốn xóa "${record.ma}"`}
                             onConfirm={() => deleteItem(record._id)}
                             onCancel={cancel}
                             okText="Đồng ý"
@@ -91,19 +91,17 @@ const TableKtx = (props: IProps) => {
                 </Space>
             ),
         },
-        { title: 'Hình thức sở hữu', key: 'htsh', render: (_, record) => record.htsh?.name ?? '' },
-        { title: 'Tổng số chỗ ở', dataIndex: 'tong_so_cho_o', key: 'tong_so_cho_o' },
-        { title: 'Tổng diện tích (m²)', dataIndex: 'tong_dt', key: 'tong_dt' },
-        { title: 'Tình trạng CSVC', key: 'tinhtrangcsvc', render: (_, record) => record.tinhtrangcsvc?.name ?? '' },
-        { title: 'Tổng số phòng ở SV', dataIndex: 'tong_so_phong_o_sv', key: 'tong_so_phong_o_sv' },
+        { title: 'Tên', key: 'name', render: (_, record) => record.name ?? '' },
+        { title: 'Diện tích (m²)', dataIndex: 'dt', key: 'dt' },
+        { title: 'Sức chứa', dataIndex: 'sc', key: 'sc' },
         { title: 'Năm sử dụng', dataIndex: 'nam_sd', key: 'nam_sd' },
-        { title: 'Tình trạng SD', key: 'tinh_trang_sd', render: (_, record) => record.tinh_trang_sd?.name ?? '' },
-        { title: 'Địa chỉ', dataIndex: 'diachi', key: 'diachi' },
+
     ];
 
     const handleOnChangePage = (current: number, pageSize: number) => {
         const params = new URLSearchParams();
-        if (selectedName) params.set('ma_ktx', selectedName);
+        if (selectedName) params.set('name', selectedName);
+        if (selectedMa) params.set('ma', selectedMa);
         params.set('current', current.toString());
         params.set('pageSize', pageSize.toString());
         router.push(`/quan-tri/csvc/ktx?${params.toString()}`);
@@ -111,7 +109,8 @@ const TableKtx = (props: IProps) => {
 
     const handleFilter = () => {
         const params = new URLSearchParams();
-        if (selectedName) params.set('ma_ktx', selectedName);
+        if (selectedName) params.set('name', selectedName);
+        if (selectedMa) params.set('ma', selectedMa);
         params.set('current', '1');
         params.set('pageSize', meta.pageSize.toString());
         router.push(`/quan-tri/csvc/ktx?${params.toString()}`);
@@ -137,16 +136,11 @@ const TableKtx = (props: IProps) => {
     const rowSelection: TableRowSelection<IKtx> = { selectedRowKeys, onChange: onSelectChange };
 
     const headers = [
-        { label: 'Mã KTX', key: 'ma_ktx' },
-        { label: 'Hình thức sở hữu', key: 'htsh.name' },
-        { label: 'Tổng số chỗ ở', key: 'tong_so_cho_o' },
-        { label: 'Tổng diện tích (m²)', key: 'tong_dt' },
-        { label: 'Tình trạng CSVC', key: 'tinhtrangcsvc.name' },
-        { label: 'Tổng số phòng ở SV', key: 'tong_so_phong_o_sv' },
+        { label: 'Mã KTX', key: 'ma' },
+        { label: 'Tên', key: 'name' },
+        { label: 'Diện tích (m²)', key: 'dt' },
+        { label: 'Sức chứa', key: 'sc' },
         { label: 'Năm sử dụng', key: 'nam_sd' },
-        { label: 'Tình trạng sử dụng', key: 'tinh_trang_sd.name' },
-        { label: 'Địa chỉ', key: 'diachi' },
-        { label: 'Ngày chuyển tình trạng', key: 'ngay_chuyen_tt' },
     ];
 
     return (
@@ -176,10 +170,14 @@ const TableKtx = (props: IProps) => {
             {canReadCsvc(user ?? {} as IUser) && (
                 <Space style={{ marginBottom: 16 }}>
                     <Input allowClear placeholder="Tìm theo mã KTX" onChange={(e) => setSelectedName(e.target.value)} value={selectedName} />
-                    <Button icon={<ClearOutlined />} onClick={() => setSelectedName(undefined)}>Xóa bộ lọc</Button>
+                    <Input allowClear placeholder="Tìm theo tên" onChange={(e) => setSelectedMa(e.target.value)} value={selectedMa} />
+                    <Button icon={<ClearOutlined />} onClick={() => { setSelectedName(undefined); setSelectedMa(undefined); }}>Xóa bộ lọc</Button>
                     <Button icon={<SearchOutlined />} type="primary" onClick={handleFilter}>Lọc</Button>
                 </Space>
             )}
+            <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 24, marginBottom: 12 }}>
+                <Text strong>- Tổng diện tích KYX:  {summary?.[0]?.totalDT?.toLocaleString('vi-VN')} m²</Text>
+            </div>
             <Table<IKtx>
                 scroll={{ x: 'max-content' }}
                 pagination={{
@@ -205,9 +203,6 @@ const TableKtx = (props: IProps) => {
                 setIsModalOpen={setIsModalOpen}
                 setDataUpdate={setDataUpdate}
                 dataUpdate={dataUpdate}
-                hinhthucsohuu={hinhthucsohuu}
-                tinhtrangcsvc={tinhtrangcsvc}
-                tinhtrangsudung={tinhtrangsudung}
             />
             <ModalImport
                 access_token={access_token}

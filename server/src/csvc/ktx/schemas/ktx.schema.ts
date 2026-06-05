@@ -1,42 +1,24 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument } from 'mongoose';
-import { Hinhthucsohuu } from 'src/csvc/danhmuc/hinhthucsohuu/schemas/hinhthucsohuu.schema';
-import { Tinhtrangcsvc } from 'src/csvc/danhmuc/tinhtrangcsvc/schemas/tinhtrangcsvc.schema';
-import { Tinhtrangsudung } from 'src/csvc/danhmuc/tinhtrangsudung/schemas/tinhtrangsudung.schema';
+import { HydratedDocument } from 'mongoose';
 
 export type KtxDocument = HydratedDocument<Ktx>;
 
 @Schema({ timestamps: true })
 export class Ktx {
     @Prop()
-    ma_ktx: string;
-
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Hinhthucsohuu.name })
-    htsh: Hinhthucsohuu | null;
+    ma: string;
 
     @Prop()
-    tong_so_cho_o: number;
+    name: string;
 
     @Prop()
-    tong_dt: number;
-
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Tinhtrangcsvc.name })
-    tinhtrangcsvc: Tinhtrangcsvc | null;
+    dt: number;
 
     @Prop()
-    tong_so_phong_o_sv: number;
+    sc: number;
 
     @Prop()
     nam_sd: number;
-
-    @Prop({ default: null })
-    diachi: string;
-
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Tinhtrangsudung.name })
-    tinh_trang_sd: Tinhtrangsudung | null;
-
-    @Prop({ default: null })
-    ngay_chuyen_tt: string;
 
 }
 

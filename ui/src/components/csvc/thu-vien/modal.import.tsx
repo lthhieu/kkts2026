@@ -45,7 +45,7 @@ const ModalImportThuvien = (props: IProps) => {
 
                     const jsonData: any[] = [];
                     worksheet.eachRow((row, rowNumber) => {
-                        if (rowNumber <= 2) return;
+                        if (rowNumber <= 1) return;
                         const getVal = (col: number) => row.getCell(col).value;
                         // A=ma_thuvien, B=name, C=nam_sd, D=dt, E=dt_phongdoc, F=so_phong_doc
                         // G=soluong_maytinh, H=soluong_cho_ngoi_doc_sach, I=soluong_sach, J=soluong_tapchi
@@ -55,32 +55,11 @@ const ModalImportThuvien = (props: IProps) => {
                         // S=so_dau_sach_dien_tu_co_truy_cap_truc_tuyen, T=so_dau_sach_co_ban_in, U=so_dau_sach_in_co_the_muon_truc_tiep
                         // V=tinhtrangcsvc(id), W=htsh(id), X=tinh_trang_sd(id), Y=ngay_chuyen_tt, Z=diachi
                         jsonData.push({
-                            ma_thuvien: getVal(1) ? String(getVal(1)) : '',
+                            ma: getVal(1) ? String(getVal(1)) : '',
                             name: getVal(2) ? String(getVal(2)) : '',
-                            nam_sd: Number(getVal(3)) || 0,
-                            dt: Number(getVal(4)) || 0,
-                            dt_phongdoc: Number(getVal(5)) || 0,
-                            so_phong_doc: Number(getVal(6)) || 0,
-                            soluong_maytinh: Number(getVal(7)) || 0,
-                            soluong_cho_ngoi_doc_sach: Number(getVal(8)) || 0,
-                            soluong_sach: Number(getVal(9)) || 0,
-                            soluong_tapchi: Number(getVal(10)) || 0,
-                            soluong_sach_dien_tu: Number(getVal(11)) || 0,
-                            soluong_tapchi_dien_tu: Number(getVal(12)) || 0,
-                            soluong_thu_vien_lien_ket_trong_nuoc: Number(getVal(13)) || 0,
-                            soluong_thu_vien_dien_tu_lien_ket_nuoc_ngoai: Number(getVal(14)) || 0,
-                            tinh_trang_sd: getVal(15) ? String(getVal(15)) : null,
-                            htsh: getVal(16) ? String(getVal(16)) : null,
-                            soluong_dau_sach: Number(getVal(17)) || 0,
-                            soluong_dau_tap_chi: Number(getVal(18)) || 0,
-                            soluong_dau_sach_dien_tu: Number(getVal(19)) || 0,
-                            soluong_dau_tap_chi_dien_tu: Number(getVal(20)) || 0,
-                            tinhtrangcsvc: getVal(21) ? String(getVal(21)) : null,
-                            ngay_chuyen_tt: getVal(22) ? String(getVal(22)) : null,
-                            so_dau_sach_dien_tu_co_truy_cap_truc_tuyen: Number(getVal(23)) || 0,
-                            so_dau_sach_co_ban_in: Number(getVal(24)) || 0,
-                            so_dau_sach_in_co_the_muon_truc_tiep: Number(getVal(25)) || 0,
-                            diachi: getVal(26) ? String(getVal(26)) : '',
+                            dt: Number(getVal(3)) || 0,
+                            nam_sd: Number(getVal(4)) || 0,
+
                         });
                     });
                     setDataImport(jsonData);
@@ -144,11 +123,11 @@ const ModalImportThuvien = (props: IProps) => {
                         dataSource={dataImport}
                         rowKey={() => crypto.randomUUID()}
                         columns={[
-                            { dataIndex: 'ma_thuvien', title: 'Mã thư viện' },
+                            { dataIndex: 'ma', title: 'Mã thư viện' },
                             { dataIndex: 'name', title: 'Tên thư viện' },
-                            { dataIndex: 'nam_sd', title: 'Năm sử dụng' },
                             { dataIndex: 'dt', title: 'Diện tích (m²)' },
-                            { dataIndex: 'diachi', title: 'Địa chỉ' },
+                            { dataIndex: 'nam_sd', title: 'Năm sử dụng' },
+
                         ]}
                     />
                 </div>

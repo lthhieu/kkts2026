@@ -1,3 +1,5 @@
+import { MayCate } from "@/components/csvc/danhsachmaytoantruong/modal"
+
 export { }
 
 declare global {
@@ -263,7 +265,7 @@ declare global {
     interface ILoaicongtrinhcsvc { _id: string; name: string; createdAt?: string; updatedAt?: string }
     interface ILoaidean { _id: string; name: string; createdAt?: string; updatedAt?: string }
     interface ILoaiphonghoc { _id: string; name: string; createdAt?: string; updatedAt?: string }
-    interface ILoaiptn { _id: string; name: string; createdAt?: string; updatedAt?: string }
+    interface ILoaiphong { _id: string; name: string; createdAt?: string; updatedAt?: string }
     interface ILuachon { _id: string; name: string; createdAt?: string; updatedAt?: string }
     interface IMucdichsudungcsvc { _id: string; name: string; createdAt?: string; updatedAt?: string }
     interface IMucdichsudungdat { _id: string; name: string; createdAt?: string; updatedAt?: string }
@@ -316,6 +318,11 @@ declare global {
     interface ISummaryCsvc {
         "totalDT": number,
     }
+    interface ISummaryMaytoantruong {
+        "totalSL": number,
+        "totalNguyenGia": number,
+        "cate": MayCate
+    }
     interface IToanha {
         _id: string;
         ma_toanha: string;
@@ -338,8 +345,40 @@ declare global {
         ma: string;
         name: string;
         dt: number;
-        qui_mo_cho_ngoi: number;
-        nam_sd: number;
+        qui_mo_cho_ngoi?: number;
+        nam_sd?: number;
+    }
+
+    interface IPhongchucnang {
+        _id: string;
+        ma: string;
+        name: string;
+        dtxd: number;
+        type?: {
+            _id: string;
+            name: string;
+        } | null;
+        nam_sd?: number;
+    }
+
+    interface ITBTren500tr {
+        _id: string;
+        code: string;
+        name: string;
+        description: string;
+        unit?: {
+            _id: string;
+            name: string;
+        } | null;
+        childrenIds?: string[];
+        yearUse: number;
+        quantity: number;
+        originalPrice?: number;
+        totalOriginalPrice?: number; // thêm
+        note?: string;
+        parentId?: string | null;
+        createdAt?: string;
+        updatedAt?: string;
     }
 
     interface IPhgdht {
@@ -363,16 +402,25 @@ declare global {
 
     interface IKtx {
         _id: string;
-        ma_ktx: string;
-        htsh: { _id: string; name: string } | null;
-        tong_so_cho_o: number;
-        tong_dt: number;
-        tinhtrangcsvc: { _id: string; name: string } | null;
-        tong_so_phong_o_sv: number;
+        ma: string;
+        name: string;
+        dt: number;
+        sc: number;
         nam_sd: number;
-        diachi: string | null;
-        tinh_trang_sd: { _id: string; name: string } | null;
-        ngay_chuyen_tt: string | null;
+        createdAt?: string;
+        updatedAt?: string;
+    }
+
+    interface IMaytoantruong {
+        _id: string;
+        name: string;
+        des: string;
+        unit: { _id: string; name: string };
+        room: { _id: string; name: string };
+        nam_sd: number;
+        sl: number;
+        nguyengia: number;
+        cate: MayCate;
         createdAt?: string;
         updatedAt?: string;
     }

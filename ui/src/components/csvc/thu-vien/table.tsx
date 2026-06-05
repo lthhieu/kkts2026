@@ -14,26 +14,26 @@ import { CSVLink } from 'react-csv';
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
 
 interface IProps {
-    data: IThuvien[];
+    data: ICsvcSubject[];
     access_token: string;
     meta: IMeta;
     user: IUser | null;
-    tinhtrangcsvc: ITinhtrangcsvc[];
-    hinhthucsohuu: IHinhthucsohuu[];
-    tinhtrangsudung: ITinhtrangsudung[];
+    summary: ISummaryCsvc[] | null;
 }
+
+const { Text } = Typography;
 
 const Context = React.createContext({ name: 'Default' });
 
 const TableThuvien = (props: IProps) => {
-    const { data, access_token, meta, user, tinhtrangcsvc, hinhthucsohuu, tinhtrangsudung } = props;
+    const { data, access_token, meta, user, summary } = props;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalImportOpen, setIsModalImportOpen] = useState(false);
     const [status, setStatus] = useState('');
     const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-    const [dataUpdate, setDataUpdate] = useState<null | IThuvien>(null);
-    const [selectedRecord, setSelectedRecord] = useState<null | IThuvien>(null);
+    const [dataUpdate, setDataUpdate] = useState<null | ICsvcSubject>(null);
+    const [selectedRecord, setSelectedRecord] = useState<null | ICsvcSubject>(null);
     const [openDrawer, setOpenDrawer] = useState(false);
     const router = useRouter();
     const [messageApi, contextHolder] = message.useMessage();
@@ -44,7 +44,7 @@ const TableThuvien = (props: IProps) => {
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
 
-    const showDrawer = (record: IThuvien) => { setSelectedRecord(record); setOpenDrawer(true); };
+    const showDrawer = (record: ICsvcSubject) => { setSelectedRecord(record); setOpenDrawer(true); };
     const onClose = () => setOpenDrawer(false);
 
     const deleteItem = async (_id: string) => {
@@ -55,12 +55,12 @@ const TableThuvien = (props: IProps) => {
 
     const cancel: PopconfirmProps['onCancel'] = () => { };
 
-    const columns: TableProps<IThuvien>['columns'] = [
+    const columns: TableProps<ICsvcSubject>['columns'] = [
         {
-            title: 'Mã thư viện', dataIndex: 'ma_thuvien', key: 'ma_thuvien',
+            title: 'Mã phòng', dataIndex: 'ma', key: 'ma',
             render: (_, record) => (
                 <Space style={{ maxWidth: 350 }}>
-                    <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.ma_thuvien}</Typography.Text>
+                    <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.ma}</Typography.Text>
                     <Tooltip title="Xem chi tiết">
                         <EyeOutlined style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => showDrawer(record)} />
                     </Tooltip>
@@ -74,7 +74,7 @@ const TableThuvien = (props: IProps) => {
                     )}
                     {canDeleteCsvc(user ?? {} as IUser) && (
                         <Popconfirm
-                            title="Xóa thư viện này?"
+                            title="Xóa phòng này?"
                             description={`Bạn thực sự muốn xóa "${record.name}"`}
                             onConfirm={() => deleteItem(record._id)}
                             onCancel={cancel}
@@ -91,30 +91,19 @@ const TableThuvien = (props: IProps) => {
             ),
         },
         {
-            title: 'Tên thư viện',
+            title: 'Tên phòng',
             dataIndex: 'name',
             key: 'name',
 
         },
         { title: 'Diện tích (m²)', dataIndex: 'dt', key: 'dt' },
-        { title: 'DT phòng đọc (m²)', dataIndex: 'dt_phongdoc', key: 'dt_phongdoc' },
-        { title: 'Số phòng đọc', dataIndex: 'so_phong_doc', key: 'so_phong_doc' },
-        { title: 'SL máy tính', dataIndex: 'soluong_maytinh', key: 'soluong_maytinh' },
-        { title: 'SL chỗ ngồi đọc sách', dataIndex: 'soluong_cho_ngoi_doc_sach', key: 'soluong_cho_ngoi_doc_sach' },
-        { title: 'SL sách', dataIndex: 'soluong_sach', key: 'soluong_sach' },
-        { title: 'SL tạp chí', dataIndex: 'soluong_tapchi', key: 'soluong_tapchi' },
-        { title: 'SL sách điện tử', dataIndex: 'soluong_sach_dien_tu', key: 'soluong_sach_dien_tu' },
-        { title: 'Tình trạng CSVC', key: 'tinhtrangcsvc', render: (_, record) => record.tinhtrangcsvc?.name ?? '' },
-        { title: 'Hình thức sở hữu', key: 'htsh', render: (_, record) => record.htsh?.name ?? '' },
         { title: 'Năm sử dụng', dataIndex: 'nam_sd', key: 'nam_sd' },
-        { title: 'Tình trạng SD', key: 'tinh_trang_sd', render: (_, record) => record.tinh_trang_sd?.name ?? '' },
-        { title: 'Địa chỉ', dataIndex: 'diachi', key: 'diachi' },
     ];
 
     const handleOnChangePage = (current: number, pageSize: number) => {
         const params = new URLSearchParams();
         if (selectedName) params.set('name', selectedName);
-        if (selectedMaThuvien) params.set('ma_thuvien', selectedMaThuvien);
+        if (selectedMaThuvien) params.set('ma', selectedMaThuvien);
         params.set('current', current.toString());
         params.set('pageSize', pageSize.toString());
         router.push(`/quan-tri/csvc/thu-vien?${params.toString()}`);
@@ -123,7 +112,7 @@ const TableThuvien = (props: IProps) => {
     const handleFilter = () => {
         const params = new URLSearchParams();
         if (selectedName) params.set('name', selectedName);
-        if (selectedMaThuvien) params.set('ma_thuvien', selectedMaThuvien);
+        if (selectedMaThuvien) params.set('ma', selectedMaThuvien);
         params.set('current', '1');
         params.set('pageSize', meta.pageSize.toString());
         router.push(`/quan-tri/csvc/thu-vien?${params.toString()}`);
@@ -151,35 +140,13 @@ const TableThuvien = (props: IProps) => {
 
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => setSelectedRowKeys(newSelectedRowKeys);
     const hasSelected = selectedRowKeys.length > 0;
-    const rowSelection: TableRowSelection<IThuvien> = { selectedRowKeys, onChange: onSelectChange };
+    const rowSelection: TableRowSelection<ICsvcSubject> = { selectedRowKeys, onChange: onSelectChange };
 
     const headers = [
-        { label: 'Mã thư viện', key: 'ma_thuvien' },
-        { label: 'Tên thư viện', key: 'name' },
-        { label: 'Năm sử dụng', key: 'nam_sd' },
+        { label: 'Mã phòng', key: 'ma' },
+        { label: 'Tên phòng', key: 'name' },
         { label: 'Diện tích (m²)', key: 'dt' },
-        { label: 'DT phòng đọc (m²)', key: 'dt_phongdoc' },
-        { label: 'Số phòng đọc', key: 'so_phong_doc' },
-        { label: 'SL máy tính', key: 'soluong_maytinh' },
-        { label: 'SL chỗ ngồi đọc sách', key: 'soluong_cho_ngoi_doc_sach' },
-        { label: 'SL sách', key: 'soluong_sach' },
-        { label: 'SL tạp chí', key: 'soluong_tapchi' },
-        { label: 'SL sách điện tử', key: 'soluong_sach_dien_tu' },
-        { label: 'SL tạp chí điện tử', key: 'soluong_tapchi_dien_tu' },
-        { label: 'SL TV điện tử liên kết nước ngoài', key: 'soluong_thu_vien_dien_tu_lien_ket_nuoc_ngoai' },
-        { label: 'SL TV liên kết trong nước', key: 'soluong_thu_vien_lien_ket_trong_nuoc' },
-        { label: 'Tình trạng CSVC', key: 'tinhtrangcsvc.name' },
-        { label: 'Hình thức sở hữu', key: 'htsh.name' },
-        { label: 'SL đầu sách', key: 'soluong_dau_sach' },
-        { label: 'SL đầu tạp chí', key: 'soluong_dau_tap_chi' },
-        { label: 'SL đầu sách điện tử', key: 'soluong_dau_sach_dien_tu' },
-        { label: 'SL đầu tạp chí điện tử', key: 'soluong_dau_tap_chi_dien_tu' },
-        { label: 'Địa chỉ', key: 'diachi' },
-        { label: 'Tình trạng SD', key: 'tinh_trang_sd.name' },
-        { label: 'Ngày chuyển tình trạng', key: 'ngay_chuyen_tt' },
-        { label: 'SL đầu sách điện tử có truy cập trực tuyến', key: 'so_dau_sach_dien_tu_co_truy_cap_truc_tuyen' },
-        { label: 'SL đầu sách có bản in', key: 'so_dau_sach_co_ban_in' },
-        { label: 'SL đầu sách in có thể mượn trực tiếp', key: 'so_dau_sach_in_co_the_muon_truc_tiep' },
+        { label: 'Năm sử dụng', key: 'nam_sd' },
     ];
 
     return (
@@ -214,7 +181,10 @@ const TableThuvien = (props: IProps) => {
                     <Button icon={<SearchOutlined />} type="primary" onClick={handleFilter}>Lọc</Button>
                 </Space>
             )}
-            <Table<IThuvien>
+            <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 24, marginBottom: 12 }}>
+                <Text strong>- Tổng diện tích phòng thư viện:  {summary?.[0]?.totalDT?.toLocaleString('vi-VN')} m²</Text>
+            </div>
+            <Table<ICsvcSubject>
                 scroll={{ x: 'max-content' }}
                 pagination={{
                     current: meta.current,
@@ -239,9 +209,6 @@ const TableThuvien = (props: IProps) => {
                 setIsModalOpen={setIsModalOpen}
                 setDataUpdate={setDataUpdate}
                 dataUpdate={dataUpdate}
-                tinhtrangcsvc={tinhtrangcsvc}
-                hinhthucsohuu={hinhthucsohuu}
-                tinhtrangsudung={tinhtrangsudung}
             />
             <ModalImport
                 access_token={access_token}

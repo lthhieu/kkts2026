@@ -1,7 +1,7 @@
 'use client'
 import { Modal, Form, Input, message, notification } from 'antd';
 import React, { useEffect, useMemo } from 'react';
-import { handleCreateOrUpdateLoaiptn } from '@/app/(main)/quan-tri/csvc/danh-muc/loai-ptn/actions';
+import { handleCreateOrUpdateLoaiphong } from '@/app/(main)/quan-tri/csvc/danh-muc/loai-phong/actions';
 
 interface IProps {
     access_token?: string;
@@ -9,13 +9,13 @@ interface IProps {
     setIsModalOpen: (value: boolean) => void;
     status: string;
     setStatus: (value: string) => void;
-    dataUpdate: null | ILoaiptn;
-    setDataUpdate: (value: null | ILoaiptn) => void;
+    dataUpdate: null | ILoaiphong;
+    setDataUpdate: (value: null | ILoaiphong) => void;
 }
 
 const Context = React.createContext({ name: 'Default' });
 
-const LoaiptnModal = (props: IProps) => {
+const LoaiphongModal = (props: IProps) => {
     const { setIsModalOpen, isModalOpen, setStatus, status, access_token, setDataUpdate, dataUpdate } = props;
     const [form] = Form.useForm();
     const [messageApi, contextHolder] = message.useMessage();
@@ -30,7 +30,7 @@ const LoaiptnModal = (props: IProps) => {
     const handleCancel = () => { form.resetFields(); setStatus(''); setDataUpdate(null); setIsModalOpen(false); };
 
     const onFinish = async (values: { name: string }) => {
-        const response = await handleCreateOrUpdateLoaiptn(values, access_token ?? '', status, dataUpdate);
+        const response = await handleCreateOrUpdateLoaiphong(values, access_token ?? '', status, dataUpdate);
         if (response.data) { messageApi.success(response.message); handleCancel(); }
         else api.error({ title: 'Có lỗi xảy ra', description: response.message, placement: 'topRight' });
     };
@@ -38,7 +38,7 @@ const LoaiptnModal = (props: IProps) => {
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
-            <Modal title={status === 'CREATE' ? 'Thêm loại PTN' : 'Cập nhật loại PTN'}
+            <Modal title={status === 'CREATE' ? 'Thêm loại phòng' : 'Cập nhật loại phòng'}
                 open={isModalOpen} onOk={handleOk} onCancel={handleCancel} okText="Đồng ý" cancelText="Hủy"
                 width={{ xs: '90%', sm: '80%', md: '60%', lg: '50%', xl: '40%', xxl: '30%' }}>
                 <Form form={form} layout="vertical" onFinish={onFinish}
@@ -52,4 +52,4 @@ const LoaiptnModal = (props: IProps) => {
     );
 };
 
-export default LoaiptnModal;
+export default LoaiphongModal;

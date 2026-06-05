@@ -19,6 +19,27 @@ export class KtxService {
     return await this.ktxModel.insertMany(createKtxDto);
   }
 
+  async summary() {
+    const result = await this.ktxModel.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalDT: {
+            $sum: '$dt',
+          },
+        },
+      },
+
+      {
+        $project: {
+          totalDT: 1,
+        },
+      },
+    ]);
+
+    return result;
+  }
+
   async findAll(current: number, pageSize: number, queryString: string) {
     let { filter, population } = aqp(queryString);
     let { sort }: { sort: any } = aqp(queryString);
@@ -38,9 +59,6 @@ export class KtxService {
       .limit(defaultLimit)
       .sort(sort)
       .populate(population)
-      .populate({ path: 'htsh', select: 'name' })
-      .populate({ path: 'tinhtrangcsvc', select: 'name' })
-      .populate({ path: 'tinh_trang_sd', select: 'name' })
       .exec();
     return {
       meta: {
@@ -56,9 +74,6 @@ export class KtxService {
   async findOne(id: string) {
     return await this.ktxModel
       .findOne({ _id: id })
-      .populate({ path: 'htsh', select: 'name' })
-      .populate({ path: 'tinhtrangcsvc', select: 'name' })
-      .populate({ path: 'tinh_trang_sd', select: 'name' })
   }
 
   async update(id: string, updateKtxDto: UpdateKtxDto) {

@@ -1,7 +1,7 @@
 'use client'
 import { Modal, message, notification, Upload, UploadProps, Table } from 'antd';
 import React, { useMemo, useState } from 'react';
-import { handleCreateManyLoaiptn } from '@/app/(main)/quan-tri/csvc/danh-muc/loai-ptn/actions';
+import { handleCreateManyLoaiphong } from '@/app/(main)/quan-tri/csvc/danh-muc/loai-phong/actions';
 import { InboxOutlined } from '@ant-design/icons';
 import * as Excel from 'exceljs';
 
@@ -40,7 +40,7 @@ const ModalImport = (props: IProps) => {
                     if (!worksheet) return;
                     const jsonData: { name: string }[] = [];
                     worksheet.eachRow((row, rowNumber) => {
-                        if (rowNumber <= 2) return;
+                        if (rowNumber <= 1) return;
                         const name = row.getCell(1).value;
                         if (name) jsonData.push({ name: String(name) });
                     });
@@ -53,7 +53,7 @@ const ModalImport = (props: IProps) => {
     const handleOk = () => {
         setConfirmLoading(true);
         setTimeout(async () => {
-            const response = await handleCreateManyLoaiptn(dataImport, access_token ?? '');
+            const response = await handleCreateManyLoaiphong(dataImport, access_token ?? '');
             if (response.data) { messageApi.success(response.message); handleCancel(); }
             else api.error({ title: 'Có lỗi xảy ra', description: response.message, placement: 'topRight' });
             setConfirmLoading(false);
@@ -72,7 +72,10 @@ const ModalImport = (props: IProps) => {
                 <Dragger {...uploadProps}>
                     <p className="ant-upload-drag-icon"><InboxOutlined /></p>
                     <p className="ant-upload-text">Chọn hoặc kéo thả file để tải dữ liệu</p>
-                    <p className="ant-upload-hint">Chỉ hỗ trợ file excel và csv</p>
+                    <p className="ant-upload-hint">
+                        Chỉ hỗ trợ file excel và csv
+                        &nbsp;<a onClick={(e) => e.stopPropagation()} href={`${process.env.NEXT_PUBLIC_FRONTEND_URI}sample/sample-danhmuc.xlsx`} download>Tải file mẫu</a>
+                    </p>
                 </Dragger>
                 <Table<{ name: string }>
                     scroll={{ x: 'max-content' }}
