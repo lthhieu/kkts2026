@@ -87,4 +87,8 @@ export class ThuchanhService {
   async removeMany(ids: any[]) {
     return await this.thuchanhModel.deleteMany({ _id: { $in: ids } });
   }
+
+  async exportAll() {
+    return await this.thuchanhModel.find().lean();
+  }
 }

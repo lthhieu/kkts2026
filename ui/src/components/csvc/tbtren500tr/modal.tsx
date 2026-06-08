@@ -25,8 +25,6 @@ const TBTren500trModal = (props: IProps) => {
     const [isParentAsset, setIsParentAsset] = useState(false);
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
 
-    console.log(dataUpdate)
-
     useEffect(() => {
         if (dataUpdate && availableChildren?.length) {
             setIsParentAsset(

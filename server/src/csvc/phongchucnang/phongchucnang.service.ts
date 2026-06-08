@@ -88,4 +88,9 @@ export class PhongchucnangService {
   async removeMany(ids: any[]) {
     return await this.phongchucnangModel.deleteMany({ _id: { $in: ids } });
   }
+
+  async exportAll() {
+    return await this.phongchucnangModel.find()
+      .populate({ path: 'type', select: 'name' }).lean();
+  }
 }

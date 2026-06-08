@@ -187,7 +187,7 @@ const TableToanha = (props: IProps) => {
 
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'toa-nha.csv';
+        a.download = 'ly-thuyet.csv';
         a.click();
 
         window.URL.revokeObjectURL(url);
@@ -196,7 +196,7 @@ const TableToanha = (props: IProps) => {
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
-            <Flex wrap style={{ marginBottom: 16 }} justify="space-between" align="center">
+            <Flex wrap style={{ marginBottom: 16, gap: 8 }} justify="space-between" align="center">
                 <h2>Danh sách tòa nhà</h2>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {canDeleteCsvc(user ?? {} as IUser) && (

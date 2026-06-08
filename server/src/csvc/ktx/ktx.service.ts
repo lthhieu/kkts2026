@@ -87,4 +87,8 @@ export class KtxService {
   async removeMany(ids: any[]) {
     return await this.ktxModel.deleteMany({ _id: { $in: ids } });
   }
+
+  async exportAll() {
+    return await this.ktxModel.find().lean();
+  }
 }

@@ -47,13 +47,7 @@ const ModalImportThuvien = (props: IProps) => {
                     worksheet.eachRow((row, rowNumber) => {
                         if (rowNumber <= 1) return;
                         const getVal = (col: number) => row.getCell(col).value;
-                        // A=ma_thuvien, B=name, C=nam_sd, D=dt, E=dt_phongdoc, F=so_phong_doc
-                        // G=soluong_maytinh, H=soluong_cho_ngoi_doc_sach, I=soluong_sach, J=soluong_tapchi
-                        // K=soluong_sach_dien_tu, L=soluong_tapchi_dien_tu
-                        // M=soluong_thu_vien_lien_ket_trong_nuoc, N=soluong_thu_vien_dien_tu_lien_ket_nuoc_ngoai
-                        // O=soluong_dau_sach, P=soluong_dau_tap_chi, Q=soluong_dau_sach_dien_tu, R=soluong_dau_tap_chi_dien_tu
-                        // S=so_dau_sach_dien_tu_co_truy_cap_truc_tuyen, T=so_dau_sach_co_ban_in, U=so_dau_sach_in_co_the_muon_truc_tiep
-                        // V=tinhtrangcsvc(id), W=htsh(id), X=tinh_trang_sd(id), Y=ngay_chuyen_tt, Z=diachi
+
                         jsonData.push({
                             ma: getVal(1) ? String(getVal(1)) : '',
                             name: getVal(2) ? String(getVal(2)) : '',
@@ -112,8 +106,7 @@ const ModalImportThuvien = (props: IProps) => {
                     <p className="ant-upload-drag-icon"><InboxOutlined /></p>
                     <p className="ant-upload-text">Chọn hoặc kéo thả file để tải dữ liệu</p>
                     <p className="ant-upload-hint">
-                        Chỉ hỗ trợ file excel và csv
-                        &nbsp;<a onClick={(e) => e.stopPropagation()} href={`${process.env.NEXT_PUBLIC_FRONTEND_URI}sample/sample-thuvien.xlsx`} download>Tải file mẫu</a>
+                        Chỉ hỗ trợ file excel và csv <a onClick={(e) => e.stopPropagation()} href={`${process.env.NEXT_PUBLIC_FRONTEND_URI}sample/sample-thuvien.xlsx`} download>Tải file mẫu</a>
                     </p>
                 </Dragger>
                 <div>

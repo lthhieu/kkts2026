@@ -275,4 +275,116 @@ export class Tbtren500trService {
     };
   }
 
+  async exportAll() {
+    const parents = await this.tbtren500trModel
+      .find({
+        parentId: null,
+      })
+      .sort('unit code name')
+      .populate({ path: 'unit', select: 'name' })
+      .lean();
+    console.log('parent count =', parents.length);
+
+    console.log(
+      [...new Set(
+        parents.map(
+          (x: any) => x.unit?.name,
+        ),
+      )],
+    );
+    const parentIds = parents.map(
+      (item: any) => item._id,
+    );
+
+    const children = await this.tbtren500trModel
+      .find({
+        parentId: {
+          $in: parentIds,
+        },
+      })
+      .populate({ path: 'unit', select: 'name' })
+      .lean();
+
+    const childrenMap = new Map<string, any[]>();
+
+    children.forEach((child: any) => {
+      const parentId = child.parentId.toString();
+
+      if (!childrenMap.has(parentId)) {
+        childrenMap.set(parentId, []);
+      }
+
+      childrenMap.get(parentId)!.push(child);
+    });
+
+    const result = parents
+      .map((parent: any) => {
+        const children =
+          childrenMap.get(
+            parent._id.toString(),
+          ) ?? null;
+
+        const totalOriginalPrice =
+          (parent.originalPrice ?? 0) +
+          (
+            children?.reduce(
+              (sum: number, item: any) =>
+                sum +
+                (item.originalPrice ?? 0),
+              0,
+            ) ?? 0
+          );
+
+        return {
+          ...parent,
+          children,
+          childrenIds: children
+            ? children.map(
+              (item: any) =>
+                item._id.toString(),
+            )
+            : null,
+          totalOriginalPrice,
+        };
+      })
+      .sort((a, b) => {
+        const unitCompare =
+          (a.unit?.name ?? '')
+            .localeCompare(
+              b.unit?.name ?? '',
+              'vi',
+            );
+
+        if (unitCompare !== 0) {
+          return unitCompare;
+        }
+
+        const aHasChildren =
+          (a.children?.length ?? 0) > 0;
+
+        const bHasChildren =
+          (b.children?.length ?? 0) > 0;
+
+        if (
+          aHasChildren !==
+          bHasChildren
+        ) {
+          return aHasChildren
+            ? -1
+            : 1;
+        }
+
+        return (a.code ?? '')
+          .localeCompare(
+            b.code ?? '',
+            'vi',
+            {
+              numeric: true,
+            },
+          );
+      });
+
+    return result;
+  }
+
 }

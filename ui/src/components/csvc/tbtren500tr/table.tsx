@@ -5,8 +5,7 @@ import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { canCreateCsvc, canDeleteCsvc, canReadCsvc, canUpdateCsvc } from '@/libs/csvc';
-import { CSVLink } from 'react-csv';
-import { handleDeleteTBTren500tr, handleDeleteTBTren500trMany } from '@/app/(main)/quan-tri/csvc/thiet-bi-tren-500-trieu/actions';
+import { handleDeleteTBTren500tr, handleDeleteTBTren500trMany, handleExportTBTren500tr } from '@/app/(main)/quan-tri/csvc/thiet-bi-tren-500-trieu/actions';
 import TBTren500trModal from '@/components/csvc/tbtren500tr/modal';
 import ModalImportTBTren500tr from '@/components/csvc/tbtren500tr/modal.import';
 import TBTren500trDetail from '@/components/csvc/tbtren500tr/detail';
@@ -49,43 +48,6 @@ const TableTBTren500tr = (props: IProps) => {
 
     const showDrawer = (record: ITBTren500tr) => { setSelectedRecord(record); setOpenDrawer(true); };
     const onClose = () => setOpenDrawer(false);
-
-    const buildTree = (data: ITBTren500tr[]) => {
-        const map = new Map();
-
-        data.forEach(item => {
-            map.set(item._id, {
-                ...item,
-            });
-        });
-
-        const roots: any[] = [];
-
-        data.forEach(item => {
-
-            console.log('item:', item.name);
-            console.log('parentId:', item.parentId);
-            console.log('parent:', map.get(item.parentId));
-
-            if (item.parentId) {
-                const parent = map.get(item.parentId);
-
-                if (parent) {
-                    if (!parent.children) {
-                        parent.children = [];
-                    }
-
-                    parent.children.push(map.get(item._id));
-                } else {
-                    roots.push(map.get(item._id));
-                }
-            } else {
-                roots.push(map.get(item._id));
-            }
-        });
-
-        return roots;
-    };
 
     const deleteItem = async (_id: string) => {
         const res = await handleDeleteTBTren500tr(_id, access_token);
@@ -238,16 +200,18 @@ const TableTBTren500tr = (props: IProps) => {
     const hasSelected = selectedRowKeys.length > 0;
     const rowSelection: TableRowSelection<ITBTren500tr> = { selectedRowKeys, onChange: onSelectChange };
 
-    const headers = [
-        { label: 'Tên thiết bị', key: 'name' },
-        { label: 'Mã TSCĐ', key: 'code' },
-        { label: 'Mô tả', key: 'description' },
-        { label: 'Đơn vị', key: 'unit' },
-        { label: 'Năm sử dụng', key: 'yearUse' },
-        { label: 'Số lượng', key: 'quantity' },
-        { label: 'Nguyên giá', key: 'originalPrice' },
-        { label: 'Ghi chú', key: 'note' },
-    ];
+    const handleExport = async () => {
+        const blob = await handleExportTBTren500tr(access_token);
+
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'thiet-bi-tren-500tr.csv';
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+    };
 
     return (
         <Context.Provider value={contextValue}>
@@ -264,8 +228,8 @@ const TableTBTren500tr = (props: IProps) => {
                         <Button onClick={() => setIsModalImportOpen(true)} type="primary" icon={<CloudUploadOutlined />}>Import</Button>
                     )}
                     {mounted && canReadCsvc(user ?? {} as IUser) && (
-                        <Button type="primary" icon={<CloudDownloadOutlined />}>
-                            <CSVLink data={data} filename="thiet-bi-tren-500tr.csv" headers={headers} separator=";">Export</CSVLink>
+                        <Button type="primary" icon={<CloudDownloadOutlined />} onClick={handleExport}>
+                            Export
                         </Button>
                     )}
                     {canCreateCsvc(user ?? {} as IUser) && (

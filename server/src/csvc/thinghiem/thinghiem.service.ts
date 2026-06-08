@@ -87,4 +87,8 @@ export class ThinghiemService {
   async removeMany(ids: any[]) {
     return await this.thinghiemModel.deleteMany({ _id: { $in: ids } });
   }
+
+  async exportAll() {
+    return await this.thinghiemModel.find().lean();
+  }
 }

@@ -1,5 +1,5 @@
 'use server'
-import { sendRequest } from '@/utils/api'
+import { sendRequest, sendRequestBlob } from '@/utils/api'
 import { updateTag } from 'next/cache'
 
 export const handleCreateOrUpdateDaphuongtien = async (data: any, access_token: string, status: string, dataUpdate?: null | ICsvcSubject) => {
@@ -24,21 +24,6 @@ export const handleDeleteDaphuongtien = async (_id: string, access_token: string
         headers: {
             Authorization: `Bearer ${access_token!}`,
         },
-    })
-    updateTag('daphuongtien')
-    return res
-}
-
-export const handleFilterDaphuongtien = async (current: number, pageSize: number, access_token: string) => {
-    const res = await sendRequest<IBackendResponse<IModelPaginate<ICsvcSubject>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/daphuongtien`,
-        queryParams: { current, pageSize },
-        headers: {
-            Authorization: `Bearer ${access_token}`,
-        },
-        nextOption: {
-            next: { tags: ['daphuongtien'] }
-        }
     })
     updateTag('daphuongtien')
     return res
@@ -69,3 +54,15 @@ export const handleDeleteDaphuongtienMany = async (ids: string[], access_token: 
     updateTag('daphuongtien')
     return res
 }
+
+export const handleExportDaphuongtien = async (
+    access_token: string,
+) => {
+    return await sendRequestBlob({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/daphuongtien/export`,
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+    });
+};

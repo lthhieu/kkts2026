@@ -1,5 +1,5 @@
 'use server'
-import { sendRequest } from '@/utils/api'
+import { sendRequest, sendRequestBlob } from '@/utils/api'
 import { updateTag } from 'next/cache'
 
 export const handleCreateOrUpdateMaytoantruong = async (data: any, access_token: string, status: string, dataUpdate?: null | IMaytoantruong) => {
@@ -24,21 +24,6 @@ export const handleDeleteMaytoantruong = async (_id: string, access_token: strin
         headers: {
             Authorization: `Bearer ${access_token!}`,
         },
-    })
-    updateTag('maytoantruong')
-    return res
-}
-
-export const handleFilterMaytoantruong = async (current: number, pageSize: number, access_token: string) => {
-    const res = await sendRequest<IBackendResponse<IModelPaginate<IMaytoantruong>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/maytoantruong`,
-        queryParams: { current, pageSize },
-        headers: {
-            Authorization: `Bearer ${access_token}`,
-        },
-        nextOption: {
-            next: { tags: ['maytoantruong'] }
-        }
     })
     updateTag('maytoantruong')
     return res
@@ -69,3 +54,15 @@ export const handleDeleteMaytoantruongMany = async (ids: string[], access_token:
     updateTag('maytoantruong')
     return res
 }
+
+export const handleExportMaytoantruong = async (
+    access_token: string,
+) => {
+    return await sendRequestBlob({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/maytoantruong/export`,
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+    });
+};

@@ -5,11 +5,10 @@ import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import KtxDetail from '@/components/csvc/ktx/detail';
 import { useRouter } from 'next/navigation';
-import { handleDeleteKtx, handleDeleteKtxMany } from '@/app/(main)/quan-tri/csvc/ktx/actions';
+import { handleDeleteKtx, handleDeleteKtxMany, handleExportKtx } from '@/app/(main)/quan-tri/csvc/ktx/actions';
 import KtxModal from '@/components/csvc/ktx/modal';
 import ModalImport from '@/components/csvc/ktx/modal.import';
 import { canCreateCsvc, canDeleteCsvc, canReadCsvc, canUpdateCsvc } from '@/libs/csvc';
-import { CSVLink } from 'react-csv';
 
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
 
@@ -135,18 +134,23 @@ const TableKtx = (props: IProps) => {
     const hasSelected = selectedRowKeys.length > 0;
     const rowSelection: TableRowSelection<IKtx> = { selectedRowKeys, onChange: onSelectChange };
 
-    const headers = [
-        { label: 'Mã KTX', key: 'ma' },
-        { label: 'Tên', key: 'name' },
-        { label: 'Diện tích (m²)', key: 'dt' },
-        { label: 'Sức chứa', key: 'sc' },
-        { label: 'Năm sử dụng', key: 'nam_sd' },
-    ];
+    const handleExport = async () => {
+        const blob = await handleExportKtx(access_token);
+
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'ktx.csv';
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+    };
 
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
-            <Flex style={{ marginBottom: 16 }} justify="space-between" align="center">
+            <Flex wrap style={{ marginBottom: 16, gap: 8 }} justify="space-between" align="center">
                 <h2>Danh sách ký túc xá</h2>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {canDeleteCsvc(user ?? {} as IUser) && (
@@ -158,8 +162,8 @@ const TableKtx = (props: IProps) => {
                         <Button onClick={() => setIsModalImportOpen(true)} type="primary" icon={<CloudUploadOutlined />}>Import</Button>
                     )}
                     {mounted && canReadCsvc(user ?? {} as IUser) && (
-                        <Button type="primary" icon={<CloudDownloadOutlined />}>
-                            <CSVLink data={data} filename="ktx.csv" headers={headers} separator=";">Export</CSVLink>
+                        <Button type="primary" icon={<CloudDownloadOutlined />} onClick={handleExport}>
+                            Export
                         </Button>
                     )}
                     {canCreateCsvc(user ?? {} as IUser) && (
@@ -168,7 +172,7 @@ const TableKtx = (props: IProps) => {
                 </div>
             </Flex>
             {canReadCsvc(user ?? {} as IUser) && (
-                <Space style={{ marginBottom: 16 }}>
+                <Space wrap style={{ marginBottom: 16 }}>
                     <Input allowClear placeholder="Tìm theo mã KTX" onChange={(e) => setSelectedName(e.target.value)} value={selectedName} />
                     <Input allowClear placeholder="Tìm theo tên" onChange={(e) => setSelectedMa(e.target.value)} value={selectedMa} />
                     <Button icon={<ClearOutlined />} onClick={() => { setSelectedName(undefined); setSelectedMa(undefined); }}>Xóa bộ lọc</Button>

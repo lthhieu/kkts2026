@@ -87,4 +87,8 @@ export class DaphuongtienService {
   async removeMany(ids: any[]) {
     return await this.daphuongtienModel.deleteMany({ _id: { $in: ids } });
   }
+
+  async exportAll() {
+    return await this.daphuongtienModel.find().lean();
+  }
 }

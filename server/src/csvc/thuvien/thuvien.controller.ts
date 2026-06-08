@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Res } from '@nestjs/common';
 import { ThuvienService } from './thuvien.service';
 import { CreateThuvienDto } from './dto/create-thuvien.dto';
 import { UpdateThuvienDto } from './dto/update-thuvien.dto';
@@ -6,6 +6,8 @@ import { CheckPolicies, ResponseMessage } from 'src/configs/my.decorator';
 import { PoliciesGuard } from 'src/configs/casl.policies.guard';
 import { AppAbility } from 'src/casl/casl-ability.factory/casl-ability.factory';
 import { Action, CsvcSubject } from 'src/configs/enum';
+import type { Response } from 'express';
+import * as csv from 'fast-csv';
 
 @UseGuards(PoliciesGuard)
 @Controller('thuvien')
@@ -31,6 +33,42 @@ export class ThuvienController {
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Create, CsvcSubject))
   createMany(@Body() createThuvienDto: CreateThuvienDto[]) {
     return this.thuvienService.createMany(createThuvienDto);
+  }
+
+  @Get('export')
+  async exportCsv(@Res() res: Response) {
+    const data = await this.thuvienService.exportAll();
+
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=thu-vien.csv',
+    );
+
+    res.setHeader(
+      'Content-Type',
+      'text/csv; charset=utf-8',
+    );
+
+    // BOM cho Excel
+    res.write('\uFEFF');
+
+    const csvStream = csv.format({
+      headers: true,
+      delimiter: ';',
+    });
+
+    csvStream.pipe(res);
+
+    data.forEach((item: CreateThuvienDto) => {
+      csvStream.write({
+        'Mã phòng': item.ma,
+        'Tên phòng': item.name,
+        'Diện tích': item.dt,
+        'Năm sử dụng': item.nam_sd,
+      });
+    });
+
+    csvStream.end();
   }
 
   @Get()

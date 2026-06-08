@@ -87,4 +87,7 @@ export class NghiencuuService {
   async removeMany(ids: any[]) {
     return await this.nghiencuuModel.deleteMany({ _id: { $in: ids } });
   }
+  async exportAll() {
+    return await this.nghiencuuModel.find().lean();
+  }
 }

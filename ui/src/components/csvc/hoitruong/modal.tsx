@@ -1,7 +1,6 @@
 'use client'
-import { Modal, Form, Input, message, Select, Row, Col, InputNumber, notification, DatePicker } from 'antd';
+import { Modal, Form, Input, message, Row, Col, InputNumber, notification } from 'antd';
 import React, { useEffect, useMemo } from 'react';
-import dayjs from 'dayjs';
 import { handleCreateOrUpdateLythuyet } from '@/app/(main)/quan-tri/csvc/ly-thuyet/actions';
 
 interface IProps {
@@ -71,7 +70,7 @@ const HoitruongModal = (props: IProps) => {
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
             <Modal
-                title={status === 'CREATE' ? 'Thêm phòng lý thuyết' : 'Cập nhật phòng lý thuyết'}
+                title={status === 'CREATE' ? 'Thêm phòng hội trường' : 'Cập nhật phòng hội trường'}
                 closable={{ 'aria-label': 'Custom Close Button' }}
                 open={isModalOpen}
                 onOk={handleOk}

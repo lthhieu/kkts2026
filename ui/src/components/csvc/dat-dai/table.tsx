@@ -146,7 +146,7 @@ const TableDatdai = (props: IProps) => {
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
-            <Flex wrap style={{ marginBottom: 16 }} justify="space-between" align="center">
+            <Flex wrap style={{ marginBottom: 16, gap: 8 }} justify="space-between" align="center">
                 <h2>Danh sách đất đai</h2>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {canDeleteCsvc(user ?? {} as IUser) && (

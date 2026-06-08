@@ -1,5 +1,5 @@
 'use server'
-import { sendRequest } from '@/utils/api'
+import { sendRequest, sendRequestBlob } from '@/utils/api'
 import { updateTag } from 'next/cache'
 
 export const handleCreateOrUpdateTBTren500tr = async (data: any, access_token: string, status: string, dataUpdate?: null | ITBTren500tr) => {
@@ -54,3 +54,15 @@ export const handleDeleteTBTren500trMany = async (ids: string[], access_token: s
     updateTag('tbtren500tr')
     return res
 }
+
+export const handleExportTBTren500tr = async (
+    access_token: string,
+) => {
+    return await sendRequestBlob({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/tbtren500tr/export`,
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+    });
+};

@@ -1,5 +1,5 @@
 'use server'
-import { sendRequest } from '@/utils/api'
+import { sendRequest, sendRequestBlob } from '@/utils/api'
 import { updateTag } from 'next/cache'
 
 export const handleCreateOrUpdatePgsgs = async (data: any, access_token: string, status: string, dataUpdate?: null | ICsvcSubject) => {
@@ -24,21 +24,6 @@ export const handleDeletePgsgs = async (_id: string, access_token: string) => {
         headers: {
             Authorization: `Bearer ${access_token!}`,
         },
-    })
-    updateTag('pgsgs')
-    return res
-}
-
-export const handleFilterPgsgs = async (current: number, pageSize: number, access_token: string) => {
-    const res = await sendRequest<IBackendResponse<IModelPaginate<ICsvcSubject>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/pgsgs`,
-        queryParams: { current, pageSize },
-        headers: {
-            Authorization: `Bearer ${access_token}`,
-        },
-        nextOption: {
-            next: { tags: ['pgsgs'] }
-        }
     })
     updateTag('pgsgs')
     return res
@@ -69,3 +54,14 @@ export const handleDeletePgsgsMany = async (ids: string[], access_token: string)
     updateTag('pgsgs')
     return res
 }
+export const handleExportPgsgs = async (
+    access_token: string,
+) => {
+    return await sendRequestBlob({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/pgsgs/export`,
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+    });
+};

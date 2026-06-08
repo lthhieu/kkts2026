@@ -5,8 +5,7 @@ import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { canCreateCsvc, canDeleteCsvc, canReadCsvc, canUpdateCsvc } from '@/libs/csvc';
-import { CSVLink } from 'react-csv';
-import { handleDeletePgsgs, handleDeletePgsgsMany } from '@/app/(main)/quan-tri/csvc/pgs-gs/actions';
+import { handleDeletePgsgs, handleDeletePgsgsMany, handleExportPgsgs } from '@/app/(main)/quan-tri/csvc/pgs-gs/actions';
 import PgsgsModal from '@/components/csvc/pgsgs/modal';
 import ModalImportPgsgs from '@/components/csvc/pgsgs/modal.import';
 import PgsgsDetail from '@/components/csvc/pgsgs/detail';
@@ -161,18 +160,23 @@ const TablePgsgs = (props: IProps) => {
     const hasSelected = selectedRowKeys.length > 0;
     const rowSelection: TableRowSelection<ICsvcSubject> = { selectedRowKeys, onChange: onSelectChange };
 
-    const headers = [
-        { label: 'Mã phòng', key: 'ma' },
-        { label: 'Tên phòng', key: 'name' },
-        { label: 'Diện tích (m²)', key: 'dt' },
-        { label: 'Số chỗ ngồi', key: 'qui_mo_cho_ngoi' },
-        { label: 'Năm sử dụng', key: 'nam_sd' },
-    ];
+    const handleExport = async () => {
+        const blob = await handleExportPgsgs(access_token);
+
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Pgs-gs.csv';
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+    };
 
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
-            <Flex style={{ marginBottom: 16 }} justify="space-between" align="center">
+            <Flex wrap style={{ marginBottom: 16, gap: 8 }} justify="space-between" align="center">
                 <h2>Danh sách phòng phó giáo sư - giáo sư</h2>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {canDeleteCsvc(user ?? {} as IUser) && (
@@ -184,8 +188,8 @@ const TablePgsgs = (props: IProps) => {
                         <Button onClick={() => setIsModalImportOpen(true)} type="primary" icon={<CloudUploadOutlined />}>Import</Button>
                     )}
                     {mounted && canReadCsvc(user ?? {} as IUser) && (
-                        <Button type="primary" icon={<CloudDownloadOutlined />}>
-                            <CSVLink data={data} filename="toa-nha.csv" headers={headers} separator=";">Export</CSVLink>
+                        <Button type="primary" icon={<CloudDownloadOutlined />} onClick={handleExport}>
+                            Export
                         </Button>
                     )}
                     {canCreateCsvc(user ?? {} as IUser) && (
@@ -194,7 +198,7 @@ const TablePgsgs = (props: IProps) => {
                 </div>
             </Flex>
             {canReadCsvc(user ?? {} as IUser) && (
-                <Space style={{ marginBottom: 16 }}>
+                <Space wrap style={{ marginBottom: 16 }}>
                     <Input
                         allowClear
                         placeholder="Tìm theo mã phòng"

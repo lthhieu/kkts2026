@@ -5,8 +5,7 @@ import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { canCreateCsvc, canDeleteCsvc, canReadCsvc, canUpdateCsvc } from '@/libs/csvc';
-import { CSVLink } from 'react-csv';
-import { handleDeletePhongchucnang, handleDeletePhongchucnangMany } from '@/app/(main)/quan-tri/csvc/phong-chucnang/actions';
+import { handleDeletePhongchucnang, handleDeletePhongchucnangMany, handleExportPhongchucnang } from '@/app/(main)/quan-tri/csvc/phong-chucnang/actions';
 import PhongchucnangModal from '@/components/csvc/phongchucnang/modal';
 import ModalImportPhongchucnang from '@/components/csvc/phongchucnang/modal.import';
 import PhongchucnangDetail from '@/components/csvc/phongchucnang/detail';
@@ -167,18 +166,23 @@ const TablePhongchucnang = (props: IProps) => {
     const hasSelected = selectedRowKeys.length > 0;
     const rowSelection: TableRowSelection<IPhongchucnang> = { selectedRowKeys, onChange: onSelectChange };
 
-    const headers = [
-        { label: 'Mã phòng', key: 'ma' },
-        { label: 'Tên phòng', key: 'name' },
-        { label: 'Loại phòng', key: 'type' },
-        { label: 'Diện tích xây dựng (m²)', key: 'dtxd' },
-        { label: 'Năm sử dụng', key: 'nam_sd' },
-    ];
+    const handleExport = async () => {
+        const blob = await handleExportPhongchucnang(access_token);
+
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Phong-chucnang.csv';
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+    };
 
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
-            <Flex style={{ marginBottom: 16 }} justify="space-between" align="center">
+            <Flex wrap style={{ marginBottom: 16, gap: 8 }} justify="space-between" align="center">
                 <h2>Danh sách phòng - chức năng</h2>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {canDeleteCsvc(user ?? {} as IUser) && (
@@ -190,8 +194,8 @@ const TablePhongchucnang = (props: IProps) => {
                         <Button onClick={() => setIsModalImportOpen(true)} type="primary" icon={<CloudUploadOutlined />}>Import</Button>
                     )}
                     {mounted && canReadCsvc(user ?? {} as IUser) && (
-                        <Button type="primary" icon={<CloudDownloadOutlined />}>
-                            <CSVLink data={data} filename="phong-chucnang.csv" headers={headers} separator=";">Export</CSVLink>
+                        <Button type="primary" icon={<CloudDownloadOutlined />} onClick={handleExport}>
+                            Export
                         </Button>
                     )}
                     {canCreateCsvc(user ?? {} as IUser) && (

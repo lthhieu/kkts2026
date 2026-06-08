@@ -100,4 +100,12 @@ export class MaytoantruongService {
   async removeMany(ids: any[]) {
     return await this.maytoantruongModel.deleteMany({ _id: { $in: ids } });
   }
+  async exportAll() {
+    return await this.maytoantruongModel
+      .find()
+      .sort('cate unit room name')
+      .populate({ path: 'unit', select: 'name' })
+      .populate({ path: 'room', select: 'name' })
+      .lean();
+  }
 }

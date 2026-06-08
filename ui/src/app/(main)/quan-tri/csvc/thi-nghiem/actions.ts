@@ -1,5 +1,5 @@
 'use server'
-import { sendRequest } from '@/utils/api'
+import { sendRequest, sendRequestBlob } from '@/utils/api'
 import { updateTag } from 'next/cache'
 
 export const handleCreateOrUpdateThinghiem = async (data: any, access_token: string, status: string, dataUpdate?: null | ICsvcSubject) => {
@@ -28,22 +28,6 @@ export const handleDeleteThinghiem = async (_id: string, access_token: string) =
     updateTag('thinghiem')
     return res
 }
-
-export const handleFilterThinghiem = async (current: number, pageSize: number, access_token: string) => {
-    const res = await sendRequest<IBackendResponse<IModelPaginate<ICsvcSubject>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/thinghiem`,
-        queryParams: { current, pageSize },
-        headers: {
-            Authorization: `Bearer ${access_token}`,
-        },
-        nextOption: {
-            next: { tags: ['thinghiem'] }
-        }
-    })
-    updateTag('thinghiem')
-    return res
-}
-
 export const handleCreateManyThinghiem = async (data: any, access_token: string) => {
     const res = await sendRequest<IBackendResponse<any>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/thinghiem/create-many`,
@@ -69,3 +53,15 @@ export const handleDeleteThinghiemMany = async (ids: string[], access_token: str
     updateTag('thinghiem')
     return res
 }
+
+export const handleExportThinghiem = async (
+    access_token: string,
+) => {
+    return await sendRequestBlob({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/thinghiem/export`,
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+    });
+};

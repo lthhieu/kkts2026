@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, Res } from '@nestjs/common';
 import { MaytoantruongService } from './maytoantruong.service';
 import { CreateMaytoantruongDto } from './dto/create-maytoantruong.dto';
 import { UpdateMaytoantruongDto } from './dto/update-maytoantruong.dto';
@@ -6,6 +6,9 @@ import { PoliciesGuard } from 'src/configs/casl.policies.guard';
 import { CheckPolicies, ResponseMessage } from 'src/configs/my.decorator';
 import { AppAbility } from 'src/casl/casl-ability.factory/casl-ability.factory';
 import { Action, CsvcSubject } from 'src/configs/enum';
+import type { Response } from 'express';
+import * as csv from 'fast-csv';
+import { MayCate } from 'src/csvc/maytoantruong/schemas/maytoantruong.schema';
 
 
 @UseGuards(PoliciesGuard)
@@ -32,6 +35,78 @@ export class MaytoantruongController {
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Create, CsvcSubject))
   createMany(@Body() createMaytoantruongDto: CreateMaytoantruongDto[]) {
     return this.maytoantruongService.createMany(createMaytoantruongDto);
+  }
+
+  @Get('export')
+  async exportCsv(
+    @Res() res: any,
+  ) {
+    const data =
+      await this.maytoantruongService.exportAll();
+
+    const cateMap = {
+      [MayCate.MAY_CAU_HINH_CAO]:
+        'Máy cấu hình cao',
+      [MayCate.LAPTOP_MAY_TINH_BANG]:
+        'Laptop/Máy tính bảng',
+      [MayCate.TUONG_DUONG_THAP]:
+        'Máy tương đương thấp',
+      [MayCate.MAY_IN]:
+        'Máy in',
+      [MayCate.MAY_SCAN]:
+        'Máy scan',
+    };
+
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=may-toan-truong.csv',
+    );
+
+    res.setHeader(
+      'Content-Type',
+      'text/csv; charset=utf-8',
+    );
+
+    // Fix lỗi tiếng Việt trên Excel
+    res.write('\uFEFF');
+
+    const csvStream = csv.format({
+      headers: true,
+      delimiter: ';',
+    });
+
+    csvStream.pipe(res);
+
+    data.forEach((item: any) => {
+      csvStream.write({
+        'Loại máy':
+          cateMap[item.cate] ??
+          item.cate,
+
+        'Tên máy':
+          item.name,
+
+        'Đơn vị':
+          item.unit?.name ?? '',
+
+        'Phòng':
+          item.room?.name ?? '',
+
+        'Năm sử dụng':
+          item.nam_sd,
+
+        'Số lượng':
+          item.sl,
+
+        'Nguyên giá':
+          item.nguyengia,
+
+        'Mô tả':
+          item.des ?? '',
+      });
+    });
+
+    csvStream.end();
   }
 
   @Get()

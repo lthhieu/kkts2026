@@ -1,5 +1,5 @@
 'use server'
-import { sendRequest } from '@/utils/api'
+import { sendRequest, sendRequestBlob } from '@/utils/api'
 import { updateTag } from 'next/cache'
 
 export const handleCreateOrUpdateNghiencuu = async (data: any, access_token: string, status: string, dataUpdate?: null | ICsvcSubject) => {
@@ -69,3 +69,15 @@ export const handleDeleteNghiencuuMany = async (ids: string[], access_token: str
     updateTag('nghiencuu')
     return res
 }
+
+export const handleExportNghiencuu = async (
+    access_token: string,
+) => {
+    return await sendRequestBlob({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/nghiencuu/export`,
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+    });
+};

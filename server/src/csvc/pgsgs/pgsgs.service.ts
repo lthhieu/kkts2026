@@ -87,4 +87,7 @@ export class PgsgsService {
   async removeMany(ids: any[]) {
     return await this.pgsgsModel.deleteMany({ _id: { $in: ids } });
   }
+  async exportAll() {
+    return await this.pgsgsModel.find().lean();
+  }
 }

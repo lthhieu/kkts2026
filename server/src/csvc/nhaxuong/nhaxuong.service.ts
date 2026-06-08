@@ -87,4 +87,8 @@ export class NhaxuongService {
   async removeMany(ids: any[]) {
     return await this.nhaxuongModel.deleteMany({ _id: { $in: ids } });
   }
+
+  async exportAll() {
+    return await this.nhaxuongModel.find().lean();
+  }
 }

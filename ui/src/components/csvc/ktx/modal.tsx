@@ -1,7 +1,6 @@
 'use client'
-import { Modal, Form, Input, message, Select, Row, Col, InputNumber, notification, DatePicker } from 'antd';
+import { Modal, Form, Input, message, Row, Col, InputNumber, notification } from 'antd';
 import React, { useEffect, useMemo } from 'react';
-import dayjs from 'dayjs';
 import { handleCreateOrUpdateKtx } from '@/app/(main)/quan-tri/csvc/ktx/actions';
 
 interface IProps {

@@ -86,4 +86,8 @@ export class ThuvienService {
   async removeMany(ids: any[]) {
     return await this.thuvienModel.deleteMany({ _id: { $in: ids } });
   }
+
+  async exportAll() {
+    return await this.thuvienModel.find().lean();
+  }
 }

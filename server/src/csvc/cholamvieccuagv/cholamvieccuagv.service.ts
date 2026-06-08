@@ -87,4 +87,7 @@ export class CholamvieccuagvService {
   async removeMany(ids: any[]) {
     return await this.cholamvieccuagvModel.deleteMany({ _id: { $in: ids } });
   }
+  async exportAll() {
+    return await this.cholamvieccuagvModel.find().lean();
+  }
 }

@@ -1,5 +1,5 @@
 'use server'
-import { sendRequest } from '@/utils/api'
+import { sendRequest, sendRequestBlob } from '@/utils/api'
 import { updateTag } from 'next/cache'
 
 export const handleCreateOrUpdateKtx = async (data: any, access_token: string, status: string, dataUpdate?: null | IKtx) => {
@@ -24,21 +24,6 @@ export const handleDeleteKtx = async (_id: string, access_token: string) => {
         headers: {
             Authorization: `Bearer ${access_token!}`,
         },
-    })
-    updateTag('ktx')
-    return res
-}
-
-export const handleFilterKtx = async (current: number, pageSize: number, access_token: string) => {
-    const res = await sendRequest<IBackendResponse<IModelPaginate<IKtx>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/ktx`,
-        queryParams: { current, pageSize },
-        headers: {
-            Authorization: `Bearer ${access_token}`,
-        },
-        nextOption: {
-            next: { tags: ['ktx'] }
-        }
     })
     updateTag('ktx')
     return res
@@ -69,3 +54,15 @@ export const handleDeleteKtxMany = async (ids: string[], access_token: string) =
     updateTag('ktx')
     return res
 }
+
+export const handleExportKtx = async (
+    access_token: string,
+) => {
+    return await sendRequestBlob({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/ktx/export`,
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+    });
+};

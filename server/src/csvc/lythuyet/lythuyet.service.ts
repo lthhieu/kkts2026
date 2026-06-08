@@ -87,4 +87,8 @@ export class LythuyetService {
   async removeMany(ids: any[]) {
     return await this.lythuyetModel.deleteMany({ _id: { $in: ids } });
   }
+
+  async exportAll() {
+    return await this.lythuyetModel.find().lean();
+  }
 }

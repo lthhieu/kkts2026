@@ -12,11 +12,11 @@ const CholamvieccuagvDetail = ({ data }: IProps) => {
     return (
         <div>
             <Descriptions
-                column={{ xs: 1, sm: 3 }}
+                column={1}
             >
-                <Descriptions.Item span={2} label="Mã phòng">{data.ma ?? '—'}</Descriptions.Item>
-                <Descriptions.Item span={2} label="Tên phòng">{data.name ?? '—'}</Descriptions.Item>
-                <Descriptions.Item span={2} label="Diện tích (m²)">{data.dt ?? '—'}</Descriptions.Item>
+                <Descriptions.Item label="Mã phòng">{data.ma ?? '—'}</Descriptions.Item>
+                <Descriptions.Item label="Tên phòng">{data.name ?? '—'}</Descriptions.Item>
+                <Descriptions.Item label="Diện tích (m²)">{data.dt ?? '—'}</Descriptions.Item>
             </Descriptions>
         </div>
     )

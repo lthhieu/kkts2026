@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Res } from '@nestjs/common';
 import { CheckPolicies, ResponseMessage } from 'src/configs/my.decorator';
 import { PoliciesGuard } from 'src/configs/casl.policies.guard';
 import { AppAbility } from 'src/casl/casl-ability.factory/casl-ability.factory';
@@ -6,6 +6,8 @@ import { Action, CsvcSubject } from 'src/configs/enum';
 import { PhongchucnangService } from 'src/csvc/phongchucnang/phongchucnang.service';
 import { CreatePhongchucnangDto } from 'src/csvc/phongchucnang/dto/create-phongchucnang.dto';
 import { UpdatePhongchucnangDto } from 'src/csvc/phongchucnang/dto/update-phongchucnang.dto';
+import type { Response } from 'express';
+import * as csv from 'fast-csv';
 
 @UseGuards(PoliciesGuard)
 @Controller('phongchucnang')
@@ -31,6 +33,43 @@ export class PhongchucnangController {
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Read, CsvcSubject))
   summary() {
     return this.phongchucnangService.summary();
+  }
+
+  @Get('export')
+  async exportCsv(@Res() res: Response) {
+    const data = await this.phongchucnangService.exportAll();
+
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=phong-chuc-nang.csv',
+    );
+
+    res.setHeader(
+      'Content-Type',
+      'text/csv; charset=utf-8',
+    );
+
+    // BOM cho Excel
+    res.write('\uFEFF');
+
+    const csvStream = csv.format({
+      headers: true,
+      delimiter: ';',
+    });
+
+    csvStream.pipe(res);
+
+    data.forEach((item: CreatePhongchucnangDto) => {
+      csvStream.write({
+        'Mã phòng': item.ma,
+        'Tên phòng': item.name,
+        'Loại phòng': (item.type as any)?.name,
+        'Diện tích xây dựng': item.dtxd,
+        'Năm sử dụng': item.nam_sd,
+      });
+    });
+
+    csvStream.end();
   }
 
   @Get()

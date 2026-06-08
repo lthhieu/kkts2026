@@ -5,8 +5,7 @@ import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { canCreateCsvc, canDeleteCsvc, canReadCsvc, canUpdateCsvc } from '@/libs/csvc';
-import { CSVLink } from 'react-csv';
-import { handleDeleteMaytoantruong, handleDeleteMaytoantruongMany } from '@/app/(main)/quan-tri/csvc/danh-sach-may-toan-truong/actions';
+import { handleDeleteMaytoantruong, handleDeleteMaytoantruongMany, handleExportMaytoantruong } from '@/app/(main)/quan-tri/csvc/danh-sach-may-toan-truong/actions';
 import MaytoantruongModal, { MayCate, MayCateLabel } from '@/components/csvc/danhsachmaytoantruong/modal';
 import ModalImportMaytoantruong from '@/components/csvc/danhsachmaytoantruong/modal.import';
 import MaytoantruongDetail from '@/components/csvc/danhsachmaytoantruong/detail';
@@ -24,7 +23,6 @@ interface IProps {
 }
 
 const Context = React.createContext({ name: 'Default' });
-const { Text } = Typography;
 
 const TableMaytoantruong = (props: IProps) => {
     const { data, access_token, meta, user, summary, rooms, units } = props;
@@ -200,20 +198,23 @@ const TableMaytoantruong = (props: IProps) => {
     const hasSelected = selectedRowKeys.length > 0;
     const rowSelection: TableRowSelection<IMaytoantruong> = { selectedRowKeys, onChange: onSelectChange };
 
-    const headers = [
-        { label: 'Tên TSCĐ', key: 'name' },
-        { label: 'Mã số / Mô tả', key: 'des' },
-        { label: 'Đơn vị', key: 'unit' },
-        { label: 'Phòng', key: 'room' },
-        { label: 'Năm sử dụng', key: 'nam_sd' },
-        { label: 'Số lượng', key: 'sl' },
-        { label: 'Nguyên giá', key: 'nguyengia' },
-    ];
+    const handleExport = async () => {
+        const blob = await handleExportMaytoantruong(access_token);
+
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'may-toan-truong.csv';
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+    };
 
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
-            <Flex style={{ marginBottom: 16 }} justify="space-between" align="center">
+            <Flex wrap style={{ marginBottom: 16, gap: 8 }} justify="space-between" align="center">
                 <h2>Danh sách Tài sản cố định</h2>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {canDeleteCsvc(user ?? {} as IUser) && (
@@ -225,8 +226,8 @@ const TableMaytoantruong = (props: IProps) => {
                         <Button onClick={() => setIsModalImportOpen(true)} type="primary" icon={<CloudUploadOutlined />}>Import</Button>
                     )}
                     {mounted && canReadCsvc(user ?? {} as IUser) && (
-                        <Button type="primary" icon={<CloudDownloadOutlined />}>
-                            <CSVLink data={data} filename="may-toan-truong.csv" headers={headers} separator=";">Export</CSVLink>
+                        <Button type="primary" icon={<CloudDownloadOutlined />} onClick={handleExport}>
+                            Export
                         </Button>
                     )}
                     {canCreateCsvc(user ?? {} as IUser) && (

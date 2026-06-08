@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, Res } from '@nestjs/common';
 import { Tbtren500trService } from './tbtren500tr.service';
 import { CreateTbtren500trDto } from './dto/create-tbtren500tr.dto';
 import { UpdateTbtren500trDto } from './dto/update-tbtren500tr.dto';
@@ -6,7 +6,8 @@ import { PoliciesGuard } from 'src/configs/casl.policies.guard';
 import { CheckPolicies, ResponseMessage } from 'src/configs/my.decorator';
 import { AppAbility } from 'src/casl/casl-ability.factory/casl-ability.factory';
 import { Action, CsvcSubject } from 'src/configs/enum';
-
+import type { Response } from 'express';
+import * as csv from 'fast-csv';
 
 @UseGuards(PoliciesGuard)
 @Controller('tbtren500tr')
@@ -49,6 +50,80 @@ export class Tbtren500trController {
     @Query() queryString: string,
   ) {
     return this.tbtren500trService.findAll(+current, +pageSize, queryString);
+  }
+
+  @Get('export')
+  async exportCsv(
+    @Res() res: Response,
+  ) {
+    const data =
+      await this.tbtren500trService.exportAll();
+
+    console.log(
+      'parents:',
+      data.length,
+    );
+
+    console.log(
+      'children:',
+      data.reduce(
+        (sum, item: any) =>
+          sum +
+          (item.children?.length ?? 0),
+        0,
+      ),
+    );
+
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=tai-san.csv',
+    );
+
+    res.setHeader(
+      'Content-Type',
+      'text/csv; charset=utf-8',
+    );
+
+    // BOM cho Excel
+    res.write('\uFEFF');
+
+    const csvStream = csv.format({
+      headers: true,
+      delimiter: ';',
+    });
+
+    csvStream.pipe(res);
+
+    data.forEach((parent: any) => {
+      // tài sản cha
+      csvStream.write({
+        'Đơn vị': parent.unit?.name,
+        'Mã tài sản': parent.code,
+        'Tên tài sản': parent.name,
+        'Nguyên giá':
+          parent.totalOriginalPrice,
+        'Loại': 'Cha',
+      });
+
+      // tài sản con
+      parent.children?.forEach(
+        (child: any) => {
+          csvStream.write({
+            'Đơn vị':
+              child.unit?.name,
+            'Mã tài sản':
+              child.code,
+            'Tên tài sản':
+              child.name,
+            'Nguyên giá':
+              child.originalPrice,
+            'Loại': 'Con',
+          });
+        },
+      );
+    });
+
+    csvStream.end();
   }
 
   @Get(':id')

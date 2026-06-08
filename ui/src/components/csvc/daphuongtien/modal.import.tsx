@@ -141,12 +141,11 @@ const ModalImportDaphuongtien = (props: IProps) => {
                     </p>
                     <p className="ant-upload-text">Chọn hoặc kéo thả file để tải dữ liệu</p>
                     <p className="ant-upload-hint">
-                        Chỉ hỗ trợ file excel và csv
-                        &nbsp;<a onClick={(e) => e.stopPropagation()} href={`${process.env.NEXT_PUBLIC_FRONTEND_URI}sample/sample-daphuongtien.xlsx`} download>Tải file mẫu</a>
+                        Chỉ hỗ trợ file excel và csv <a onClick={(e) => e.stopPropagation()} href={`${process.env.NEXT_PUBLIC_FRONTEND_URI}sample/sample-daphuongtien.xlsx`} download>Tải file mẫu</a>
                     </p>
                 </Dragger>
                 <div>
-                    <Table<any>
+                    <Table<ICsvcSubject>
                         scroll={{ x: 'max-content' }}
                         title={() => <span>Dữ liệu:</span>}
                         dataSource={dataImport}
