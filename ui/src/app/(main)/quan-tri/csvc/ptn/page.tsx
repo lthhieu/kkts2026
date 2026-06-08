@@ -38,7 +38,7 @@ const PtnPage = async ({ searchParams }: { searchParams: Params }) => {
         headers: { Authorization: `Bearer ${session?.access_token}` },
         nextOption: { next: { tags: ['ctk'] } }
     })
-    const resLoaiptn = await sendRequest<IBackendResponse<IModelPaginate<ILoaiptn>>>({
+    const resLoaiptn = await sendRequest<IBackendResponse<IModelPaginate<any>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/loaiptn`,
         queryParams: { current: 1, pageSize: 100000 },
         headers: { Authorization: `Bearer ${session?.access_token}` },

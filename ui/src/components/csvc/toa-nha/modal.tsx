@@ -12,8 +12,6 @@ interface IProps {
     setStatus: (value: string) => void;
     dataUpdate: null | IToanha;
     setDataUpdate: (value: null | IToanha) => void;
-    hinhthucsohuu: IHinhthucsohuu[];
-    tinhtrangsudung: ITinhtrangsudung[];
 }
 
 export const placeOptions = [
@@ -24,12 +22,11 @@ export const placeOptions = [
 const Context = React.createContext({ name: 'Default' });
 
 const ToanhaModal = (props: IProps) => {
-    const { setIsModalOpen, isModalOpen, setStatus, status, access_token, setDataUpdate, dataUpdate, hinhthucsohuu, tinhtrangsudung } = props;
+    const { setIsModalOpen, isModalOpen, setStatus, status, access_token, setDataUpdate, dataUpdate } = props;
     const [form] = Form.useForm();
     const [messageApi, contextHolder] = message.useMessage();
     const [api, contextHolderNotification] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
-
 
     useEffect(() => {
         if (dataUpdate) {
@@ -40,10 +37,6 @@ const ToanhaModal = (props: IProps) => {
                 tong_dt_sxd: dataUpdate.tong_dt_sxd,
                 so_tang: dataUpdate.so_tang,
                 nam_sd: dataUpdate.nam_sd,
-                htsh: dataUpdate.htsh?._id ?? null,
-                diachi: dataUpdate.diachi ?? null,
-                tinh_trang_sd: dataUpdate.tinh_trang_sd?._id ?? null,
-                ngay_chuyen_tt: dataUpdate.ngay_chuyen_tt ? dayjs(dataUpdate.ngay_chuyen_tt, ['DD/MM/YYYY', 'YYYY-MM-DD']) : null,
                 place: dataUpdate.place || 0,
             });
         }
@@ -63,7 +56,6 @@ const ToanhaModal = (props: IProps) => {
     const onFinish = async (values: any) => {
         const payload = {
             ...values,
-            ngay_chuyen_tt: values.ngay_chuyen_tt ? values.ngay_chuyen_tt.format('DD/MM/YYYY') : null,
         };
         const response = await handleCreateOrUpdateToanha(payload, access_token ?? '', status, dataUpdate);
         if (response.data) {
@@ -179,77 +171,19 @@ const ToanhaModal = (props: IProps) => {
                         </Col>
                     </Row>
 
-                    <Row gutter={16}>
-                        <Col span={12}>
-                            <Form.Item
-                                style={{ marginBottom: 8 }}
-                                label="Hình thức sở hữu"
-                                name="htsh"
-                                rules={[{ required: true }]}
-                            >
-                                <Select
-                                    style={{ width: '100%' }}
-                                    showSearch={{ optionFilterProp: 'label' }}
-                                    placeholder="Chọn hình thức sở hữu"
-                                    allowClear
-                                    options={hinhthucsohuu.map(({ _id, name }) => ({ value: _id, label: name }))}
-                                />
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item
-                                style={{ marginBottom: 8 }}
-                                label="Tình trạng sử dụng"
-                                name="tinh_trang_sd"
-                            >
-                                <Select
-                                    style={{ width: '100%' }}
-                                    showSearch={{ optionFilterProp: 'label' }}
-                                    placeholder="Chọn tình trạng sử dụng"
-                                    allowClear
-                                    options={tinhtrangsudung.map(({ _id, name }) => ({ value: _id, label: name }))}
-                                />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-
                     <Form.Item
                         style={{ marginBottom: 8 }}
-                        label="Địa chỉ"
-                        name="diachi"
-                        rules={[{ required: true }]}
+                        label="Vị trí"
+                        name="place"
                     >
-                        <Input />
+                        <Select
+                            style={{ width: '100%' }}
+                            showSearch={{ optionFilterProp: 'label' }}
+                            placeholder="Chọn vị trí"
+                            allowClear
+                            options={placeOptions.map(({ value, label }) => ({ value, label }))}
+                        />
                     </Form.Item>
-
-                    <Row gutter={16}>
-                        <Col span={12}>
-                            <Form.Item
-                                style={{ marginBottom: 8 }}
-                                label="Ngày chuyển tình trạng"
-                                name="ngay_chuyen_tt"
-                            >
-                                <DatePicker style={{ width: '100%' }} format="DD/MM/YYYY" placeholder="DD/MM/YYYY" />
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item
-                                style={{ marginBottom: 8 }}
-                                label="Vị trí"
-                                name="place"
-                            >
-                                <Select
-                                    style={{ width: '100%' }}
-                                    showSearch={{ optionFilterProp: 'label' }}
-                                    placeholder="Chọn vị trí"
-                                    allowClear
-                                    options={placeOptions.map(({ value, label }) => ({ value, label }))}
-                                />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-
-
                 </Form>
             </Modal>
         </Context.Provider>

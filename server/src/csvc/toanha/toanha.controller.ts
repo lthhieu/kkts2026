@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Res } from '@nestjs/common';
 import { ToanhaService } from './toanha.service';
 import { CreateToanhaDto } from './dto/create-toanha.dto';
 import { UpdateToanhaDto } from './dto/update-toanha.dto';
@@ -6,6 +6,8 @@ import { CheckPolicies, ResponseMessage } from 'src/configs/my.decorator';
 import { PoliciesGuard } from 'src/configs/casl.policies.guard';
 import { AppAbility } from 'src/casl/casl-ability.factory/casl-ability.factory';
 import { Action, CsvcSubject } from 'src/configs/enum';
+import * as csv from 'fast-csv';
+import type { Response } from 'express';
 
 @UseGuards(PoliciesGuard)
 @Controller('toanha')
@@ -42,6 +44,45 @@ export class ToanhaController {
     @Query() queryString: string,
   ) {
     return this.toanhaService.findAll(+current, +pageSize, queryString);
+  }
+
+  @Get('export')
+  async exportCsv(@Res() res: Response) {
+    const data = await this.toanhaService.exportAll();
+
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=toa-nha.csv',
+    );
+
+    res.setHeader(
+      'Content-Type',
+      'text/csv; charset=utf-8',
+    );
+
+    // BOM cho Excel
+    res.write('\uFEFF');
+
+    const csvStream = csv.format({
+      headers: true,
+      delimiter: ';',
+    });
+
+    csvStream.pipe(res);
+
+    data.forEach((item: CreateToanhaDto) => {
+      csvStream.write({
+        'Mã toàn nhà': item.ma_toanha,
+        'Tên tòa nhà': item.ten_toanha,
+        'Diện tích xây dựng': item.dtxd,
+        'Tông diện tích sàn xây dựng': item.tong_dt_sxd,
+        'Số tầng': item.so_tang,
+        'Năm đưa vào sử dụng': item.nam_sd,
+        'Vị trí': item.place === 0 ? 'SPKT' : 'KTX',
+      });
+    });
+
+    csvStream.end();
   }
 
   @Get(':id')

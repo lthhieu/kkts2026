@@ -75,13 +75,41 @@ export const sendRequestFile = async <T>(props: IRequest) => {
         }
     });
 };
+export const sendRequestBlob = async (props: IRequest) => {
+    let {
+        url,
+        method,
+        useCredentials = false,
+        body,
+        headers = {},
+        queryParams = {},
+        nextOption = {}
+    } = props;
 
-// export const fetchDefaultImages = (type: string) => {
-//     if (type === 'GITHUB') return '/users/default-github.png'
-//     if (type === 'GOOGLE') return '/users/default-google.png'
-//     if (type === 'SYSTEM') return '/users/default-user.png'
-//     return type
-// }
-// export const convertStringToSlug = (str: string) => {
-//     return slugify(str, { lower: true, locale: 'vi' })
-// }
+    const options: any = {
+        method: method ?? 'GET',
+        headers: new Headers({ ...headers }),
+        body: body ? JSON.stringify(body) : null,
+        ...nextOption
+    };
+
+    if (useCredentials) options.credentials = 'include';
+
+    if (queryParams) {
+        url = `${url}?${queryString.stringify(queryParams)}`;
+    }
+
+    return fetch(url, options).then(async (res) => {
+        if (res.ok) {
+            return await res.blob();
+        } else {
+            const json = await res.json();
+
+            throw new Error(
+                json?.message ??
+                json?.error ??
+                'Download failed'
+            );
+        }
+    });
+};

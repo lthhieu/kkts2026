@@ -5,11 +5,10 @@ import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import ToanhaDetail from '@/components/csvc/toa-nha/detail';
 import { useRouter } from 'next/navigation';
-import { handleDeleteToanha, handleDeleteToanhaMany } from '@/app/(main)/quan-tri/csvc/toa-nha/actions';
+import { handleDeleteToanha, handleDeleteToanhaMany, handleExportToanha } from '@/app/(main)/quan-tri/csvc/toa-nha/actions';
 import ToanhaModal, { placeOptions } from '@/components/csvc/toa-nha/modal';
 import ModalImport from '@/components/csvc/toa-nha/modal.import';
 import { canCreateCsvc, canDeleteCsvc, canReadCsvc, canUpdateCsvc } from '@/libs/csvc';
-import { CSVLink } from 'react-csv';
 
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
 
@@ -18,8 +17,6 @@ interface IProps {
     access_token: string;
     meta: IMeta;
     user: IUser | null;
-    hinhthucsohuu: IHinhthucsohuu[];
-    tinhtrangsudung: ITinhtrangsudung[];
     summary: ISummaryToanha[] | null;
 }
 
@@ -27,7 +24,7 @@ const Context = React.createContext({ name: 'Default' });
 const { Text } = Typography;
 
 const TableToanha = (props: IProps) => {
-    const { data, access_token, meta, user, hinhthucsohuu, tinhtrangsudung, summary } = props;
+    const { data, access_token, meta, user, summary } = props;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalImportOpen, setIsModalImportOpen] = useState(false);
     const [status, setStatus] = useState('');
@@ -108,6 +105,9 @@ const TableToanha = (props: IProps) => {
             title: 'Tên tòa nhà',
             dataIndex: 'ten_toanha',
             key: 'ten_toanha',
+            render: (_, record) => <Space>
+                <Typography.Text ellipsis={{ tooltip: record.ten_toanha }}>{record.ten_toanha}</Typography.Text>
+            </Space>
         },
         {
             title: 'Diện tích xây dựng (m²)',
@@ -130,9 +130,12 @@ const TableToanha = (props: IProps) => {
             key: 'nam_sd',
         },
         {
-            title: 'Địa chỉ',
-            dataIndex: 'diachi',
-            key: 'diachi',
+            title: 'Vị trí',
+            dataIndex: 'place',
+            key: 'place',
+            render: (place: number) => {
+                return place === 0 ? 'SPKT' : 'KTX';
+            }
         },
     ];
 
@@ -177,23 +180,23 @@ const TableToanha = (props: IProps) => {
     const hasSelected = selectedRowKeys.length > 0;
     const rowSelection: TableRowSelection<IToanha> = { selectedRowKeys, onChange: onSelectChange };
 
-    const headers = [
-        { label: 'Mã tòa nhà', key: 'ma_toanha' },
-        { label: 'Tên tòa nhà', key: 'ten_toanha' },
-        { label: 'Diện tích xây dựng (m²)', key: 'dtxd' },
-        { label: 'Tổng diện tích sàn (m²)', key: 'tong_dt_sxd' },
-        { label: 'Số tầng', key: 'so_tang' },
-        { label: 'Năm sử dụng', key: 'nam_sd' },
-        { label: 'Hình thức sở hữu', key: 'htsh.name' },
-        { label: 'Tình trạng sử dụng', key: 'tinh_trang_sd.name' },
-        { label: 'Địa chỉ', key: 'diachi' },
-        { label: 'Ngày chuyển tình trạng', key: 'ngay_chuyen_tt' }
-    ];
+    const handleExport = async () => {
+        const blob = await handleExportToanha(access_token);
+
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'toa-nha.csv';
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+    };
 
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
-            <Flex style={{ marginBottom: 16 }} justify="space-between" align="center">
+            <Flex wrap style={{ marginBottom: 16 }} justify="space-between" align="center">
                 <h2>Danh sách tòa nhà</h2>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {canDeleteCsvc(user ?? {} as IUser) && (
@@ -205,8 +208,8 @@ const TableToanha = (props: IProps) => {
                         <Button onClick={() => setIsModalImportOpen(true)} type="primary" icon={<CloudUploadOutlined />}>Import</Button>
                     )}
                     {mounted && canReadCsvc(user ?? {} as IUser) && (
-                        <Button type="primary" icon={<CloudDownloadOutlined />}>
-                            <CSVLink data={data} filename="toa-nha.csv" headers={headers} separator=";">Export</CSVLink>
+                        <Button type="primary" icon={<CloudDownloadOutlined />} onClick={handleExport}>
+                            Export
                         </Button>
                     )}
                     {canCreateCsvc(user ?? {} as IUser) && (
@@ -215,7 +218,7 @@ const TableToanha = (props: IProps) => {
                 </div>
             </Flex>
             {canReadCsvc(user ?? {} as IUser) && (
-                <Space style={{ marginBottom: 16 }}>
+                <Space wrap style={{ marginBottom: 16 }}>
                     <Input
                         allowClear
                         placeholder="Tìm theo mã tòa nhà"
@@ -301,8 +304,6 @@ const TableToanha = (props: IProps) => {
                 setIsModalOpen={setIsModalOpen}
                 setDataUpdate={setDataUpdate}
                 dataUpdate={dataUpdate}
-                hinhthucsohuu={hinhthucsohuu}
-                tinhtrangsudung={tinhtrangsudung}
             />
             <ModalImport
                 access_token={access_token}

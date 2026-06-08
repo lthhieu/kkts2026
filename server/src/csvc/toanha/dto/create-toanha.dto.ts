@@ -19,15 +19,7 @@ export class CreateToanhaDto {
     @IsNotEmpty({ message: 'Năm sử dụng không được để trống' })
     nam_sd: number;
 
-    @IsNotEmpty({ message: 'Hình thức sở hữu không được để trống' })
-    htsh: any;
-
-    @IsNotEmpty({ message: 'Địa chỉ không được để trống' })
-    diachi: string;
-
     @IsOptional()
-    tinh_trang_sd?: any;
+    place?: number;
 
-    @IsOptional()
-    ngay_chuyen_tt?: string;
 }

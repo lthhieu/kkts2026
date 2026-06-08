@@ -5,11 +5,10 @@ import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import DatdaiDetail from '@/components/csvc/dat-dai/detail';
 import { useRouter } from 'next/navigation';
-import { handleDeleteDatdai, handleDeleteDatdaiMany } from '@/app/(main)/quan-tri/csvc/dat-dai/actions';
+import { handleDeleteDatdai, handleDeleteDatdaiMany, handleExportDatdai } from '@/app/(main)/quan-tri/csvc/dat-dai/actions';
 import DatdaiModal from '@/components/csvc/dat-dai/modal';
 import ModalImport from '@/components/csvc/dat-dai/modal.import';
 import { canCreateCsvc, canDeleteCsvc, canReadCsvc, canUpdateCsvc } from '@/libs/csvc';
-import { CSVLink } from 'react-csv';
 
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
 
@@ -18,11 +17,6 @@ interface IProps {
     access_token: string;
     meta: IMeta;
     user: IUser | null;
-    hinhthucsudung: IHinhthucsudung[];
-    mucdichsudungdat: IMucdichsudungdat[];
-    tinhtrangsudung: ITinhtrangsudung[];
-    tinhthanhpho: ITinhthanhpho[];
-    xaphuong: IXaphuong[];
     summary: ISummary;
 }
 
@@ -30,7 +24,7 @@ const Context = React.createContext({ name: 'Default' });
 const { Text } = Typography;
 
 const TableDatdai = (props: IProps) => {
-    const { data, access_token, meta, user, hinhthucsudung, mucdichsudungdat, tinhtrangsudung, tinhthanhpho, xaphuong, summary } = props;
+    const { data, access_token, meta, user, summary } = props;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalImportOpen, setIsModalImportOpen] = useState(false);
     const [status, setStatus] = useState('');
@@ -65,7 +59,7 @@ const TableDatdai = (props: IProps) => {
             key: 'ma_giay_cnqsh',
             render: (_, record) => (
                 <Space>
-                    <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.ma_giay_cnqsh}</Typography.Text>
+                    <Typography.Text ellipsis={{ tooltip: record.ma_giay_cnqsh }} copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.ma_giay_cnqsh}</Typography.Text>
                     <Tooltip title="Xem chi tiết">
                         <EyeOutlined style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => showDrawer(record)} />
                     </Tooltip>
@@ -97,7 +91,6 @@ const TableDatdai = (props: IProps) => {
         },
         { title: 'Thửa', dataIndex: 'thua', key: 'thua' },
         { title: 'Diện tích (m²)', dataIndex: 'dt', key: 'dt' },
-        { title: 'Năm bắt đầu SDD', dataIndex: 'nam_bd_sdd', key: 'nam_bd_sdd' },
         { title: 'Địa chỉ', dataIndex: 'diachi', key: 'diachi' },
         { title: 'Ghi chú', dataIndex: 'ghichu', key: 'ghichu' },
     ];
@@ -137,28 +130,23 @@ const TableDatdai = (props: IProps) => {
     const hasSelected = selectedRowKeys.length > 0;
     const rowSelection: TableRowSelection<IDatdai> = { selectedRowKeys, onChange: onSelectChange };
 
-    const headers = [
-        { label: 'Mã giấy CNQSH', key: 'ma_giay_cnqsh' },
-        { label: 'Thửa', key: 'thua' },
-        { label: 'Diện tích (m²)', key: 'dt' },
-        { label: 'Hình thức sử dụng', key: 'htsd.name' },
-        { label: 'Cơ quan sở hữu', key: 'cqsh' },
-        { label: 'Minh chứng QSHD', key: 'minh_chung_qshd' },
-        { label: 'Mục đích sử dụng đất', key: 'muc_dich_shd.name' },
-        { label: 'Năm bắt đầu SDD', key: 'nam_bd_sdd' },
-        { label: 'Thời gian SDD', key: 'tg_sdd' },
-        { label: 'Diện tích đã SD', key: 'dtd_da_sd' },
-        { label: 'Tình trạng SD', key: 'tinh_trang_sd.name' },
-        { label: 'Tỉnh / Thành phố', key: 'tinhthanhpho.name' },
-        { label: 'Xã / Phường', key: 'xaphuong.name' },
-        { label: 'Địa chỉ', key: 'diachi' },
-        { label: 'Ngày chuyển tình trạng', key: 'ngay_chuyen_tt' },
-    ];
+    const handleExport = async () => {
+        const blob = await handleExportDatdai(access_token);
+
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'dat-dai.csv';
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+    };
 
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
-            <Flex style={{ marginBottom: 16 }} justify="space-between" align="center">
+            <Flex wrap style={{ marginBottom: 16 }} justify="space-between" align="center">
                 <h2>Danh sách đất đai</h2>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {canDeleteCsvc(user ?? {} as IUser) && (
@@ -170,17 +158,18 @@ const TableDatdai = (props: IProps) => {
                         <Button onClick={() => setIsModalImportOpen(true)} type="primary" icon={<CloudUploadOutlined />}>Import</Button>
                     )}
                     {mounted && canReadCsvc(user ?? {} as IUser) && (
-                        <Button type="primary" icon={<CloudDownloadOutlined />}>
-                            <CSVLink data={data} filename="dat-dai.csv" headers={headers} separator=";">Export</CSVLink>
+                        <Button type="primary" icon={<CloudDownloadOutlined />} onClick={handleExport}>
+                            Export
                         </Button>
                     )}
+
                     {canCreateCsvc(user ?? {} as IUser) && (
                         <Button onClick={() => { setStatus('CREATE'); setIsModalOpen(true); }} type="primary" icon={<FolderAddOutlined />}>Thêm mới</Button>
                     )}
                 </div>
             </Flex>
             {canReadCsvc(user ?? {} as IUser) && (
-                <Space style={{ marginBottom: 16 }}>
+                <Space wrap style={{ marginBottom: 16 }}>
                     <Input allowClear placeholder="Tìm theo mã giấy CNQSH" onChange={(e) => setSelectedName(e.target.value)} value={selectedName} />
                     <Button icon={<ClearOutlined />} onClick={() => setSelectedName(undefined)}>Xóa bộ lọc</Button>
                     <Button icon={<SearchOutlined />} type="primary" onClick={handleFilter}>Lọc</Button>
@@ -215,11 +204,6 @@ const TableDatdai = (props: IProps) => {
                 setIsModalOpen={setIsModalOpen}
                 setDataUpdate={setDataUpdate}
                 dataUpdate={dataUpdate}
-                hinhthucsudung={hinhthucsudung}
-                mucdichsudungdat={mucdichsudungdat}
-                tinhtrangsudung={tinhtrangsudung}
-                tinhthanhpho={tinhthanhpho}
-                xaphuong={xaphuong}
             />
             <ModalImport
                 access_token={access_token}

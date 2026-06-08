@@ -12,7 +12,7 @@ interface IProps {
     dataUpdate: null | IPtn;
     setDataUpdate: (value: null | IPtn) => void;
     ctk: ICtk[];
-    loaiptn: ILoaiptn[];
+    loaiptn: any[];
     linhvucdaotao: ILinhvucdaotao[];
 }
 

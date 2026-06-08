@@ -30,7 +30,7 @@ export const NhiemVu = () => {
                     <Text>Công tác quản trị:</Text>
                     {/* Tạo list con để thụt lề cho phó phòng */}
                     <ul style={{ listStyleType: 'circle', paddingLeft: '20px' }}>
-                        <li><Text>Quản lý, bảo dưỡng cơ sở hạ tầng, bao gồm: Phòng làm việc, xưởng thực hành, ban ghế, thiết bị hỗ trợ làm việc, hàng rào, hệ thống giao thông trong Trường, hệ thống cống rãnh, hệ thống cung cấp điện nước, hệ thống iện thoại trong trường đảm bảo thông tin thông suốt.</Text></li>
+                        <li><Text>Quản lý, bảo dưỡng cơ sở hạ tầng, bao gồm: Phòng làm việc, xưởng thực hành, ban ghế, thiết bị hỗ trợ làm việc, hàng rào, hệ thống giao thông trong Trường, hệ thống cống rãnh, hệ thống cung cấp điện nước, hệ thống điện thoại trong trường đảm bảo thông tin thông suốt.</Text></li>
                         <li><Text>Phối hợp với các bộ phận liên quan triển khai công tác phòng, chống bão lụt, phòng cháy, chữa cháy trong Trường.</Text></li>
                         <li><Text>Lập kế hoạch và tổ chức sửa chữa nhà cửa, công trình công cộng, thiết bị máy móc, bàn ghế, tủ, bảng,... bị hư hỏng của tất cả các đơn vị trong Trường.</Text></li>
                         <li><Text>Phối hợp với các đơn vị chức năng có liên quan, lập kế hoạch xây dựng và nghiệm thu các công trình xây dựng mới, công trình sửa chữa, cải tạo lớn nhận bàn giao và có kế hoạch đưa các công trình đó vào sử dụng có hiệu quả.</Text></li>

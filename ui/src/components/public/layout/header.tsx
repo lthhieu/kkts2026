@@ -41,7 +41,12 @@ const MyHeader = ({ items, selectedKey }: { items: MenuItem[], selectedKey: stri
 
             {/* Menu */}
             <Menu
-                style={{ padding: 0, background: '#fff' }}
+                style={{
+                    padding: 0, background: '#fff',
+                    flex: 1,
+                    minWidth: 0,
+                    justifyContent: 'center',
+                }}
                 selectedKeys={[selectedKey]}
                 mode="horizontal"
                 items={items}

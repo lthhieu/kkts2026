@@ -38,19 +38,6 @@ const ToaNhaPage = async ({ searchParams }: { searchParams: Params }) => {
         nextOption: { next: { tags: ['toanha'] } }
     })
 
-    const resHinhthucsohuu = await sendRequest<IBackendResponse<IModelPaginate<IHinhthucsohuu>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/hinhthucsohuu`,
-        queryParams: { current: 1, pageSize: 100000 },
-        headers: { Authorization: `Bearer ${session?.access_token}` },
-        nextOption: { next: { tags: ['hinhthucsohuu'] } }
-    })
-    const resTinhtrangsudung = await sendRequest<IBackendResponse<IModelPaginate<ITinhtrangsudung>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/tinhtrangsudung`,
-        queryParams: { current: 1, pageSize: 100000 },
-        headers: { Authorization: `Bearer ${session?.access_token}` },
-        nextOption: { next: { tags: ['tinhtrangsudung'] } }
-    })
-
     return (
         <div>
             <TableToanha
@@ -58,8 +45,6 @@ const ToaNhaPage = async ({ searchParams }: { searchParams: Params }) => {
                 access_token={session?.access_token ?? ''}
                 meta={res?.data?.meta!}
                 user={session?.user ?? null}
-                hinhthucsohuu={resHinhthucsohuu?.data?.result ?? []}
-                tinhtrangsudung={resTinhtrangsudung?.data?.result ?? []}
                 summary={resSummary?.data ?? null}
             />
         </div>

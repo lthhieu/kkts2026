@@ -19,7 +19,7 @@ interface IProps {
     meta: IMeta;
     user: IUser | null;
     ctk: ICtk[];
-    loaiptn: ILoaiptn[];
+    loaiptn: any[];
     linhvucdaotao: ILinhvucdaotao[];
 }
 

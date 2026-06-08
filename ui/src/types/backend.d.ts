@@ -289,17 +289,6 @@ declare global {
         ma_giay_cnqsh: string;
         thua?: number;
         dt: number;
-        htsd: { _id: string; name: string } | null;
-        cqsh: string | null;
-        minh_chung_qshd: string | null;
-        muc_dich_shd: { _id: string; name: string } | null;
-        nam_bd_sdd: number;
-        tg_sdd: number;
-        dtd_da_sd: number;
-        tinh_trang_sd: { _id: string; name: string } | null;
-        ngay_chuyen_tt: string | null;
-        tinhthanhpho: { _id: string; name: string } | null;
-        xaphuong: { _id: string; name: string } | null;
         diachi: string | null;
         ghichu?: string | null;
         createdAt?: string;
@@ -331,10 +320,6 @@ declare global {
         tong_dt_sxd: number;
         so_tang: number;
         nam_sd: number;
-        htsh: { _id: string; name: string } | null;
-        diachi: string | null;
-        tinh_trang_sd: { _id: string; name: string } | null;
-        ngay_chuyen_tt: string | null;
         createdAt?: string;
         updatedAt?: string;
         place?: number;

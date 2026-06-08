@@ -1,5 +1,5 @@
 'use server'
-import { sendRequest } from '@/utils/api'
+import { sendRequest, sendRequestBlob } from '@/utils/api'
 import { updateTag } from 'next/cache'
 
 export const handleCreateOrUpdateDatdai = async (data: any, access_token: string, status: string, dataUpdate?: null | IDatdai) => {
@@ -24,21 +24,6 @@ export const handleDeleteDatdai = async (_id: string, access_token: string) => {
         headers: {
             Authorization: `Bearer ${access_token!}`,
         },
-    })
-    updateTag('datdai')
-    return res
-}
-
-export const handleFilterDatdai = async (current: number, pageSize: number, access_token: string) => {
-    const res = await sendRequest<IBackendResponse<IModelPaginate<IDatdai>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/datdai`,
-        queryParams: { current, pageSize },
-        headers: {
-            Authorization: `Bearer ${access_token}`,
-        },
-        nextOption: {
-            next: { tags: ['datdai'] }
-        }
     })
     updateTag('datdai')
     return res
@@ -69,3 +54,15 @@ export const handleDeleteDatdaiMany = async (ids: string[], access_token: string
     updateTag('datdai')
     return res
 }
+
+export const handleExportDatdai = async (
+    access_token: string,
+) => {
+    return await sendRequestBlob({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/datdai/export`,
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+    });
+};

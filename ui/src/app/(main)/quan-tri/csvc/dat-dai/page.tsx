@@ -32,36 +32,6 @@ const DatDaiPage = async ({ searchParams }: { searchParams: Params }) => {
         headers: { Authorization: `Bearer ${session?.access_token}` },
         nextOption: { next: { tags: ['datdai'] } }
     })
-    const resHinhthucsudung = await sendRequest<IBackendResponse<IModelPaginate<IHinhthucsudung>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/hinhthucsudung`,
-        queryParams: { current: 1, pageSize: 100000 },
-        headers: { Authorization: `Bearer ${session?.access_token}` },
-        nextOption: { next: { tags: ['hinhthucsudung'] } }
-    })
-    const resMucdichsudungdat = await sendRequest<IBackendResponse<IModelPaginate<IMucdichsudungdat>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/mucdichsudungdat`,
-        queryParams: { current: 1, pageSize: 100000 },
-        headers: { Authorization: `Bearer ${session?.access_token}` },
-        nextOption: { next: { tags: ['mucdichsudungdat'] } }
-    })
-    const resTinhtrangsudung = await sendRequest<IBackendResponse<IModelPaginate<ITinhtrangsudung>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/tinhtrangsudung`,
-        queryParams: { current: 1, pageSize: 100000 },
-        headers: { Authorization: `Bearer ${session?.access_token}` },
-        nextOption: { next: { tags: ['tinhtrangsudung'] } }
-    })
-    const resTinhthanhpho = await sendRequest<IBackendResponse<IModelPaginate<ITinhthanhpho>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/tinhthanhpho`,
-        queryParams: { current: 1, pageSize: 100000 },
-        headers: { Authorization: `Bearer ${session?.access_token}` },
-        nextOption: { next: { tags: ['tinhthanhpho'] } }
-    })
-    const resXaphuong = await sendRequest<IBackendResponse<IModelPaginate<IXaphuong>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/xaphuong`,
-        queryParams: { current: 1, pageSize: 100000 },
-        headers: { Authorization: `Bearer ${session?.access_token}` },
-        nextOption: { next: { tags: ['xaphuong'] } }
-    })
 
     return (
         <div>
@@ -70,11 +40,6 @@ const DatDaiPage = async ({ searchParams }: { searchParams: Params }) => {
                 access_token={session?.access_token ?? ''}
                 meta={res?.data?.meta!}
                 user={session?.user ?? null}
-                hinhthucsudung={resHinhthucsudung?.data?.result ?? []}
-                mucdichsudungdat={resMucdichsudungdat?.data?.result ?? []}
-                tinhtrangsudung={resTinhtrangsudung?.data?.result ?? []}
-                tinhthanhpho={resTinhthanhpho?.data?.result ?? []}
-                xaphuong={resXaphuong?.data?.result ?? []}
                 summary={resSummary?.data ?? { totalArea: 0, revokedArea: 0 }}
             />
         </div>

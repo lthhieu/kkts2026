@@ -45,26 +45,15 @@ const ModalImportDatdai = (props: IProps) => {
 
                     const jsonData: any[] = [];
                     worksheet.eachRow((row, rowNumber) => {
-                        if (rowNumber <= 2) return;
+                        if (rowNumber <= 1) return;
                         const getVal = (col: number) => row.getCell(col).value;
                         // A=ma_giay_cnqsh, B=dt, C=cqsh, D=minh_chung_qshd, E=nam_bd_sdd, F=tg_sdd, G=dtd_da_sd, H=diachi
                         jsonData.push({
                             ma_giay_cnqsh: getVal(1) ? String(getVal(1)) : '',
-                            dt: Number(getVal(2)) || 0,
-                            htsd: getVal(3) ? String(getVal(3)) : '',
-                            cqsh: getVal(4) ? String(getVal(4)) : '',
-                            minh_chung_qshd: getVal(5) ? String(getVal(5)) : '',
-                            muc_dich_shd: getVal(6) ? String(getVal(6)) : null,
-                            nam_bd_sdd: Number(getVal(7)) || 0,
-                            tg_sdd: Number(getVal(8)) || 0,
-                            dtd_da_sd: Number(getVal(9)) || 0,
-                            tinh_trang_sd: getVal(10) ? String(getVal(10)) : null,
-                            ngay_chuyen_tt: getVal(11) ? String(getVal(11)) : null,
-                            tinhthanhpho: getVal(12) ? String(getVal(12)) : null,
-                            xaphuong: getVal(13) ? String(getVal(13)) : null,
-                            diachi: getVal(14) ? String(getVal(14)) : '',
-                            ghichu: getVal(15) ? String(getVal(15)) : '',
-                            thua: Number(getVal(16)) || 0,
+                            thua: Number(getVal(2)) || 0,
+                            dt: Number(getVal(3)) || 0,
+                            diachi: getVal(4) ? String(getVal(4)) : '',
+                            ghichu: getVal(5) ? String(getVal(5)) : '',
                         });
                     });
                     setDataImport(jsonData);
@@ -117,8 +106,7 @@ const ModalImportDatdai = (props: IProps) => {
                     <p className="ant-upload-drag-icon"><InboxOutlined /></p>
                     <p className="ant-upload-text">Chọn hoặc kéo thả file để tải dữ liệu</p>
                     <p className="ant-upload-hint">
-                        Chỉ hỗ trợ file excel và csv
-                        &nbsp;<a onClick={(e) => e.stopPropagation()} href={`${process.env.NEXT_PUBLIC_FRONTEND_URI}sample/sample-datdai.xlsx`} download>Tải file mẫu</a>
+                        Chỉ hỗ trợ file excel và csv <a onClick={(e) => e.stopPropagation()} href={`${process.env.NEXT_PUBLIC_FRONTEND_URI}sample/sample-datdai.xlsx`} download>Tải file mẫu</a>
                     </p>
                 </Dragger>
                 <div>
@@ -129,8 +117,10 @@ const ModalImportDatdai = (props: IProps) => {
                         rowKey={() => crypto.randomUUID()}
                         columns={[
                             { dataIndex: 'ma_giay_cnqsh', title: 'Mã giấy CNQSH' },
+                            { dataIndex: 'thua', title: 'Thửa' },
                             { dataIndex: 'dt', title: 'Diện tích (m²)' },
-                            { dataIndex: 'nam_bd_sdd', title: 'Năm bắt đầu SDD' },
+                            { dataIndex: 'diachi', title: 'Địa chỉ' },
+                            { dataIndex: 'ghichu', title: 'Ghi chú' }
                         ]}
                     />
                 </div>

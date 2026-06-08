@@ -70,11 +70,7 @@ const ModalImportToanha = (props: IProps) => {
                             tong_dt_sxd: Number(getVal(4)) || 0,
                             so_tang: Number(getVal(5)) || 0,
                             nam_sd: Number(getVal(6)) || 0,
-                            htsh: getVal(7) ? String(getVal(7)) : null,
-                            diachi: getVal(8) ? String(getVal(8)) : null,
-                            tinh_trang_sd: getVal(9) ? String(getVal(9)) : null,
-                            ngay_chuyen_tt: getVal(10) ? String(getVal(10)) : null,
-                            place: Number(getVal(11)) || 0,
+                            place: Number(getVal(7)) || 0,
                         };
 
                         jsonData.push(obj);
@@ -147,8 +143,7 @@ const ModalImportToanha = (props: IProps) => {
                     </p>
                     <p className="ant-upload-text">Chọn hoặc kéo thả file để tải dữ liệu</p>
                     <p className="ant-upload-hint">
-                        Chỉ hỗ trợ file excel và csv
-                        &nbsp;<a onClick={(e) => e.stopPropagation()} href={`${process.env.NEXT_PUBLIC_FRONTEND_URI}sample/sample-toanha.xlsx`} download>Tải file mẫu</a>
+                        Chỉ hỗ trợ file excel và csv <a onClick={(e) => e.stopPropagation()} href={`${process.env.NEXT_PUBLIC_FRONTEND_URI}sample/sample-toanha.xlsx`} download>Tải file mẫu</a>
                     </p>
                 </Dragger>
                 <div>
@@ -160,6 +155,9 @@ const ModalImportToanha = (props: IProps) => {
                         columns={[
                             { dataIndex: 'ma_toanha', title: 'Mã tòa nhà' },
                             { dataIndex: 'ten_toanha', title: 'Tên tòa nhà' },
+                            { dataIndex: 'dtxd', title: 'Diện tích xây dựng' },
+                            { dataIndex: 'tong_dt_sxd', title: 'Tổng diện tích sàn xây dựng' },
+                            { dataIndex: 'so_tang', title: 'Số tầng' },
                             { dataIndex: 'nam_sd', title: 'Năm sử dụng' },
                         ]}
                     />

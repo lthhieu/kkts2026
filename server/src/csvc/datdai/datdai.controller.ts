@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Res } from '@nestjs/common';
 import { DatdaiService } from './datdai.service';
 import { CreateDatdaiDto } from './dto/create-datdai.dto';
 import { UpdateDatdaiDto } from './dto/update-datdai.dto';
@@ -6,6 +6,8 @@ import { CheckPolicies, ResponseMessage } from 'src/configs/my.decorator';
 import { PoliciesGuard } from 'src/configs/casl.policies.guard';
 import { AppAbility } from 'src/casl/casl-ability.factory/casl-ability.factory';
 import { Action, CsvcSubject } from 'src/configs/enum';
+import type { Response } from 'express';
+import * as csv from 'fast-csv';
 
 @UseGuards(PoliciesGuard)
 @Controller('datdai')
@@ -29,11 +31,7 @@ export class DatdaiController {
   @Get()
   @ResponseMessage('Tải đất đai thành công')
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Read, CsvcSubject))
-  findAll(
-    @Query('current') current: string,
-    @Query('pageSize') pageSize: string,
-    @Query() queryString: string,
-  ) {
+  findAll(@Query('current') current: string, @Query('pageSize') pageSize: string, @Query() queryString: string) {
     return this.datdaiService.findAll(+current, +pageSize, queryString);
   }
 
@@ -42,6 +40,43 @@ export class DatdaiController {
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Read, CsvcSubject))
   summary() {
     return this.datdaiService.summary();
+  }
+
+  @Get('export')
+  async exportCsv(@Res() res: Response) {
+    const data = await this.datdaiService.exportAll();
+
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=dat-dai.csv',
+    );
+
+    res.setHeader(
+      'Content-Type',
+      'text/csv; charset=utf-8',
+    );
+
+    // BOM cho Excel
+    res.write('\uFEFF');
+
+    const csvStream = csv.format({
+      headers: true,
+      delimiter: ';',
+    });
+
+    csvStream.pipe(res);
+
+    data.forEach((item) => {
+      csvStream.write({
+        'Mã giấy CNQSH': item.ma_giay_cnqsh,
+        'Thửa': item.thua,
+        'Diện tích': item.dt,
+        'Địa chỉ': item.diachi,
+        'Ghi chú': item.ghichu,
+      });
+    });
+
+    csvStream.end();
   }
 
   @Get(':id')

@@ -70,8 +70,6 @@ export class ToanhaService {
       .limit(defaultLimit)
       .sort(sort)
       .populate(population)
-      .populate({ path: 'htsh', select: 'name' })
-      .populate({ path: 'tinh_trang_sd', select: 'name' })
       .exec();
     return {
       meta: {
@@ -85,10 +83,7 @@ export class ToanhaService {
   }
 
   async findOne(id: string) {
-    return await this.toanhaModel
-      .findOne({ _id: id })
-      .populate({ path: 'htsh', select: 'name' })
-      .populate({ path: 'tinh_trang_sd', select: 'name' })
+    return await this.toanhaModel.findOne({ _id: id })
   }
 
   async update(id: string, updateToanhaDto: UpdateToanhaDto) {
@@ -101,5 +96,9 @@ export class ToanhaService {
 
   async removeMany(ids: any[]) {
     return await this.toanhaModel.deleteMany({ _id: { $in: ids } });
+  }
+
+  async exportAll() {
+    return await this.toanhaModel.find().lean();
   }
 }
