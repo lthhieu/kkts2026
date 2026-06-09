@@ -90,4 +90,10 @@ export class RoomsService {
   async removeMany(ids: any[]) {
     return await this.roomModel.deleteMany({ _id: { $in: ids } });
   }
+
+  async exportAll() {
+    return await this.roomModel.find()
+      .populate({ path: 'currentUnit', select: 'name' })
+      .populate({ path: 'users', select: 'name' }).lean();
+  }
 }

@@ -4,7 +4,7 @@ import { Button, Flex, Grid, Input, Popconfirm, Select, Space, Table, Tooltip, T
 import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
-import { handleDeleteRoom, handleDeleteRoomMany } from '@/app/(main)/quan-tri/phong-kho/actions';
+import { handleDeleteRoom, handleDeleteRoomMany, handleExportRoom } from '@/app/(main)/quan-tri/phong-kho/actions';
 import RoomModal from '@/components/phong-kho/modal';
 import { canCreateRoom, canDeleteRoom, canReadRoom, canUpdateRoom } from '@/libs/rooms';
 import ModalImport from '@/components/phong-kho/modal.import';
@@ -172,13 +172,19 @@ const TableRooms = (props: IProps) => {
         selectedRowKeys,
         onChange: onSelectChange,
     };
-    const headers = [
-        { label: "Mã phòng - kho", key: "_id" },
-        { label: "Tên phòng - kho", key: "name" },
-        { label: "Mô tả", key: "currentDescription" },
-        { label: "Đơn vị", key: "currentUnit" },
-        { label: "Năm", key: "currentYear" }
-    ];
+    const handleExport = async () => {
+        const blob = await handleExportRoom(access_token);
+
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'phong-kho.csv';
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+    };
+
     // Hàm xử lý khi chọn unit
     const onChangeUnit = (value: string) => {
         setSelectedUnit(value);
@@ -202,24 +208,17 @@ const TableRooms = (props: IProps) => {
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
-            <Flex style={{ marginBottom: 16 }} justify='space-between'
-                align={isMobile ? 'stretch' : 'center'}
-                vertical={isMobile} gap={16}>
+            <Flex wrap style={{ marginBottom: 16, gap: 8 }} justify='space-between' align='center'>
                 <h2>Danh sách phòng - kho</h2>
 
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {canDeleteRoom(user ?? {} as IUser) && <Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa {selectedRowKeys.length !== 0 && `(${selectedRowKeys.length})`}</Button>}
                     {canCreateRoom(user ?? {} as IUser) && <Button onClick={showModalImport} type='primary' icon={<CloudUploadOutlined />}>Import</Button>}
-                    {canReadRoom(user ?? {} as IUser) && mounted && (<Button type='primary' icon={<CloudDownloadOutlined />}>
-                        <CSVLink
-                            data={dataExport}
-                            filename={"phong-kho.csv"}
-                            headers={headers}
-                            separator={";"}
-                        >
+                    {canReadRoom(user ?? {} as IUser) && mounted && (
+                        <Button type="primary" icon={<CloudDownloadOutlined />} onClick={handleExport}>
                             Export
-                        </CSVLink>
-                    </Button>)}
+                        </Button>
+                    )}
                     {canCreateRoom(user ?? {} as IUser) && <Button onClick={showModal} type='primary' icon={<FolderAddOutlined />}>Thêm mới</Button>}
                 </div>
             </Flex>

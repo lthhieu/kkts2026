@@ -1,5 +1,5 @@
 'use server'
-import { sendRequest } from '@/utils/api'
+import { sendRequest, sendRequestBlob } from '@/utils/api'
 import { updateTag } from 'next/cache'
 
 export const handleCreateOrUpdateRoom = async (data: any, access_token: string, status: string, dataUpdate?: null | IUnit) => {
@@ -56,3 +56,15 @@ export const handleDeleteRoomMany = async (ids: string[], access_token: string) 
     updateTag('rooms')
     return res
 }
+
+export const handleExportRoom = async (
+    access_token: string,
+) => {
+    return await sendRequestBlob({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/rooms/export`,
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+    });
+};

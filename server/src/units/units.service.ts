@@ -69,4 +69,8 @@ export class UnitsService {
   async removeMany(ids: any[]) {
     return await this.unitModel.deleteMany({ _id: { $in: ids } });
   }
+
+  async exportAll() {
+    return await this.unitModel.find().lean();
+  }
 }

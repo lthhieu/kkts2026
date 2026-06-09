@@ -7,6 +7,17 @@ import { Action, UserSubject } from 'src/configs/enum';
 import { AppAbility } from 'src/casl/casl-ability.factory/casl-ability.factory';
 import { PoliciesGuard } from 'src/configs/casl.policies.guard';
 import { ChangePasswordDto } from 'src/users/dto/change-password.dto';
+import type { Response } from 'express';
+import * as csv from 'fast-csv';
+
+export const ROLE_LABEL_MAP: Record<string, string> = {
+  superadmin: 'Quản trị hệ thống',
+  admin: 'Quản trị',
+  thukho: 'Thủ kho',
+  truongdv: 'Trưởng đơn vị',
+  gv: 'Giáo viên',
+  guest: 'Khách'
+};
 
 @UseGuards(PoliciesGuard)
 @Controller('users')
@@ -26,6 +37,43 @@ export class UsersController {
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Create, UserSubject))
   createMany(@Body() createUserDto: CreateUserDto[]) {
     return this.usersService.createMany(createUserDto);
+  }
+
+  @Get('export')
+  async exportCsv(@Res() res: Response) {
+    const data = await this.usersService.exportAll();
+
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=tai-khoan.csv',
+    );
+
+    res.setHeader(
+      'Content-Type',
+      'text/csv; charset=utf-8',
+    );
+
+    // BOM cho Excel
+    res.write('\uFEFF');
+
+    const csvStream = csv.format({
+      headers: true,
+      delimiter: ';',
+    });
+
+    csvStream.pipe(res);
+
+    data.forEach((item: any) => {
+      csvStream.write({
+        'Tên': item.name,
+        'Email': item.email,
+        'Số điện thoại': item?.phone ?? '',
+        'Quyền hạn': ROLE_LABEL_MAP[item.role] || item.role,
+        'Đơn vị': item.unit?.name || '',
+      });
+    });
+
+    csvStream.end();
   }
 
   @Get()

@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreatePhongchucnangDto {
     @IsNotEmpty({ message: 'Mã phòng không được để trống' })
@@ -15,5 +15,8 @@ export class CreatePhongchucnangDto {
 
     @IsNotEmpty({ message: 'Năm sử dụng không được để trống' })
     nam_sd: number;
+
+    @IsOptional()
+    unit?: any;
 
 }

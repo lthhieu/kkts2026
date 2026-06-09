@@ -6,6 +6,8 @@ import { CheckPolicies, ResponseMessage } from 'src/configs/my.decorator';
 import { PoliciesGuard } from 'src/configs/casl.policies.guard';
 import { AppAbility } from 'src/casl/casl-ability.factory/casl-ability.factory';
 import { Action, RoomSubject } from 'src/configs/enum';
+import type { Response } from 'express';
+import * as csv from 'fast-csv';
 
 @UseGuards(PoliciesGuard)
 @Controller('rooms')
@@ -23,6 +25,42 @@ export class RoomsController {
   @ResponseMessage('Tạo phòng thành công')
   createMany(@Body() createRoomDto: CreateRoomDto[]) {
     return this.roomsService.createMany(createRoomDto);
+  }
+
+  @Get('export')
+  async exportCsv(@Res() res: Response) {
+    const data = await this.roomsService.exportAll();
+
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=phong-chuc-nang.csv',
+    );
+
+    res.setHeader(
+      'Content-Type',
+      'text/csv; charset=utf-8',
+    );
+
+    // BOM cho Excel
+    res.write('\uFEFF');
+
+    const csvStream = csv.format({
+      headers: true,
+      delimiter: ';',
+    });
+
+    csvStream.pipe(res);
+
+    data.forEach((item: any) => {
+      csvStream.write({
+        'Tên phòng': item.name,
+        "Mô tả": item.currentDescription,
+        "Đơn vị": item.currentUnit.name,
+        "Năm": item.currentYear
+      });
+    });
+
+    csvStream.end();
   }
 
   @Get()

@@ -3,7 +3,6 @@ import { Modal, message, notification, Upload, UploadProps, Table } from 'antd';
 import React, { useMemo, useState } from 'react';
 import { handleCreateMany } from '@/app/(main)/quan-tri/phong-kho/actions';
 import { InboxOutlined } from '@ant-design/icons';
-// import sampleFile from '@public/sample/sample-unit.xlsx'
 import * as Excel from 'exceljs';
 
 
@@ -177,8 +176,7 @@ const ModalImport = (props: IProps) => {
                     </p>
                     <p className="ant-upload-text">Chọn hoặc kéo thả file để tải dữ liệu</p>
                     <p className="ant-upload-hint">
-                        Chỉ hỗ trợ file excel và csv
-                        &nbsp;<a onClick={(e) => e.stopPropagation()} href={`${process.env.NEXT_PUBLIC_FRONTEND_URI}sample/sample-room.xlsx`} download>Tải file mẫu</a>
+                        Chỉ hỗ trợ file excel và csv <a onClick={(e) => e.stopPropagation()} href={`${process.env.NEXT_PUBLIC_FRONTEND_URI}sample/sample-room.xlsx`} download>Tải file mẫu</a>
                     </p>
                 </Dragger>
                 <div>

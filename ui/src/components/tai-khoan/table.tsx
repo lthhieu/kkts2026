@@ -4,7 +4,7 @@ import { Button, Flex, Grid, Input, Popconfirm, Select, Space, Table, Tag, Toolt
 import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
-import { handleDeleteUser, handleDeleteUserMany } from '@/app/(main)/quan-tri/tai-khoan/actions';
+import { handleDeleteUser, handleDeleteUserMany, handleExportUser } from '@/app/(main)/quan-tri/tai-khoan/actions';
 import UserModal from '@/components/tai-khoan/modal';
 import { canCreateUser, canDeleteUser, canReadUser, canUpdateUser } from '@/libs/users';
 import { CSVLink } from 'react-csv';
@@ -231,13 +231,18 @@ const TableUsers = (props: IProps) => {
         selectedRowKeys,
         onChange: onSelectChange,
     };
-    const headers = [
-        { label: "Mã tài khoản", key: "_id" },
-        { label: "Tên tài khoản", key: "name" },
-        { label: "Email", key: "email" },
-        { label: "Quyền hạn", key: "role" },
-        { label: "Đơn vị", key: "unit" },
-    ];
+    const handleExport = async () => {
+        const blob = await handleExportUser(access_token);
+
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'tai-khoan.csv';
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+    };
 
     // Hàm xử lý khi chọn unit
     const onChangeUnit = (value: string) => {
@@ -270,23 +275,16 @@ const TableUsers = (props: IProps) => {
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
-            <Flex style={{ marginBottom: 16 }} justify='space-between'
-                align={isMobile ? 'stretch' : 'center'}
-                vertical={isMobile} gap={16}>
+            <Flex wrap style={{ marginBottom: 16 }} justify='space-between' align='center'>
                 <h2>Danh sách tài khoản</h2>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {canDeleteUser(user ?? {} as IUser) && (<Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa {selectedRowKeys.length !== 0 && `(${selectedRowKeys.length})`}</Button>)}
                     {canCreateUser(user ?? {} as IUser) && <Button onClick={showModalImport} type='primary' icon={<CloudUploadOutlined />}>Import</Button>}
-                    {canReadUser(user ?? {} as IUser) && mounted && (<Button type='primary' icon={<CloudDownloadOutlined />}>
-                        <CSVLink
-                            data={dataExport}
-                            filename={"tai-khoan.csv"}
-                            headers={headers}
-                            separator={";"}
-                        >
+                    {canReadUser(user ?? {} as IUser) && mounted && (
+                        <Button type="primary" icon={<CloudDownloadOutlined />} onClick={handleExport}>
                             Export
-                        </CSVLink>
-                    </Button>)}
+                        </Button>
+                    )}
                     {canCreateUser(user ?? {} as IUser) && (
                         <Button onClick={showModal} type='primary' icon={<FolderAddOutlined />}>Thêm mới</Button>
                     )}

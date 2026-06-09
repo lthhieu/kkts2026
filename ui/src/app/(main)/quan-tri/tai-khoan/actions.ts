@@ -1,5 +1,5 @@
 'use server'
-import { sendRequest } from '@/utils/api'
+import { sendRequest, sendRequestBlob } from '@/utils/api'
 import { updateTag } from 'next/cache'
 
 export const handleCreateOrUpdateUser = async (data: any, access_token: string, status: string, dataUpdate?: null | IUser) => {
@@ -59,3 +59,15 @@ export const handleDeleteUserMany = async (ids: string[], access_token: string) 
     updateTag('users')
     return res
 }
+
+export const handleExportUser = async (
+    access_token: string,
+) => {
+    return await sendRequestBlob({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/users/export`,
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+    });
+};

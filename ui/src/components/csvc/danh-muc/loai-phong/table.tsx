@@ -4,10 +4,9 @@ import { Button, Flex, Input, Popconfirm, Space, Table, Tooltip, Typography, mes
 import type { TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
-import { handleDeleteLoaiphong, handleDeleteLoaiphongMany } from '@/app/(main)/quan-tri/csvc/danh-muc/loai-phong/actions';
+import { handleDeleteLoaiphong, handleDeleteLoaiphongMany, handleExportLoaiphong } from '@/app/(main)/quan-tri/csvc/danh-muc/loai-phong/actions';
 import ModalImport from '@/components/csvc/danh-muc/loai-phong/modal.import';
 import { canCreateDanhmuc, canDeleteDanhmuc, canReadDanhmuc, canUpdateDanhmuc } from '@/libs/danhmuc';
-import { CSVLink } from 'react-csv';
 import LoaiphongModal from '@/components/csvc/danh-muc/loai-phong/modal';
 
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
@@ -98,12 +97,23 @@ const TableLoaiphong = (props: IProps) => {
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => setSelectedRowKeys(newSelectedRowKeys);
     const hasSelected = selectedRowKeys.length > 0;
     const rowSelection: TableRowSelection<ILoaiphong> = { selectedRowKeys, onChange: onSelectChange };
-    const headers = [{ label: 'Tên', key: 'name' }];
+    const handleExport = async () => {
+        const blob = await handleExportLoaiphong(access_token);
+
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'loai-phong.csv';
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+    };
 
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
-            <Flex style={{ marginBottom: 16 }} justify="space-between" align="center">
+            <Flex wrap style={{ marginBottom: 16, gap: 8 }} justify="space-between" align="center">
                 <h2>Danh sách loại phòng</h2>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {canDeleteDanhmuc(user ?? {} as IUser) && (
@@ -115,8 +125,8 @@ const TableLoaiphong = (props: IProps) => {
                         <Button onClick={() => setIsModalImportOpen(true)} type="primary" icon={<CloudUploadOutlined />}>Import</Button>
                     )}
                     {mounted && canReadDanhmuc(user ?? {} as IUser) && (
-                        <Button type="primary" icon={<CloudDownloadOutlined />}>
-                            <CSVLink data={data} filename="loai-ptn.csv" headers={headers} separator=";">Export</CSVLink>
+                        <Button type="primary" icon={<CloudDownloadOutlined />} onClick={handleExport}>
+                            Export
                         </Button>
                     )}
                     {canCreateDanhmuc(user ?? {} as IUser) && (
@@ -125,7 +135,7 @@ const TableLoaiphong = (props: IProps) => {
                 </div>
             </Flex>
             {canReadDanhmuc(user ?? {} as IUser) && (
-                <Space style={{ marginBottom: 16 }}>
+                <Space wrap style={{ marginBottom: 16 }}>
                     <Input allowClear placeholder="Tìm theo tên" onChange={(e) => setSelectedName(e.target.value)} value={selectedName} />
                     <Button icon={<ClearOutlined />} onClick={() => setSelectedName(undefined)}>Xóa bộ lọc</Button>
                     <Button icon={<SearchOutlined />} type="primary" onClick={handleFilter}>Lọc</Button>

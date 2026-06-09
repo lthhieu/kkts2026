@@ -29,6 +29,7 @@ import {
     BookOutlined,
     LaptopOutlined,
     CoffeeOutlined,
+    DollarOutlined,
 } from '@ant-design/icons';
 import { Button, Layout, Menu, Space, theme, Dropdown, MenuProps } from 'antd';
 import Link from 'next/link';
@@ -162,72 +163,9 @@ const Dashboard = ({
                     permission: { action: Action.Read, subject: new DanhmucSubject() },
                     children: [
                         {
-                            key: '/quan-tri/csvc/danh-muc/hinh-thuc-so-huu',
-                            label: <Link href="/quan-tri/csvc/danh-muc/hinh-thuc-so-huu">Hình thức sở hữu</Link>,
-                        },
-                        {
-                            key: '/quan-tri/csvc/danh-muc/hinh-thuc-su-dung',
-                            label: <Link href="/quan-tri/csvc/danh-muc/hinh-thuc-su-dung">Hình thức sử dụng</Link>,
-                        },
-                        {
-                            key: '/quan-tri/csvc/danh-muc/tinh-trang-su-dung',
-                            label: <Link href="/quan-tri/csvc/danh-muc/tinh-trang-su-dung">Tình trạng sử dụng</Link>,
-                        },
-                        {
-                            key: '/quan-tri/csvc/danh-muc/tinh-trang-csvc',
-                            label: <Link href="/quan-tri/csvc/danh-muc/tinh-trang-csvc">Tình trạng CSVC</Link>,
-                        },
-                        {
-                            key: '/quan-tri/csvc/danh-muc/phan-loai',
-                            label: <Link href="/quan-tri/csvc/danh-muc/phan-loai">Phân loại</Link>,
-                        },
-                        {
-                            key: '/quan-tri/csvc/danh-muc/loai-phong-hoc',
-                            label: <Link href="/quan-tri/csvc/danh-muc/loai-phong-hoc">Loại phòng học</Link>,
-                        },
-                        {
-                            key: '/quan-tri/csvc/danh-muc/loai-cong-trinh',
-                            label: <Link href="/quan-tri/csvc/danh-muc/loai-cong-trinh">Loại công trình</Link>,
-                        },
-                        {
                             key: '/quan-tri/csvc/danh-muc/loai-phong',
                             label: <Link href="/quan-tri/csvc/danh-muc/loai-phong">Loại phòng</Link>,
-                        },
-                        {
-                            key: '/quan-tri/csvc/danh-muc/loai-de-an',
-                            label: <Link href="/quan-tri/csvc/danh-muc/loai-de-an">Loại đề án</Link>,
-                        },
-                        {
-                            key: '/quan-tri/csvc/danh-muc/muc-dich-sd-csvc',
-                            label: <Link href="/quan-tri/csvc/danh-muc/muc-dich-sd-csvc">Mục đích SD CSVC</Link>,
-                        },
-                        {
-                            key: '/quan-tri/csvc/danh-muc/muc-dich-sd-dat',
-                            label: <Link href="/quan-tri/csvc/danh-muc/muc-dich-sd-dat">Mục đích SD đất</Link>,
-                        },
-                        {
-                            key: '/quan-tri/csvc/danh-muc/linh-vuc-dao-tao',
-                            label: <Link href="/quan-tri/csvc/danh-muc/linh-vuc-dao-tao">Lĩnh vực đào tạo</Link>,
-                        },
-                        {
-                            key: '/quan-tri/csvc/danh-muc/tinh-thanh-pho',
-                            icon: <EnvironmentOutlined />,
-                            label: <Link href="/quan-tri/csvc/danh-muc/tinh-thanh-pho">Tỉnh thành phố</Link>,
-                        },
-                        {
-                            key: '/quan-tri/csvc/danh-muc/xa-phuong',
-                            icon: <EnvironmentOutlined />,
-                            label: <Link href="/quan-tri/csvc/danh-muc/xa-phuong">Xã phường</Link>,
-                        },
-                        {
-                            key: '/quan-tri/csvc/danh-muc/quoc-gia',
-                            icon: <GlobalOutlined />,
-                            label: <Link href="/quan-tri/csvc/danh-muc/quoc-gia">Quốc gia</Link>,
-                        },
-                        {
-                            key: '/quan-tri/csvc/danh-muc/lua-chon',
-                            label: <Link href="/quan-tri/csvc/danh-muc/lua-chon">Lựa chọn</Link>,
-                        },
+                        }
                     ],
                 },
                 {
@@ -308,7 +246,7 @@ const Dashboard = ({
                 },
                 {
                     key: '/quan-tri/csvc/thiet-bi-tren-500-trieu',
-                    icon: <CoffeeOutlined />,
+                    icon: <DollarOutlined />,
                     label: <Link href="/quan-tri/csvc/thiet-bi-tren-500-trieu">Thiết bị trên 500 triệu</Link>,
                 },
                 // {

@@ -6,6 +6,8 @@ import { CheckPolicies, ResponseMessage } from 'src/configs/my.decorator';
 import { PoliciesGuard } from 'src/configs/casl.policies.guard';
 import { AppAbility } from 'src/casl/casl-ability.factory/casl-ability.factory';
 import { Action, UnitSubject } from 'src/configs/enum';
+import type { Response } from 'express';
+import * as csv from 'fast-csv';
 
 @UseGuards(PoliciesGuard)
 @Controller('units')
@@ -24,6 +26,39 @@ export class UnitsController {
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Create, UnitSubject))
   createMany(@Body() createUnitDto: CreateUnitDto[]) {
     return this.unitsService.createMany(createUnitDto);
+  }
+
+  @Get('export')
+  async exportCsv(@Res() res: Response) {
+    const data = await this.unitsService.exportAll();
+
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=don-vi.csv',
+    );
+
+    res.setHeader(
+      'Content-Type',
+      'text/csv; charset=utf-8',
+    );
+
+    // BOM cho Excel
+    res.write('\uFEFF');
+
+    const csvStream = csv.format({
+      headers: true,
+      delimiter: ';',
+    });
+
+    csvStream.pipe(res);
+
+    data.forEach((item: CreateUnitDto) => {
+      csvStream.write({
+        'Tên đơn vị': item.name
+      });
+    });
+
+    csvStream.end();
   }
 
   @Get()

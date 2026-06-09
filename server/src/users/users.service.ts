@@ -179,4 +179,10 @@ export class UsersService {
     );
 
   }
+
+  async exportAll() {
+    return await this.userModel.find()
+      .select('-password')
+      .populate({ path: 'unit', select: 'name' }).lean();
+  }
 }

@@ -1,14 +1,13 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Grid, Input, Popconfirm, Space, Table, Typography, message, notification } from 'antd';
+import { Button, Flex, Grid, Input, Popconfirm, Space, Table, Tooltip, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
-import { handleDeleteUnit, handleDeleteUnitMany } from '@/app/(main)/quan-tri/don-vi/actions';
+import { handleDeleteUnit, handleDeleteUnitMany, handleExportUnit } from '@/app/(main)/quan-tri/don-vi/actions';
 import UnitModal from '@/components/don-vi/modal';
 import ModalImport from '@/components/don-vi/modal.import';
 import { canCreateUnit, canDeleteUnit, canReadUnit, canUpdateUnit } from '@/libs/units';
-import { CSVLink } from 'react-csv';
 
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
 const { useBreakpoint } = Grid;
@@ -24,8 +23,8 @@ const Context = React.createContext({ name: 'Default' });
 
 const TableUnits = (props: IProps) => {
     const { units, access_token, meta, user } = props
-    const [isModalOpen, SetIsModalOpen] = useState(false)
-    const [isModalImportOpen, SetIsModalImportOpen] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isModalImportOpen, setIsModalImportOpen] = useState(false)
     const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [status, setStatus] = useState('')
@@ -48,10 +47,10 @@ const TableUnits = (props: IProps) => {
 
     const showModal = () => {
         setStatus("CREATE")
-        SetIsModalOpen(true);
+        setIsModalOpen(true);
     }
     const showModalImport = () => {
-        SetIsModalImportOpen(true);
+        setIsModalImportOpen(true);
     }
     const confirm = (_id: string) => {
         deleteUnit(_id)
@@ -93,33 +92,19 @@ const TableUnits = (props: IProps) => {
             title: 'Tên đơn vị',
             dataIndex: 'name',
             key: 'name',
-            render: (_, record) => <Typography.Text copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.name}</Typography.Text>
-        },
-        {
-            title: '',
-            key: 'action',
             render: (_, record) => (
-                <Space size="middle">
+                <Space>
+                    <Typography.Text copyable={{ text: record._id, tooltips: 'Sao chép' }}>{record.name}</Typography.Text>
                     {canUpdateUnit(user ?? {} as IUser) && (
-                        <Button color="green" variant="outlined" icon={<EditOutlined />}
-                            onClick={() => {
-                                setDataUpdate(record)
-                                setStatus("UPDATE")
-                                SetIsModalOpen(true)
-                            }}
-                        ></Button>
+                        <Tooltip title="Cập nhật">
+                            <EditOutlined style={{ color: '#1cc03d', cursor: 'pointer' }}
+                                onClick={() => { setDataUpdate(record); setStatus('UPDATE'); setIsModalOpen(true); }} />
+                        </Tooltip>
                     )}
-
                     {canDeleteUnit(user ?? {} as IUser) && (
-                        <Popconfirm
-                            title="Xóa đơn vị này?"
-                            description={`Bạn thực sự muốn xóa đơn vị ${record.name}`}
-                            onConfirm={() => confirm(record._id)}
-                            onCancel={cancel}
-                            okText="Đồng ý"
-                            cancelText="Hủy"
-                        >
-                            <Button icon={<DeleteOutlined />} color="danger" variant="outlined"></Button>
+                        <Popconfirm title="Xóa đơn vị này?" description={`Bạn thực sự muốn xóa "${record.name}"`}
+                            onConfirm={() => deleteUnit(record._id)} okText="Đồng ý" cancelText="Hủy" placement="rightBottom">
+                            <Tooltip title="Xóa"><DeleteOutlined style={{ color: '#f12929', cursor: 'pointer' }} /></Tooltip>
                         </Popconfirm>
                     )}
                 </Space>
@@ -153,10 +138,18 @@ const TableUnits = (props: IProps) => {
         selectedRowKeys,
         onChange: onSelectChange,
     };
-    const headers = [
-        { label: "Mã đơn vị", key: "_id" },
-        { label: "Tên đơn vị", key: "name" }
-    ];
+    const handleExport = async () => {
+        const blob = await handleExportUnit(access_token);
+
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'don-vi.csv';
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+    };
 
     // Hàm xóa bộ lọc
     const handleClear = () => {
@@ -174,27 +167,20 @@ const TableUnits = (props: IProps) => {
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
-            <Flex style={{ marginBottom: 16 }} justify='space-between'
-                align={isMobile ? 'stretch' : 'center'}
-                vertical={isMobile} gap={16}>
+            <Flex wrap style={{ marginBottom: 16, gap: 8 }} justify='space-between' align='center'>
                 <h2>Danh sách đơn vị</h2>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {canDeleteUnit(user ?? {} as IUser) && (<Button icon={<DeleteOutlined />} color="danger" variant="solid" onClick={start} disabled={!hasSelected} loading={loading}>Xóa {selectedRowKeys.length !== 0 && `(${selectedRowKeys.length})`}</Button>)}
                     {canCreateUnit(user ?? {} as IUser) && (<Button onClick={showModalImport} type='primary' icon={<CloudUploadOutlined />}>Import</Button>)}
-                    {canReadUnit(user ?? {} as IUser) && mounted && (<Button type='primary' icon={<CloudDownloadOutlined />}>
-                        <CSVLink
-                            data={dataExport}
-                            filename={"don-vi.csv"}
-                            headers={headers}
-                            separator={";"}
-                        >
+                    {canReadUnit(user ?? {} as IUser) && mounted && (
+                        <Button type="primary" icon={<CloudDownloadOutlined />} onClick={handleExport}>
                             Export
-                        </CSVLink>
-                    </Button>)}
+                        </Button>
+                    )}
                     {canCreateUnit(user ?? {} as IUser) && (<Button onClick={showModal} type='primary' icon={<FolderAddOutlined />}>Thêm mới</Button>)}
                 </div>
             </Flex>
-            {canReadUnit(user ?? {} as IUser) && (<Space style={{ marginBottom: 16, flexWrap: 'wrap' }}>
+            {canReadUnit(user ?? {} as IUser) && (<Space wrap style={{ marginBottom: 16 }}>
                 <Input allowClear placeholder="Tìm theo tên đơn vị"
                     onChange={(e) => setSelectedName(e.target.value)} value={selectedName} />
 
@@ -220,7 +206,7 @@ const TableUnits = (props: IProps) => {
                 status={status}
                 access_token={access_token}
                 isModalOpen={isModalOpen}
-                setIsModalOpen={SetIsModalOpen}
+                setIsModalOpen={setIsModalOpen}
                 //update info
                 setDataUpdate={setDataUpdate}
                 dataUpdate={dataUpdate}
@@ -228,7 +214,7 @@ const TableUnits = (props: IProps) => {
             <ModalImport
                 access_token={access_token}
                 isModalImportOpen={isModalImportOpen}
-                setIsModalImportOpen={SetIsModalImportOpen}
+                setIsModalImportOpen={setIsModalImportOpen}
             />
         </Context.Provider>
     )

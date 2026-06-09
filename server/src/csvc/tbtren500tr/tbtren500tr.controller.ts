@@ -59,21 +59,6 @@ export class Tbtren500trController {
     const data =
       await this.tbtren500trService.exportAll();
 
-    console.log(
-      'parents:',
-      data.length,
-    );
-
-    console.log(
-      'children:',
-      data.reduce(
-        (sum, item: any) =>
-          sum +
-          (item.children?.length ?? 0),
-        0,
-      ),
-    );
-
     res.setHeader(
       'Content-Disposition',
       'attachment; filename=tai-san.csv',

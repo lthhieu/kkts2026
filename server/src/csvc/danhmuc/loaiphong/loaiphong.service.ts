@@ -66,4 +66,7 @@ export class LoaiphongService {
   async removeMany(ids: any[]) {
     return await this.loaiphongModel.deleteMany({ _id: { $in: ids } });
   }
+  async exportAll() {
+    return await this.loaiphongModel.find().lean();
+  }
 }

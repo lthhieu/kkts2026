@@ -1,5 +1,5 @@
 'use server'
-import { sendRequest } from '@/utils/api'
+import { sendRequest, sendRequestBlob } from '@/utils/api'
 import { updateTag } from 'next/cache'
 
 export const handleCreateOrUpdateLoaiphong = async (data: any, access_token: string, status: string, dataUpdate?: null | ILoaiphong) => {
@@ -28,22 +28,6 @@ export const handleDeleteLoaiphong = async (_id: string, access_token: string) =
     updateTag('loaiphong')
     return res
 }
-
-export const handleFilterLoaiphong = async (current: number, pageSize: number, access_token: string) => {
-    const res = await sendRequest<IBackendResponse<IModelPaginate<ILoaiphong>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/loaiphong`,
-        queryParams: { current, pageSize },
-        headers: {
-            Authorization: `Bearer ${access_token}`,
-        },
-        nextOption: {
-            next: { tags: ['loaiphong'] }
-        }
-    })
-    updateTag('loaiphong')
-    return res
-}
-
 export const handleCreateManyLoaiphong = async (data: any, access_token: string) => {
     const res = await sendRequest<IBackendResponse<any>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/loaiphong/create-many`,
@@ -69,3 +53,14 @@ export const handleDeleteLoaiphongMany = async (ids: string[], access_token: str
     updateTag('loaiphong')
     return res
 }
+export const handleExportLoaiphong = async (
+    access_token: string,
+) => {
+    return await sendRequestBlob({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/loaiphong/export`,
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+    });
+};

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Res } from '@nestjs/common';
 import { LoaiphongService } from './loaiphong.service';
 import { CreateLoaiphongDto } from './dto/create-loaiphong.dto';
 import { UpdateLoaiphongDto } from './dto/update-loaiphong.dto';
@@ -6,6 +6,8 @@ import { CheckPolicies, ResponseMessage } from 'src/configs/my.decorator';
 import { PoliciesGuard } from 'src/configs/casl.policies.guard';
 import { AppAbility } from 'src/casl/casl-ability.factory/casl-ability.factory';
 import { Action, DanhmucSubject } from 'src/configs/enum';
+import type { Response } from 'express';
+import * as csv from 'fast-csv';
 
 @UseGuards(PoliciesGuard)
 @Controller('loaiphong')
@@ -24,6 +26,39 @@ export class LoaiphongController {
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Create, DanhmucSubject))
   createMany(@Body() createLoaiphongDto: CreateLoaiphongDto[]) {
     return this.loaiphongService.createMany(createLoaiphongDto);
+  }
+
+  @Get('export')
+  async exportCsv(@Res() res: Response) {
+    const data = await this.loaiphongService.exportAll();
+
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=loai-phong.csv',
+    );
+
+    res.setHeader(
+      'Content-Type',
+      'text/csv; charset=utf-8',
+    );
+
+    // BOM cho Excel
+    res.write('\uFEFF');
+
+    const csvStream = csv.format({
+      headers: true,
+      delimiter: ';',
+    });
+
+    csvStream.pipe(res);
+
+    data.forEach((item: CreateLoaiphongDto) => {
+      csvStream.write({
+        'Tên phòng': item.name
+      });
+    });
+
+    csvStream.end();
   }
 
   @Get()
