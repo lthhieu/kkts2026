@@ -3,7 +3,7 @@ import { sendRequest, sendRequestBlob } from '@/utils/api'
 import { updateTag } from 'next/cache'
 
 export const handleCreateOrUpdatePhongchucnang = async (data: any, access_token: string, status: string, dataUpdate?: null | IPhongchucnang) => {
-    const res = await sendRequest<IBackendResponse<ICsvcSubject>>({
+    const res = await sendRequest<IBackendResponse<IPhongchucnang>>({
         url: status === "CREATE"
             ? `${process.env.NEXT_PUBLIC_BACKEND_URI}/phongchucnang`
             : `${process.env.NEXT_PUBLIC_BACKEND_URI}/phongchucnang/${dataUpdate?._id}`,

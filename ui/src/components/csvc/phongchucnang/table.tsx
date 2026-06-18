@@ -143,7 +143,6 @@ const TablePhongchucnang = (props: IProps) => {
         if (selectedType) params.set('type', selectedType);
         params.set('current', '1');
         params.set('pageSize', meta.pageSize.toString());
-        console.log(params.toString());
         router.push(`/quan-tri/csvc/phong-chucnang?${params.toString()}`);
     };
 

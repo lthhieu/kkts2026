@@ -27,54 +27,47 @@ const Thietbi = async ({ searchParams }: { searchParams: Params }) => {
     if (!permission.can(Action.Read, new DeviceSubject())) {
         redirect('/quan-tri/trang-chu')
     }
-    const { pageSize = 20, current = 1, currentRoom, type, unit, name, status } = await searchParams
-    const res = await sendRequest<IBackendResponse<IModelPaginate<IDevice>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/devices`,
-        queryParams: {
-            current, pageSize,
-            ...(currentRoom && { currentRoom }),
-            ...(unit && { unit }),
-            ...(type && { type }),
-            ...(name && { name: `/${name}/i` }),
-            ...(status && { status }),
-        },
-        headers: {
-            Authorization: `Bearer ${session?.access_token}`,
-        },
-        nextOption: {
-            next: { tags: ['devices'] }
-        }
-    })
-    const res1 = await sendRequest<IBackendResponse<IModelPaginate<IRoom>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/rooms`,
-        queryParams: { current: 1, pageSize: 100000 },
-        headers: {
-            Authorization: `Bearer ${session?.access_token}`,
-        },
-        nextOption: {
-            next: { tags: ['rooms'] }
-        }
-    })
-    const res2 = await sendRequest<IBackendResponse<IModelPaginate<IUnit>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/units`,
-        queryParams: { current: 1, pageSize: 100000 },
-        headers: {
-            Authorization: `Bearer ${session?.access_token}`,
-        },
-        nextOption: {
-            next: { tags: ['units'] }
-        }
-    })
+    // const { pageSize = 20, current = 1, currentRoom, type, unit, name, status } = await searchParams
+    // const res = await sendRequest<IBackendResponse<IModelPaginate<IDevice>>>({
+    //     url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/devices`,
+    //     queryParams: {
+    //         current, pageSize,
+    //         ...(currentRoom && { currentRoom }),
+    //         ...(unit && { unit }),
+    //         ...(type && { type }),
+    //         ...(name && { name: `/${name}/i` }),
+    //         ...(status && { status }),
+    //     },
+    //     headers: {
+    //         Authorization: `Bearer ${session?.access_token}`,
+    //     },
+    //     nextOption: {
+    //         next: { tags: ['devices'] }
+    //     }
+    // })
+    // const res1 = await sendRequest<IBackendResponse<IModelPaginate<IRoom>>>({
+    //     url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/rooms`,
+    //     queryParams: { current: 1, pageSize: 100000 },
+    //     headers: {
+    //         Authorization: `Bearer ${session?.access_token}`,
+    //     },
+    //     nextOption: {
+    //         next: { tags: ['rooms'] }
+    //     }
+    // })
+    // const res2 = await sendRequest<IBackendResponse<IModelPaginate<IUnit>>>({
+    //     url: `${process.env.NEXT_PUBLIC_BACKEND_URI}/units`,
+    //     queryParams: { current: 1, pageSize: 100000 },
+    //     headers: {
+    //         Authorization: `Bearer ${session?.access_token}`,
+    //     },
+    //     nextOption: {
+    //         next: { tags: ['units'] }
+    //     }
+    // })
     return (
         <div>
-            <TableDevices
-                devices={res?.data?.result ?? []}
-                access_token={session?.access_token ?? ''}
-                email={session?.user.email ?? ''}
-                meta={res?.data?.meta!}
-                rooms={res1?.data?.result ?? []}
-                units={res2?.data?.result ?? []}
-                user={session?.user ?? null} />
+            Hello world
         </div>
     )
 }

@@ -70,10 +70,6 @@ export class DevicesService {
     let defaultCurrent = +current ? +current : 1
     let offset = (+defaultCurrent - 1) * (+defaultLimit)
 
-    // filter = {
-    //   ...filter,
-    //   isDeleted: filter?.status === 'daxoa'
-    // };
 
     if (user.role === 'gv') {
       filter = {

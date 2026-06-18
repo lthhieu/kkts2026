@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
+import { DevicesV2 } from 'src/devices-v2/schemas/devices-v2.schema';
 import { Device } from 'src/devices/schemas/device.schema';
 import { Unit } from 'src/units/schemas/unit.schema';
 import { User } from 'src/users/schemas/user.schema';
@@ -20,8 +21,8 @@ export class Request {
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
     createdBy: User | null;
 
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Device.name })
-    device: Device | null;
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: DevicesV2.name })
+    device: DevicesV2 | null;
 
     @Prop()
     description: string;

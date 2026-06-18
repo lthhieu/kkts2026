@@ -137,7 +137,6 @@ const TableThinghiem = (props: IProps) => {
         if (selectedMa) params.set('ma', selectedMa);
         params.set('current', '1');
         params.set('pageSize', meta.pageSize.toString());
-        console.log(params.toString());
         router.push(`/quan-tri/csvc/thi-nghiem?${params.toString()}`);
     };
 

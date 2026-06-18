@@ -175,7 +175,6 @@ const TableMaytoantruong = (props: IProps) => {
         if (selectedCate) params.set('cate', selectedCate);
         params.set('current', '1');
         params.set('pageSize', meta?.pageSize.toString());
-        console.log(params.toString());
         router.push(`/quan-tri/csvc/danh-sach-may-toan-truong?${params.toString()}`);
     };
 

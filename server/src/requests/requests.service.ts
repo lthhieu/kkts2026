@@ -62,6 +62,7 @@ export class RequestsService {
         }
       })
       .populate({ path: 'unit', select: 'name' })
+      .populate({ path: 'createdBy', select: 'name email' })
       .exec()
     return {
       meta: {

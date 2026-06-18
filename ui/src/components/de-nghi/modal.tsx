@@ -13,8 +13,8 @@ interface IProps {
     isModalOpen: boolean,
     setIsModalOpen: (value: boolean) => void,
     //update
-    dataUpdate?: null | IDevice,
-    setDataUpdate?: (value: null | IDevice) => void,
+    dataUpdate?: null | IDeviceV2,
+    setDataUpdate?: (value: null | IDeviceV2) => void,
 }
 
 const Context = React.createContext({ name: 'Default' });
@@ -93,7 +93,8 @@ const RequestModal = (props: IProps) => {
         const response = await handleCreateRequest(values, access_token ?? '')
 
         if (response.data) {
-            await handleSendMail(response.data)
+            const temp = await handleSendMail(response.data)
+            console.log(temp)
             messageApi.success(response.message);
             handleCancel()
         } else {

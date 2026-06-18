@@ -49,6 +49,7 @@ export class Tbtren500trService {
       .sort(sort)
       .populate(population)
       .populate({ path: 'unit', select: 'name' })
+      .select('_id code name')
       .exec();
     return {
       meta: {
@@ -255,26 +256,6 @@ export class Tbtren500trService {
     return await this.tbtren500trModel.deleteMany({ _id: { $in: ids } });
   }
 
-  async updateChildren(parentId: string, childrenIds: string[]) {
-
-    // bỏ toàn bộ con cũ
-    await this.tbtren500trModel.updateMany({ parentId } as any, {
-      $set: { parentId: null }
-    });
-
-    // gán con mới
-    if (childrenIds.length > 0) {
-      await this.tbtren500trModel.updateMany({
-        _id: { $in: childrenIds }
-      },
-        { $set: { parentId } });
-    }
-
-    return {
-      success: true,
-    };
-  }
-
   async exportAll() {
     const parents = await this.tbtren500trModel
       .find({
@@ -283,15 +264,7 @@ export class Tbtren500trService {
       .sort('unit code name')
       .populate({ path: 'unit', select: 'name' })
       .lean();
-    console.log('parent count =', parents.length);
 
-    console.log(
-      [...new Set(
-        parents.map(
-          (x: any) => x.unit?.name,
-        ),
-      )],
-    );
     const parentIds = parents.map(
       (item: any) => item._id,
     );

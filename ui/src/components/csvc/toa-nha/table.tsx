@@ -157,7 +157,6 @@ const TableToanha = (props: IProps) => {
             params.set('place', selectedPlace.toString());
         } params.set('current', '1');
         params.set('pageSize', meta.pageSize.toString());
-        console.log(params.toString());
         router.push(`/quan-tri/csvc/toa-nha?${params.toString()}`);
     };
 
