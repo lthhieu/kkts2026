@@ -49,3 +49,6 @@ export class CsvcSubject {
 export class DanhmucSubject {
     '_id': string;
 }
+export class ChungtuSubject {
+    '_id': string;
+}

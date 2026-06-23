@@ -1,9 +1,8 @@
 "use client"
-import { Modal, Form, Input, message, notification, DatePicker, Row, Col, Select, DatePickerProps, } from 'antd';
+import { Modal, Form, Input, message, notification, Select } from 'antd';
 import React, { useEffect, useMemo } from 'react';
 import slugify from 'slugify';
 import { handleCreateOrUpdateNews } from '@/app/(main)/quan-tri/tin-tuc/actions';
-import dayjs from 'dayjs';
 import { categoryArr } from '@/components/tin-tuc/table';
 
 interface IProps {

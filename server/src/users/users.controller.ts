@@ -16,7 +16,8 @@ export const ROLE_LABEL_MAP: Record<string, string> = {
   thukho: 'Thủ kho',
   truongdv: 'Trưởng đơn vị',
   gv: 'Giáo viên',
-  guest: 'Khách'
+  guest: 'Khách',
+  qttb: 'Cán bộ P.QTTB'
 };
 
 @UseGuards(PoliciesGuard)

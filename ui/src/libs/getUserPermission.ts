@@ -1,8 +1,8 @@
 
-import { Action, CsvcSubject, DanhmucSubject, DeviceSubject, NewsSubject, RequestSubject, RoomSubject, SnapshotSubject, UnitSubject, UploadSubject, UserSubject } from "@/libs/enum";
+import { Action, CsvcSubject, DanhmucSubject, DeviceSubject, NewsSubject, RequestSubject, RoomSubject, SnapshotSubject, UnitSubject, UploadSubject, UserSubject, ChungtuSubject } from "@/libs/enum";
 import { AbilityBuilder, createMongoAbility, InferSubjects, MongoAbility } from "@casl/ability";
 
-type Subjects = InferSubjects<typeof DeviceSubject | typeof UserSubject | typeof RoomSubject | typeof UnitSubject | typeof NewsSubject | typeof UploadSubject | typeof RequestSubject | typeof SnapshotSubject | typeof CsvcSubject | typeof DanhmucSubject> | 'all';
+type Subjects = InferSubjects<typeof DeviceSubject | typeof UserSubject | typeof RoomSubject | typeof UnitSubject | typeof NewsSubject | typeof UploadSubject | typeof RequestSubject | typeof SnapshotSubject | typeof CsvcSubject | typeof DanhmucSubject> | typeof ChungtuSubject | 'all';
 
 export type AppAbility = MongoAbility<[Action, Subjects]>;
 
@@ -19,8 +19,9 @@ export function getUserPermission(user: any): AppAbility {
         can(Action.Read, RequestSubject);
         can(Action.Read, SnapshotSubject);
         cannot(Action.Manage, UploadSubject);
-        can(Action.Read, CsvcSubject);
-        can(Action.Read, DanhmucSubject);
+        can(Action.Read, CsvcSubject);        // CSVC: read only
+        can(Action.Read, DanhmucSubject);     // Danhmuc: read only
+        can(Action.Read, ChungtuSubject);
     } else if (user.role === 'thukho') {
         cannot(Action.Manage, UserSubject);
         cannot(Action.Manage, NewsSubject);
@@ -30,8 +31,9 @@ export function getUserPermission(user: any): AppAbility {
         can(Action.Manage, RoomSubject);
         can(Action.Manage, RequestSubject);
         can(Action.Manage, SnapshotSubject);
-        can(Action.Manage, CsvcSubject);
-        cannot(Action.Manage, DanhmucSubject);
+        can(Action.Manage, CsvcSubject);      // CSVC: full manage
+        cannot(Action.Manage, DanhmucSubject); // Danhmuc: deny
+        can(Action.Manage, ChungtuSubject);
     } else if (user.role === 'truongdv') {
         can(Action.Read, UserSubject);
         cannot(Action.Manage, NewsSubject);
@@ -43,8 +45,9 @@ export function getUserPermission(user: any): AppAbility {
         can(Action.Create, RequestSubject);
         can(Action.Comment, RequestSubject);
         can(Action.Read, SnapshotSubject);
-        cannot(Action.Manage, CsvcSubject);
-        cannot(Action.Manage, DanhmucSubject);
+        cannot(Action.Manage, CsvcSubject);   // CSVC: deny
+        cannot(Action.Manage, DanhmucSubject); // Danhmuc: deny
+        cannot(Action.Manage, ChungtuSubject);
     } else if (user.role === 'gv') {
         can(Action.Read, DeviceSubject);
         can(Action.Read, UnitSubject);
@@ -56,8 +59,23 @@ export function getUserPermission(user: any): AppAbility {
         can(Action.Create, RequestSubject);
         can(Action.Comment, RequestSubject);
         can(Action.Read, SnapshotSubject);
-        cannot(Action.Manage, CsvcSubject);
-        cannot(Action.Manage, DanhmucSubject);
+        cannot(Action.Manage, CsvcSubject);   // CSVC: deny
+        cannot(Action.Manage, DanhmucSubject); // Danhmuc: deny
+        cannot(Action.Manage, ChungtuSubject);
+    } else if (user.role === 'qttb') {
+        can(Action.Read, DeviceSubject);
+        can(Action.Read, UnitSubject);
+        can(Action.Read, RoomSubject);
+        cannot(Action.Manage, UserSubject);
+        cannot(Action.Manage, NewsSubject);
+        can(Action.Manage, UploadSubject);
+        can(Action.Read, RequestSubject);
+        can(Action.Create, RequestSubject);
+        can(Action.Comment, RequestSubject);
+        can(Action.Read, SnapshotSubject);
+        can(Action.Read, CsvcSubject);   // CSVC: deny
+        can(Action.Manage, DanhmucSubject); // Danhmuc: deny
+        can(Action.Manage, ChungtuSubject);
     } else if (user.role === 'guest') {
         cannot(Action.Manage, UserSubject);
         cannot(Action.Manage, DeviceSubject);
@@ -67,8 +85,9 @@ export function getUserPermission(user: any): AppAbility {
         cannot(Action.Manage, RequestSubject);
         cannot(Action.Manage, SnapshotSubject);
         can(Action.Read, UnitSubject);
-        cannot(Action.Manage, CsvcSubject);
-        cannot(Action.Manage, DanhmucSubject);
+        cannot(Action.Manage, CsvcSubject);   // CSVC: deny
+        cannot(Action.Manage, DanhmucSubject); // Danhmuc: deny
+        cannot(Action.Manage, ChungtuSubject);
     }
     return build()
 }

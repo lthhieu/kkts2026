@@ -8,15 +8,16 @@ import { typeArr } from '@/components/thietbiv2/table';
 interface IProps {
     device: IDeviceV2 | null;
 }
+export const formatMoney = (value: number | null | undefined) => {
+    if (value === null || value === undefined) return '—';
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+};
 
 const DeviceDetail = ({ device }: IProps) => {
     if (!device) return null;
 
     // Format số tiền
-    const formatMoney = (value: number | null | undefined) => {
-        if (value === null || value === undefined) return '—';
-        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
-    };
+
 
     const typeInfo = typeArr.find(
         item => item.value === device.type

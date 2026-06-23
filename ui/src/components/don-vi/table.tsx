@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Grid, Input, Popconfirm, Space, Table, Tooltip, Typography, message, notification } from 'antd';
+import { Button, Flex, Input, Popconfirm, Space, Table, Tooltip, Typography, message, notification } from 'antd';
 import type { PopconfirmProps, TableProps } from 'antd';
 import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
@@ -10,7 +10,6 @@ import ModalImport from '@/components/don-vi/modal.import';
 import { canCreateUnit, canDeleteUnit, canReadUnit, canUpdateUnit } from '@/libs/units';
 
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
-const { useBreakpoint } = Grid;
 
 interface IProps {
     units: IUnit[],
@@ -33,17 +32,10 @@ const TableUnits = (props: IProps) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [api, contextHolderNotification] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
-    const [dataExport, setDataExport] = useState<any[]>([])
-    const screens = useBreakpoint();
-    const isMobile = !screens.md;  // < 768px
+
     const [selectedName, setSelectedName] = useState<string | undefined>(undefined);
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
-
-    useEffect(() => {
-        const filteredData = units.map(({ _id, name }) => ({ _id, name }));
-        setDataExport(filteredData);
-    }, [units])
 
     const showModal = () => {
         setStatus("CREATE")

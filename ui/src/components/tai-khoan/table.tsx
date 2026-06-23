@@ -28,6 +28,7 @@ export const ROLE_COLOR_MAP: Record<string, string> = {
     thukho: 'purple',
     truongdv: 'blue',
     gv: 'green',
+    qttb: 'cyan',
     guest: 'default'
 };
 export const ROLE_LABEL_MAP: Record<string, string> = {
@@ -36,6 +37,7 @@ export const ROLE_LABEL_MAP: Record<string, string> = {
     thukho: 'Thủ kho',
     truongdv: 'Trưởng đơn vị',
     gv: 'Giáo viên',
+    qttb: 'Cán bộ P. QTTB',
     guest: 'Khách'
 };
 
@@ -44,6 +46,7 @@ export const roleArray = [
     { value: 'admin', label: 'Quản trị' },
     { value: 'thukho', label: 'Thủ kho' },
     { value: 'truongdv', label: 'Trưởng đơn vị' },
+    { value: 'qttb', label: 'Cán bộ P. QTTB' },
     { value: 'gv', label: 'Giáo viên' },
     { value: 'guest', label: 'Khách' }
 ]

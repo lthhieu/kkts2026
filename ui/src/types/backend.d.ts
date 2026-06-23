@@ -425,4 +425,19 @@ declare global {
         createdAt?: string;
         updatedAt?: string;
     }
+
+    interface IChungtu {
+        createdAt: string;
+        ngayhoanthanh?: any;
+        ngaynhan: any;
+        noidung: string;
+        sotien: number;
+        tienbangchu: string
+        trangthai: string;
+        updatedAt: string;
+        ghichu?: string;
+        __v: number;
+        _id: string;
+        user?: IUser
+    }
 }

@@ -47,3 +47,6 @@ export class SnapshotSubject {
 export class CsvcSubject { _id: string; }
 // Danhmuc Subject (16 modules trong csvc/danhmuc/)
 export class DanhmucSubject { _id: string; }
+export class ChungtuSubject {
+    _id: string;
+}

@@ -72,10 +72,6 @@ const TableDevicesV2 = (props: IProps) => {
     const [selectedType, setSelectedType] = useState<string | undefined>(undefined);
     const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
 
-    const [dataExport, setDataExport] = useState<any[]>([])
-    const screens = useBreakpoint();
-    const isMobile = !screens.md;  // < 768px
-
     const [selectedName, setSelectedName] = useState<string | undefined>(undefined);
 
     const [selectedDevice, setSelectedDevice] = useState<IDeviceV2 | null>(null)

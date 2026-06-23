@@ -29,6 +29,7 @@ import {
     LaptopOutlined,
     CoffeeOutlined,
     DollarOutlined,
+    PushpinOutlined,
 } from '@ant-design/icons';
 import { Button, Layout, Menu, Space, theme, Dropdown, MenuProps } from 'antd';
 import Link from 'next/link';
@@ -249,6 +250,11 @@ const Dashboard = ({
                     label: <Link href="/quan-tri/csvc/thiet-bi-tren-500-trieu">Thiết bị trên 500 triệu</Link>,
                 },
             ],
+        },
+        {
+            key: '/quan-tri/chung-tu',
+            icon: <PushpinOutlined />,
+            label: <Link href="/quan-tri/chung-tu">Chứng từ</Link>,
         },
         {
             key: 'tin-tuc-group',
