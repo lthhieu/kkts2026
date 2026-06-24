@@ -30,13 +30,14 @@ import {
     CoffeeOutlined,
     DollarOutlined,
     PushpinOutlined,
+    IdcardOutlined,
 } from '@ant-design/icons';
 import { Button, Layout, Menu, Space, theme, Dropdown, MenuProps } from 'antd';
 import Link from 'next/link';
 import { handleSignOut } from '@/app/(auth)/dang-nhap/actions';
 import { usePathname, useRouter } from 'next/navigation';
 import { getUserPermission, AppAbility } from '@/libs/getUserPermission';
-import { Action, CsvcSubject, DanhmucSubject, DeviceSubject, NewsSubject, UserSubject } from '@/libs/enum';
+import { Action, ChungtuSubject, CsvcSubject, DanhmucSubject, DeviceSubject, NewsSubject, UserSubject } from '@/libs/enum';
 import ChangePasswordModal from '@/components/dashboard/change-password-modal';
 import Image from 'next/image';
 import UpdateModal from '@/components/dashboard/update.info';
@@ -252,9 +253,22 @@ const Dashboard = ({
             ],
         },
         {
-            key: '/quan-tri/chung-tu',
+            key: 'chungtu-group',
             icon: <PushpinOutlined />,
-            label: <Link href="/quan-tri/chung-tu">Chứng từ</Link>,
+            label: 'Quản lý chứng từ',
+            permission: { action: Action.Read, subject: new ChungtuSubject() },
+            children: [
+                {
+                    key: '/quan-tri/ncc',
+                    icon: <IdcardOutlined />,
+                    label: <Link href="/quan-tri/ncc">Nhà cung cấp</Link>,
+                },
+                {
+                    key: '/quan-tri/chung-tu',
+                    icon: <PushpinOutlined />,
+                    label: <Link href="/quan-tri/chung-tu">Chứng từ</Link>,
+                },
+            ],
         },
         {
             key: 'tin-tuc-group',

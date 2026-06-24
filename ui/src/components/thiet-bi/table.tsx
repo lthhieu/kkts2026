@@ -595,14 +595,14 @@ const TableDevices = (props: IProps) => {
                 isModalUpdateManyOpen={isModalUpdateManyOpen}
                 setIsModalUpdateManyOpen={setIsModalUpdateManyOpen}
             />
-            <RequestModal
+            {/* <RequestModal
                 access_token={access_token}
                 isModalOpen={isModalRequestOpen}
                 setIsModalOpen={setIsModalRequestOpen}
                 //update info
                 setDataUpdate={setDataUpdate}
                 dataUpdate={dataUpdate}
-            />
+            /> */}
             <Drawer
                 title="Xem chi tiết thiết bị"
                 closable={{ 'aria-label': 'Close Button' }}

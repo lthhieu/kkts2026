@@ -68,7 +68,8 @@ export class ChungtuController {
           : '-',
         "Ghi chú": item.ghichu,
         "Tiền bằng chữ": item.tienbangchu,
-        "Trạng thái": item.trangthai
+        "Trạng thái": item.trangthai,
+        "Nhà cung cấp": item.ncc.name
       });
     });
 
@@ -92,8 +93,8 @@ export class ChungtuController {
   @Patch(':id')
   @ResponseMessage('Cập nhật chứng từ thành công')
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Update, ChungtuSubject))
-  update(@Param('id') id: string, @Body() dto: UpdateChungtuDto) {
-    return this.chungtuService.update(id, dto);
+  update(@Param('id') id: string, @Body() dto: UpdateChungtuDto, @User() user: IUser) {
+    return this.chungtuService.update(id, dto, user);
   }
 
   @Delete('/delete-many')

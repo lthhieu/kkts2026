@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsOptional } from "class-validator";
-import { TrangthaiChungtu } from "src/chungtu/schemas/chungtu.schema";
+import { TrangthaiChungtu } from "src/qlchungtu/chungtu/schemas/chungtu.schema";
 
 export class CreateChungtuDto {
     @IsNotEmpty({ message: "Nội dung không được để trống" })
@@ -23,4 +23,7 @@ export class CreateChungtuDto {
 
     @IsOptional()
     ghichu?: string;
+
+    @IsOptional()
+    ncc?: any;
 }

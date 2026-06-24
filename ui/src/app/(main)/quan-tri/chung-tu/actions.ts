@@ -3,8 +3,8 @@ import { sendRequest, sendRequestBlob } from '@/utils/api'
 import { updateTag } from 'next/cache'
 
 export const handleCreateOrUpdateChungtu = async (data: any, access_token: string, status: string, dataUpdate?: null | IChungtu) => {
-    const { noidung, ngaynhan, ngayhoanthanh, sotien, trangthai, ghichu, tienbangchu } = data
-    const body: any = { noidung, ngaynhan, ngayhoanthanh, sotien, trangthai, ghichu, tienbangchu }
+    const { noidung, ngaynhan, ngayhoanthanh, sotien, trangthai, ghichu, tienbangchu, ncc } = data
+    const body: any = { noidung, ngaynhan, ngayhoanthanh, sotien, trangthai, ghichu, tienbangchu, ncc }
 
     const res = await sendRequest<IBackendResponse<IUnit>>({
         url: status === "CREATE" ? `${process.env.NEXT_PUBLIC_BACKEND_URI}/chungtu` : `${process.env.NEXT_PUBLIC_BACKEND_URI}/chungtu/${dataUpdate?._id}`,

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateChungtuDto } from './dto/create-chungtu.dto';
 import { UpdateChungtuDto } from './dto/update-chungtu.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Chungtu } from 'src/chungtu/schemas/chungtu.schema';
+import { Chungtu } from 'src/qlchungtu/chungtu/schemas/chungtu.schema';
 import { Model } from 'mongoose';
 import aqp from 'api-query-params';
 import { isEmpty } from 'class-validator';
@@ -49,6 +49,13 @@ export class ChungtuService {
         path: 'user',
         select: 'name',
       })
+      .populate({
+        path: 'ncc',
+        select: 'name',
+      }).populate({
+        path: 'updatedBy',
+        select: 'name',
+      })
       .exec()
     return {
       meta: {
@@ -65,11 +72,17 @@ export class ChungtuService {
     return await this.chungtuModel.findOne({ _id: id }).populate({
       path: 'user',
       select: 'name',
+    }).populate({
+      path: 'ncc',
+      select: 'name',
+    }).populate({
+      path: 'updatedBy',
+      select: 'name',
     });
   }
 
-  async update(id: string, updateChungtuDto: UpdateChungtuDto) {
-    return await this.chungtuModel.updateOne({ _id: id }, updateChungtuDto);
+  async update(id: string, updateChungtuDto: UpdateChungtuDto, user: IUser) {
+    return await this.chungtuModel.updateOne({ _id: id }, { ...updateChungtuDto, updatedBy: user });
   }
 
   async remove(id: string) {
@@ -108,6 +121,10 @@ export class ChungtuService {
 
     return this.chungtuModel
       .find(filter)
+      .populate({
+        path: 'ncc',
+        select: 'name',
+      })
       .sort({ ngaynhan: -1 })
       .lean();
   }

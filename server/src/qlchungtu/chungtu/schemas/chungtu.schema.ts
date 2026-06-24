@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
+import { Ncc } from 'src/qlchungtu/ncc/schemas/ncc.schema';
 import { User } from 'src/users/schemas/user.schema';
 
 export type ChungtuDocument = HydratedDocument<Chungtu>;
@@ -35,6 +36,12 @@ export class Chungtu {
     ghichu: string;
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name, default: null })
     user?: User | null;
+
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name, default: null })
+    updatedBy?: User | null;
+
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Ncc.name, default: null })
+    ncc: Ncc | null;
 
 }
 

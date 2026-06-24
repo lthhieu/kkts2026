@@ -10,6 +10,7 @@ interface IProps {
     setIsModalOpen: (value: boolean) => void,
     status: string,
     setStatus: (value: string) => void,
+    ncc: IUnit[],
     //update
     dataUpdate: null | IChungtu,
     setDataUpdate: (value: null | IChungtu) => void
@@ -33,11 +34,13 @@ export const statusChungtuArray = [
 ]
 
 const ChungtuModal = (props: IProps) => {
-    const { setIsModalOpen, isModalOpen, setStatus, status, access_token, setDataUpdate, dataUpdate } = props
+    const { setIsModalOpen, isModalOpen, setStatus, status, access_token, setDataUpdate, dataUpdate, ncc } = props
     const [form] = Form.useForm()
     const [messageApi, contextHolder] = message.useMessage();
     const [api, contextHolderNotification] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
+
+    console.log(ncc)
 
     useEffect(() => {
         if (dataUpdate) {
@@ -55,6 +58,7 @@ const ChungtuModal = (props: IProps) => {
                 ghichu: dataUpdate.ghichu,
                 tienbangchu: dataUpdate.tienbangchu,
                 _id: dataUpdate._id,
+                ncc: dataUpdate?.ncc?._id ?? null,
             })
         }
     }, [dataUpdate])
@@ -71,12 +75,13 @@ const ChungtuModal = (props: IProps) => {
     };
 
     const onFinish = async (values: IChungtu) => {
-        const { noidung, ngaynhan, ngayhoanthanh, sotien, trangthai, ghichu, tienbangchu } = values
+        const { noidung, ngaynhan, ngayhoanthanh, sotien, trangthai, ghichu, tienbangchu, ncc } = values
         const data = {
-            noidung, sotien, trangthai, ghichu, tienbangchu,
+            noidung, sotien, trangthai, ghichu, tienbangchu, ncc,
             ngaynhan: ngaynhan?.toDate(),
             ngayhoanthanh: ngayhoanthanh?.toDate() ?? null,
         }
+        console.log(data)
         const response = await handleCreateOrUpdateChungtu(data, access_token ?? '', status, dataUpdate)
 
         if (response.data) {
@@ -187,26 +192,55 @@ const ChungtuModal = (props: IProps) => {
                             </Form.Item>
                         </Col>
                     </Row>
-                    <Form.Item
-                        style={{ marginBottom: 8 }}
-                        label="Số tiền"
-                        name="sotien"
-                        rules={[{ required: true }]}
-                    >
-                        <InputNumber style={{ width: '100%' }}
-                            onChange={(value) => {
-                                if (!value) {
-                                    form.setFieldValue('tienbangchu', '');
-                                    return;
-                                }
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item
+                                style={{ marginBottom: 8 }}
+                                label="Nhà cung cấp"
+                                name="ncc"
+                                rules={[{ required: true }]}
+                            >
+                                <Select
+                                    style={{ width: '100%' }}
+                                    showSearch
+                                    placeholder="Vui lòng chọn nhà cung cấp"
+                                    options={
+                                        ncc && ncc.length > 0
+                                            ? ncc.map(({ _id, name }) => ({
+                                                value: _id,
+                                                label: name
+                                            }))
+                                            : []
+                                    }
+                                />
+                            </Form.Item>
 
-                                const tienBangChu = normalizeText(
-                                    `${VNnum2words(Number(value))} đồng`
-                                );
+                        </Col>
 
-                                form.setFieldValue('tienbangchu', tienBangChu);
-                            }} />
-                    </Form.Item>
+                        <Col span={12}>
+                            <Form.Item
+                                style={{ marginBottom: 8 }}
+                                label="Số tiền"
+                                name="sotien"
+                                rules={[{ required: true }]}
+                            >
+                                <InputNumber style={{ width: '100%' }}
+                                    onChange={(value) => {
+                                        if (!value) {
+                                            form.setFieldValue('tienbangchu', '');
+                                            return;
+                                        }
+
+                                        const tienBangChu = normalizeText(
+                                            `${VNnum2words(Number(value))} đồng`
+                                        );
+
+                                        form.setFieldValue('tienbangchu', tienBangChu);
+                                    }} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+
                     <Form.Item
                         style={{ marginBottom: 8 }}
                         label="Tiền bằng chữ"

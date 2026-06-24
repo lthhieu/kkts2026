@@ -88,6 +88,7 @@ const ModalImport = (props: IProps) => {
                             ghichu: getVal(5) ? String(getVal(5)) : "-",
                             tienbangchu: getVal(6) ? String(getVal(6)) : "-",
                             trangthai: getVal(7) ? String(getVal(7)) : "Chưa xác định",
+                            ncc: getVal(8) ? String(getVal(8)) : null,
                         };
 
                         jsonData.push(obj);
@@ -191,6 +192,7 @@ const ModalImport = (props: IProps) => {
                             { dataIndex: 'ghichu', title: 'Ghi chú' },
                             { dataIndex: 'tienbangchu', title: 'Tiên bằng chữ' },
                             { dataIndex: 'trangthai', title: 'Trạng thái' },
+                            { dataIndex: 'ncc', title: 'Nhà cung cấp' },
                         ]} />
                 </div>
             </Modal>

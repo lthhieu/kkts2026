@@ -438,6 +438,8 @@ declare global {
         ghichu?: string;
         __v: number;
         _id: string;
-        user?: IUser
+        user?: IUser;
+        updatedBy?: IUser;
+        ncc?: IUnit
     }
 }

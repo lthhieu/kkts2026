@@ -18,7 +18,8 @@ interface IProps {
     chungtu: IChungtu[],
     access_token: string,
     meta: IMeta,
-    user: IUser | null
+    user: IUser | null,
+    ncc: IUnit[],
 }
 export const STATUS_COLOR_MAP: Record<string, string> = {
     'Chưa xác định': 'green',
@@ -36,7 +37,7 @@ export const STATUS_LABEL_MAP: Record<string, string> = {
 const Context = React.createContext({ name: 'Default' });
 
 const TableChungtu = (props: IProps) => {
-    const { chungtu, access_token, meta, user } = props
+    const { chungtu, access_token, meta, user, ncc } = props
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isModalImportOpen, setIsModalImportOpen] = useState(false)
     const [loading, setLoading] = useState(false);
@@ -51,6 +52,7 @@ const TableChungtu = (props: IProps) => {
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
     const [sotien, setSotien] = useState<number | undefined>(undefined);
     const [noidung, setNoidung] = useState<string | undefined>(undefined);
+    const [selectedNcc, setSelectedNcc] = useState<string | undefined>(undefined);
     const [selectedTrangthai, setSelectedTrangthai] = useState<string | undefined>(undefined);
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
@@ -167,15 +169,31 @@ const TableChungtu = (props: IProps) => {
             render: (_, record) => {
                 return record?.user?.name ?? '-'
             }
+        },
+        {
+            title: 'Người cập nhật',
+            dataIndex: 'updatedBy',
+            key: 'updatedBy',
+            render: (_, record) => {
+                return record?.updatedBy?.name ?? '-'
+            }
+        },
+        {
+            title: 'Nhà cung cấp',
+            dataIndex: 'ncc',
+            key: 'ncc',
+            render: (_, record) => {
+                return <Typography.Text copyable={{ text: record.ncc?._id, tooltips: 'Sao chép' }}>{record?.ncc?.name ?? '-'}</Typography.Text>
+            }
         }
     ];
-    console.log(chungtu)
     const handleOnChangePage = (current: number, pageSize: number) => {
         const params = new URLSearchParams()
 
         if (sotien) params.set('sotien', sotien.toString())
         if (noidung) params.set('noidung', noidung)
         if (selectedTrangthai) params.set('trangthai', selectedTrangthai)
+        if (selectedNcc) params.set('ncc', selectedNcc)
 
         params.set('current', current.toString())
         params.set('pageSize', pageSize.toString())
@@ -208,12 +226,14 @@ const TableChungtu = (props: IProps) => {
         setSotien(undefined)
         setNoidung(undefined)
         setSelectedTrangthai(undefined)
+        setSelectedNcc(undefined)
     };
     const handleFilter = () => {
         const params = new URLSearchParams()
         if (sotien) params.set('sotien', sotien.toString())
         if (noidung) params.set('noidung', noidung)
         if (selectedTrangthai) params.set('trangthai', selectedTrangthai)
+        if (selectedNcc) params.set('ncc', selectedNcc)
 
         params.set('current', '1')
         params.set('pageSize', meta.pageSize.toString())
@@ -251,6 +271,23 @@ const TableChungtu = (props: IProps) => {
                     allowClear
                     options={statusChungtuArray}
                 />
+                <Select
+                    style={{ width: '100%' }}
+                    showSearch={{ optionFilterProp: 'label' }}
+                    placeholder="Vui lòng chọn nhà cung cấp"
+                    // 🔥 Gán value từ state vào đây
+                    value={selectedNcc}
+                    onChange={(e) => setSelectedNcc(e)}
+                    allowClear
+                    options={
+                        ncc && ncc.length > 0
+                            ? ncc.map(({ _id, name }) => ({
+                                value: _id,
+                                label: name
+                            }))
+                            : []
+                    }
+                />
                 <Button icon={<ClearOutlined />} onClick={handleClear}>Xóa bộ lọc</Button>
                 <Button icon={<SearchOutlined />} type='primary' onClick={handleFilter}>Lọc</Button>
             </Space>)}
@@ -273,6 +310,7 @@ const TableChungtu = (props: IProps) => {
                 status={status}
                 access_token={access_token}
                 isModalOpen={isModalOpen}
+                ncc={ncc}
                 setIsModalOpen={setIsModalOpen}
                 //update info
                 setDataUpdate={setDataUpdate}

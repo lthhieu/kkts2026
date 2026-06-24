@@ -34,7 +34,8 @@ import { LoaiphongModule } from 'src/csvc/danhmuc/loaiphong/loaiphong.module';
 import { PhongchucnangModule } from 'src/csvc/phongchucnang/phongchucnang.module';
 import { Tbtren500trModule } from './csvc/tbtren500tr/tbtren500tr.module';
 import { DevicesV2Module } from './devices-v2/devices-v2.module';
-import { ChungtuModule } from './chungtu/chungtu.module';
+import { ChungtuModule } from './qlchungtu/chungtu/chungtu.module';
+import { NccsModule } from 'src/qlchungtu/ncc/ncc.module';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true, }),
@@ -69,7 +70,8 @@ import { ChungtuModule } from './chungtu/chungtu.module';
     PhongchucnangModule,
     Tbtren500trModule,
     DevicesV2Module,
-    ChungtuModule
+    ChungtuModule,
+    NccsModule
   ],
   controllers: [AppController],
   providers: [AppService],
