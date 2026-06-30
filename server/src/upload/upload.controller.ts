@@ -29,4 +29,21 @@ export class UploadController {
       throw new BadRequestException('Không tìm thấy tài liệu của bạn')
     }
   }
+
+  @Post('chungtu')
+  @ResponseMessage('Tải chứng từ thành công')
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Create, UploadSubject))
+  @UseInterceptors(FileInterceptor('file'))
+  @UseFilters(new HttpExceptionFilter())
+  uploadChungtu(@UploadedFile() file: Express.Multer.File, @Req() req: Request) {
+    if (file && file.filename) {
+      return {
+        filename: file?.filename,
+        folder: req.headers['folder_type'] ?? "default",
+        link: `/files?folder=${req.headers['folder_type'] ?? "default"}&name=${file.filename}`
+      }
+    } else {
+      throw new BadRequestException('Không tìm thấy tài liệu của bạn')
+    }
+  }
 }

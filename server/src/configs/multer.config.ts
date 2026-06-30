@@ -40,8 +40,8 @@ export class MulterConfigService implements MulterOptionsFactory {
             storage: diskStorage({
                 destination: (req, file, cb) => {
                     const folder = req?.headers?.folder_type ?? "default";
-                    this.ensureExists(`public/images/${folder}`);
-                    cb(null, join(this.getRootPath(), `public/images/${folder}`))
+                    this.ensureExists(`public/files/${folder}`);
+                    cb(null, join(this.getRootPath(), `public/files/${folder}`))
                 },
                 filename: (req, file, cb) => {
                     //get image extension
@@ -53,10 +53,10 @@ export class MulterConfigService implements MulterOptionsFactory {
                 }
             }),
             limits: {
-                fileSize: 1000 * 1024 // 1MB
+                fileSize: 100000 * 1024 // 1MB
             },
             fileFilter: (req, file, cb) => {
-                const allowedFileTypes = ['jpg', 'jpeg', 'png']
+                const allowedFileTypes = ['pdf']
                 const fileExtension = file.originalname.split('.').pop()!.toLowerCase();
                 const isValidFileType = allowedFileTypes.includes(fileExtension);
                 if (!isValidFileType) {

@@ -17,7 +17,7 @@ const GioithieuComponent = () => {
                     {/* Tạo list con để thụt lề cho phó phòng */}
                     <ul style={{ listStyleType: 'circle', paddingLeft: '20px' }}>
                         <li><Text>ThS. Nguyễn Thanh Hoàng; Email: <span style={{ color: '#4275e4' }}>hoangnt@vlute.edu.vn</span></Text></li>
-                        <li><Text>ThS. Nguyễn Đức Hải; Email: <span style={{ color: '#4275e4' }}>haind@vlute.edu.vn</span></Text></li>
+                        <li><Text>ThS. Nguyễn Đức Thành; Email: <span style={{ color: '#4275e4' }}>thanhnd@vlute.edu.vn</span></Text></li>
                     </ul>
                 </li>
 

@@ -1,8 +1,8 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Input, InputNumber, Popconfirm, Select, Space, Table, Tag, Tooltip, Typography, message, notification } from 'antd';
+import { Button, Drawer, Flex, Input, InputNumber, Popconfirm, Select, Space, Table, Tag, Tooltip, Typography, message, notification } from 'antd';
 import type { TableProps } from 'antd';
-import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
+import { ClearOutlined, CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FolderAddOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { handleDeleteChungtu, handleDeleteChungtuMany, handleExportChungtu } from '@/app/(main)/quan-tri/chung-tu/actions';
 import { canCreateChungtu, canDeleteChungtu, canReadChungtu, canUpdateChungtu } from '@/libs/chungtu';
@@ -11,6 +11,7 @@ import { formatMoney } from '@/components/thietbiv2/device.detail';
 import ModalImport from '@/components/chungtu/modal.import';
 import dayjs from 'dayjs';
 import ModalExport from '@/components/chungtu/modal.export';
+import ChungtuDetail from '@/components/chungtu/chungtu.detail';
 
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
 
@@ -43,6 +44,8 @@ const TableChungtu = (props: IProps) => {
     const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [isModalExportOpen, SetIsModalExportOpen] = useState(false)
+    const [open, setOpen] = useState(false);
+    const [selectedChungtu, setSelectedChungtu] = useState<IChungtu | null>(null)
 
     const [status, setStatus] = useState('')
     const [dataUpdate, setDataUpdate] = useState<null | IChungtu>(null)
@@ -92,6 +95,13 @@ const TableChungtu = (props: IProps) => {
             messageApi.success(res.message);
         }
     }
+    const showDrawer = (data: IChungtu) => {
+        setSelectedChungtu(data)
+        setOpen(true);
+    };
+    const onClose = () => {
+        setOpen(false);
+    };
 
     const columns: TableProps<IChungtu>['columns'] = [
         {
@@ -101,6 +111,9 @@ const TableChungtu = (props: IProps) => {
             render: (_, record) => (
                 <Space>
                     <Typography.Text copyable={{ text: record._id, tooltips: 'Sao chép' }}>{dayjs(record.ngaynhan).format('DD/MM/YYYY')}</Typography.Text>
+                    <Tooltip title="Xem chi tiết">
+                        <EyeOutlined style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => showDrawer(record)} />
+                    </Tooltip>
                     {canUpdateChungtu(user ?? {} as IUser) && (
                         <Tooltip title="Cập nhật">
                             <EditOutlined style={{ color: '#1cc03d', cursor: 'pointer' }}
@@ -326,6 +339,23 @@ const TableChungtu = (props: IProps) => {
                 isModalImportOpen={isModalImportOpen}
                 setIsModalImportOpen={setIsModalImportOpen}
             />
+            <Drawer
+                title="Xem chi tiết chứng từ"
+                closable={{ 'aria-label': 'Close Button' }}
+                onClose={onClose}
+                open={open}
+                size={'large'}
+                extra={
+                    canUpdateChungtu(user ?? {} as IUser) && (
+                        <Button type="primary" icon={<EditOutlined />}
+                            onClick={() => { onClose(); setDataUpdate(selectedChungtu); setStatus('UPDATE'); setIsModalOpen(true); }}>
+                            Chỉnh sửa
+                        </Button>
+                    )
+                }
+            >
+                <ChungtuDetail chungtu={selectedChungtu} />
+            </Drawer>
         </Context.Provider>
     )
 }

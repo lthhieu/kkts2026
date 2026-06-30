@@ -14,7 +14,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
             response
                 .status(status)
                 .json({
-                    "message": "Kích thước file > 1MB",
+                    "message": "Kích thước file quá lớn",
                     "error": "Payload Too Large",
                     "statusCode": status
                 });
