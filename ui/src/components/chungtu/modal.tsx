@@ -145,7 +145,7 @@ const ChungtuModal = (props: IProps) => {
                         <Col span={12}>
                             <Form.Item
                                 style={{ marginBottom: 8 }}
-                                label="Tên hoàn thành CT"
+                                label="Ngày hoàn thành CT"
                                 name="ngayhoanthanh"
                             >
                                 <DatePicker format='DD/MM/YYYY' style={{ width: '100%' }} />
