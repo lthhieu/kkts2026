@@ -1,7 +1,7 @@
 "use client"
 import { handleCreateOrUpdateChungtu } from '@/app/(main)/quan-tri/chung-tu/actions';
 import { Modal, Form, Input, message, notification, Row, Col, DatePicker, Select, InputNumber } from 'antd';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import React, { useEffect, useMemo } from 'react';
 import VNnum2words from 'vn-num2words';
 interface IProps {
@@ -18,7 +18,7 @@ interface IProps {
 
 const Context = React.createContext({ name: 'Default' });
 
-const normalizeText = (text: string) => {
+export const normalizeText = (text: string) => {
     // bỏ khoảng trắng thừa
     text = text.replace(/\s+/g, ' ').trim();
 
@@ -27,10 +27,9 @@ const normalizeText = (text: string) => {
 };
 
 export const statusChungtuArray = [
-    { value: 'Chưa xác định', label: 'Chưa xác định' },
-    { value: 'Đã thanh toán nhưng chưa scan', label: 'Đã thanh toán nhưng chưa scan' },
+    { value: 'Đã nhận', label: 'Đã nhận' },
+    { value: 'Đã duyệt thanh toán', label: 'Đã duyệt thanh toán' },
     { value: 'Đã thanh toán', label: 'Đã thanh toán' },
-    { value: 'Thanh toán một phần', label: 'Thanh toán một phần' }
 ]
 
 const ChungtuModal = (props: IProps) => {
@@ -39,9 +38,6 @@ const ChungtuModal = (props: IProps) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [api, contextHolderNotification] = notification.useNotification();
     const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
-
-    console.log(ncc)
-
     useEffect(() => {
         if (dataUpdate) {
             form.setFieldsValue({
@@ -202,7 +198,7 @@ const ChungtuModal = (props: IProps) => {
                             >
                                 <Select
                                     style={{ width: '100%' }}
-                                    showSearch
+                                    showSearch={{ optionFilterProp: 'label' }}
                                     placeholder="Vui lòng chọn nhà cung cấp"
                                     options={
                                         ncc && ncc.length > 0

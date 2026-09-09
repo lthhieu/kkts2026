@@ -184,7 +184,7 @@ const TableNccs = (props: IProps) => {
                     total: meta.total,
                     showTotal: (total, range) => `${range[0]}-${range[1]} / ${total} kết quả`,
                     onChange: (page: number, pageSize: number) => handleOnChangePage(page, pageSize),
-                    pageSizeOptions: [10, 20],
+                    pageSizeOptions: [10, 20, 50],
                     defaultPageSize: 10,
                     showSizeChanger: true,
                 }}

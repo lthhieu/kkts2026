@@ -38,7 +38,7 @@ export class ChungtuService {
     const totalItems = await this.chungtuModel.countDocuments(filter)
     const totalPages = Math.ceil(totalItems / defaultLimit)
     if (isEmpty(sort)) {
-      sort = "ngaynhan"
+      sort = "-ngaynhan"
     }
     let chungtus = await this.chungtuModel.find(filter)
       .skip(offset)

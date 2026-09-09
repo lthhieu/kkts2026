@@ -6,10 +6,9 @@ import { User } from 'src/users/schemas/user.schema';
 export type ChungtuDocument = HydratedDocument<Chungtu>;
 
 export enum TrangthaiChungtu {
-    CHUAXACDINH = 'Chưa xác định',
-    CHUASCAN = 'Đã thanh toán nhưng chưa scan',
+    DANHAN = 'Đã nhận',
+    DADUYETTHANHTOAN = 'Đã duyệt thanh toán',
     DATHANHTOAN = 'Đã thanh toán',
-    THANHTOAN1PHAN = 'Thanh toán một phần'
 }
 
 @Schema({ timestamps: true })
@@ -29,7 +28,7 @@ export class Chungtu {
     @Prop()
     tienbangchu: string;
 
-    @Prop({ type: String, enum: TrangthaiChungtu, default: TrangthaiChungtu.CHUAXACDINH })
+    @Prop({ type: String, enum: TrangthaiChungtu, default: TrangthaiChungtu.DANHAN })
     trangthai: TrangthaiChungtu;
 
     @Prop()

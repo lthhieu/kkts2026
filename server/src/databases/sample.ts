@@ -115077,7 +115077,7 @@ export const INIT_DEVICES = [
     },
     {
         "_id": "699ffa803f6b7d6eee2a567e",
-        "name": "Đá tảng bảng tên công viên khắc logo “Trường đại học sư phạm kỹ thuật Vĩnh Long”",
+        "name": "Đá tảng bảng tên công viên khắc logo “Trường đại học công nghệ kỹ thuật Vĩnh Long”",
         "description": "2_2018_QT_081",
         "usedLocation": [
             {
@@ -115113,7 +115113,7 @@ export const INIT_DEVICES = [
     },
     {
         "_id": "699ffa803f6b7d6eee2a561a",
-        "name": "Đá tảng bảng tên công viên khắc logo “Trường đại học sư phạm kỹ thuật Vĩnh Long”",
+        "name": "Đá tảng bảng tên công viên khắc logo “Trường đại học công nghệ kỹ thuật Vĩnh Long”",
         "description": "2_2018_QT_081",
         "usedLocation": [
             {

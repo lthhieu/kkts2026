@@ -380,7 +380,7 @@ const Dashboard = ({
                 >
                     {children}
                 </Content>
-                <Footer style={{ textAlign: 'center', background: colorBgContainer, padding: 12 }}>©{new Date().getFullYear()} Trường Đại học Sư phạm Kỹ thuật Vĩnh Long</Footer>
+                <Footer style={{ textAlign: 'center', background: colorBgContainer, padding: 12 }}>©{new Date().getFullYear()} Trường Đại học Công nghệ Kỹ thuật Vĩnh Long</Footer>
             </Layout>
             <ChangePasswordModal
                 isModalOpen={isModalOpen}

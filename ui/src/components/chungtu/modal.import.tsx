@@ -5,6 +5,8 @@ import { InboxOutlined } from '@ant-design/icons';
 import * as Excel from 'exceljs';
 import { handleCreateMany } from '@/app/(main)/quan-tri/chung-tu/actions';
 import dayjs from 'dayjs';
+import { normalizeText } from '@/components/chungtu/modal';
+import VNnum2words from 'vn-num2words';
 
 
 interface IProps {
@@ -86,7 +88,7 @@ const ModalImport = (props: IProps) => {
                                 ? dayjs(String(getVal(4))).toDate()
                                 : null,
                             ghichu: getVal(5) ? String(getVal(5)) : "-",
-                            tienbangchu: getVal(6) ? String(getVal(6)) : "-",
+                            tienbangchu: getVal(6) ? String(getVal(6)) : normalizeText(`${VNnum2words(Number(getVal(3)))} đồng`),
                             trangthai: getVal(7) ? String(getVal(7)) : "Chưa xác định",
                             ncc: getVal(8) ? String(getVal(8)) : null,
                         };

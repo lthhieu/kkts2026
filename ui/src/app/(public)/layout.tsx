@@ -132,7 +132,7 @@ const PublicLayout = ({
                     <Content style={contentStyle}>{children}</Content>
                     <Footer style={footerStyle}>
                         <div style={{ fontWeight: 500, marginBottom: 8 }}>
-                            ©{new Date().getFullYear()} Trường Đại học Sư phạm Kỹ thuật Vĩnh Long
+                            ©{new Date().getFullYear()} Trường Đại học Công nghệ Kỹ thuật Vĩnh Long
                         </div>
                         <div style={{ fontSize: '14px', color: 'rgba(0, 0, 0, 0.65)', lineHeight: 1.6 }}>
                             Địa chỉ: Số 73, Nguyễn Huệ, Phường Long Châu, Tỉnh Vĩnh Long

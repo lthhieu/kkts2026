@@ -23,16 +23,14 @@ interface IProps {
     ncc: IUnit[],
 }
 export const STATUS_COLOR_MAP: Record<string, string> = {
-    'Chưa xác định': 'green',
-    'Đã thanh toán nhưng chưa scan': 'red',
+    'Đã nhận': 'green',
+    'Đã duyệt thanh toán': 'orange',
     'Đã thanh toán': 'blue',
-    'Thanh toán một phần': 'cyan',
 };
 export const STATUS_LABEL_MAP: Record<string, string> = {
-    'Chưa xác định': 'Chưa xác định',
-    'Đã thanh toán nhưng chưa scan': 'Đã thanh toán nhưng chưa scan',
+    'Đã nhận': 'Đã nhận',
+    'Đã duyệt thanh toán': 'Đã duyệt thanh toán',
     'Đã thanh toán': 'Đã thanh toán',
-    'Thanh toán một phần': 'Thanh toán một phần',
 };
 
 const Context = React.createContext({ name: 'Default' });
@@ -130,6 +128,33 @@ const TableChungtu = (props: IProps) => {
             ),
         },
         {
+            title: 'Trạng thái',
+            dataIndex: 'trangthai',
+            key: 'trangthai',
+            render: (_, record) => (
+                <Tag color={STATUS_COLOR_MAP[record.trangthai!] || 'default'} variant='outlined'>
+                    {STATUS_LABEL_MAP[record.trangthai!] || record.trangthai}
+                </Tag>
+            )
+        },
+
+        {
+            title: 'Số tiền',
+            dataIndex: 'sotien',
+            key: 'sotien',
+            render: (_, record) => {
+                return formatMoney(record.sotien)
+            }
+        },
+        {
+            title: 'Nhà cung cấp',
+            dataIndex: 'ncc',
+            key: 'ncc',
+            render: (_, record) => {
+                return <Typography.Text copyable={{ text: record.ncc?._id, tooltips: 'Sao chép' }}>{record?.ncc?.name ?? '-'}</Typography.Text>
+            }
+        },
+        {
             title: 'Nội dung',
             dataIndex: 'noidung',
             key: 'noidung',
@@ -149,24 +174,7 @@ const TableChungtu = (props: IProps) => {
                 <Typography.Text >{record?.ngayhoanthanh ? dayjs(record?.ngayhoanthanh).format('DD/MM/YYYY') : '-'}</Typography.Text>
             )
         },
-        {
-            title: 'Trạng thái',
-            dataIndex: 'trangthai',
-            key: 'trangthai',
-            render: (_, record) => (
-                <Tag color={STATUS_COLOR_MAP[record.trangthai!] || 'default'} variant='outlined'>
-                    {STATUS_LABEL_MAP[record.trangthai!] || record.trangthai}
-                </Tag>
-            )
-        },
-        {
-            title: 'Số tiền',
-            dataIndex: 'sotien',
-            key: 'sotien',
-            render: (_, record) => {
-                return formatMoney(record.sotien)
-            }
-        },
+
         {
             title: 'Ghi chú',
             dataIndex: 'ghichu',
@@ -191,14 +199,7 @@ const TableChungtu = (props: IProps) => {
                 return record?.updatedBy?.name ?? '-'
             }
         },
-        {
-            title: 'Nhà cung cấp',
-            dataIndex: 'ncc',
-            key: 'ncc',
-            render: (_, record) => {
-                return <Typography.Text copyable={{ text: record.ncc?._id, tooltips: 'Sao chép' }}>{record?.ncc?.name ?? '-'}</Typography.Text>
-            }
-        }
+
     ];
     const handleOnChangePage = (current: number, pageSize: number) => {
         const params = new URLSearchParams()
@@ -312,7 +313,7 @@ const TableChungtu = (props: IProps) => {
                     total: meta.total,
                     showTotal: (total, range) => `${range[0]}-${range[1]} / ${total} kết quả`,
                     onChange: (page: number, pageSize: number) => handleOnChangePage(page, pageSize),
-                    pageSizeOptions: [10, 20],
+                    pageSizeOptions: [10, 20, 50],
                     defaultPageSize: 10,
                     showSizeChanger: true,
                 }}
