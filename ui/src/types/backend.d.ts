@@ -305,7 +305,7 @@ declare global {
         "slug": string,
         "content": string,
         "thumbnail": string,
-        "category": string,
+        "category"?: string,
         "author": {
             "_id": string,
             "name": string

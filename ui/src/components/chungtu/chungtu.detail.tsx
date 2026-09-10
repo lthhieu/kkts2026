@@ -16,15 +16,15 @@ const ChungtuDetail = ({ chungtu }: IProps) => {
         <div >
             <Descriptions
                 size="small"
-                column={{ xs: 1, sm: 3 }}
+                column={1}
             >
                 <Descriptions.Item label="Ngày nhận CT">
                     {<Typography.Text >{chungtu?.ngaynhan ? dayjs(chungtu?.ngaynhan).format('DD/MM/YYYY') : '-'}</Typography.Text>}
                 </Descriptions.Item>
-                <Descriptions.Item label="Ngày hoàn thành CT" span={2}>
+                <Descriptions.Item label="Ngày hoàn thành CT" >
                     {<Typography.Text >{chungtu?.ngayhoanthanh ? dayjs(chungtu?.ngayhoanthanh).format('DD/MM/YYYY') : '-'}</Typography.Text>}
                 </Descriptions.Item>
-                <Descriptions.Item label="Nội dung" span={'filled'}>
+                <Descriptions.Item label="Nội dung" >
                     {chungtu.noidung}
                 </Descriptions.Item>
                 <Descriptions.Item label="Trạng thái">
@@ -32,22 +32,22 @@ const ChungtuDetail = ({ chungtu }: IProps) => {
                         {STATUS_LABEL_MAP[chungtu.trangthai!] || chungtu.trangthai}
                     </Tag>}
                 </Descriptions.Item>
-                <Descriptions.Item label="Số tiền" span={2}>
+                <Descriptions.Item label="Số tiền" >
                     {formatMoney(chungtu.sotien)}
                 </Descriptions.Item>
-                <Descriptions.Item label="Số tiền bằng chữ" span={'filled'}>
+                <Descriptions.Item label="Số tiền bằng chữ">
                     {chungtu.tienbangchu}
                 </Descriptions.Item>
-                <Descriptions.Item label="Người tạo" span={'filled'}>
+                <Descriptions.Item label="Người tạo">
                     {chungtu.user?.name ?? '-'}
                 </Descriptions.Item>
-                <Descriptions.Item label="Người cập nhật" span={'filled'}>
+                <Descriptions.Item label="Người cập nhật">
                     {chungtu.updatedBy?.name ?? '-'}
                 </Descriptions.Item>
-                <Descriptions.Item label="Nhà cung cấp" span={'filled'}>
+                <Descriptions.Item label="Nhà cung cấp">
                     {chungtu.ncc?.name ?? '-'}
                 </Descriptions.Item>
-                <Descriptions.Item label="Ghi chú" span={'filled'}>
+                <Descriptions.Item label="Ghi chú">
                     {chungtu?.ghichu ?? '-'}
                 </Descriptions.Item>
             </Descriptions>

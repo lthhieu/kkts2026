@@ -151,107 +151,107 @@ const Dashboard = ({
                 },
             ],
         },
-        {
-            key: 'csvc-group',
-            icon: <BuildOutlined />,
-            label: 'Cơ sở vật chất',
-            permission: { action: Action.Read, subject: new CsvcSubject() },
-            children: [
-                {
-                    key: 'csvc-danhmuc-group',
-                    icon: <UnorderedListOutlined />,
-                    label: 'Danh mục',
-                    permission: { action: Action.Read, subject: new DanhmucSubject() },
-                    children: [
-                        {
-                            key: '/quan-tri/csvc/danh-muc/loai-phong',
-                            label: <Link href="/quan-tri/csvc/danh-muc/loai-phong">Loại phòng</Link>,
-                        }
-                    ],
-                },
-                {
-                    key: '/quan-tri/csvc/dat-dai',
-                    icon: <EnvironmentOutlined />,
-                    label: <Link href="/quan-tri/csvc/dat-dai">Đất đai</Link>,
-                },
-                {
-                    key: '/quan-tri/csvc/toa-nha',
-                    icon: <BankOutlined />,
-                    label: <Link href="/quan-tri/csvc/toa-nha">Tòa nhà</Link>,
-                },
-                {
-                    key: '/quan-tri/csvc/ly-thuyet',
-                    icon: <AlertOutlined />,
-                    label: <Link href="/quan-tri/csvc/ly-thuyet">Lý thuyết</Link>,
-                },
-                {
-                    key: '/quan-tri/csvc/hoi-truong',
-                    icon: <CompassOutlined />,
-                    label: <Link href="/quan-tri/csvc/hoi-truong">Hội trường</Link>,
-                },
-                {
-                    key: '/quan-tri/csvc/da-phuong-tien',
-                    icon: <CameraOutlined />,
-                    label: <Link href="/quan-tri/csvc/da-phuong-tien">Đa phương tiện</Link>,
-                },
-                {
-                    key: '/quan-tri/csvc/thuc-hanh',
-                    icon: <ToolOutlined />,
-                    label: <Link href="/quan-tri/csvc/thuc-hanh">Thực hành</Link>,
-                },
-                {
-                    key: '/quan-tri/csvc/thi-nghiem',
-                    icon: <ExperimentOutlined />,
-                    label: <Link href="/quan-tri/csvc/thi-nghiem">Thí nghiệm</Link>,
-                },
-                {
-                    key: '/quan-tri/csvc/nghien-cuu',
-                    icon: <NodeIndexOutlined />,
-                    label: <Link href="/quan-tri/csvc/nghien-cuu">Nghiên cứu</Link>,
-                },
-                {
-                    key: '/quan-tri/csvc/pgs-gs',
-                    icon: <FireOutlined />,
-                    label: <Link href="/quan-tri/csvc/pgs-gs">PGS-GS</Link>,
-                },
-                {
-                    key: '/quan-tri/csvc/cho-lam-viec-cua-giang-vien',
-                    icon: <BookOutlined />,
-                    label: <Link href="/quan-tri/csvc/cho-lam-viec-cua-giang-vien">Chỗ làm việc của GV</Link>,
-                },
-                {
-                    key: '/quan-tri/csvc/thu-vien',
-                    icon: <ReadOutlined />,
-                    label: <Link href="/quan-tri/csvc/thu-vien">Thư viện</Link>,
-                },
-                {
-                    key: '/quan-tri/csvc/ktx',
-                    icon: <HomeOutlined />,
-                    label: <Link href="/quan-tri/csvc/ktx">Ký túc xá</Link>,
-                },
-                {
-                    key: '/quan-tri/csvc/nha-xuong',
-                    icon: <DeploymentUnitOutlined />,
-                    label: <Link href="/quan-tri/csvc/nha-xuong">Nhà xưởng</Link>,
-                },
+        // {
+        //     key: 'csvc-group',
+        //     icon: <BuildOutlined />,
+        //     label: 'Cơ sở vật chất',
+        //     permission: { action: Action.Read, subject: new CsvcSubject() },
+        //     children: [
+        //         {
+        //             key: 'csvc-danhmuc-group',
+        //             icon: <UnorderedListOutlined />,
+        //             label: 'Danh mục',
+        //             permission: { action: Action.Read, subject: new DanhmucSubject() },
+        //             children: [
+        //                 {
+        //                     key: '/quan-tri/csvc/danh-muc/loai-phong',
+        //                     label: <Link href="/quan-tri/csvc/danh-muc/loai-phong">Loại phòng</Link>,
+        //                 }
+        //             ],
+        //         },
+        //         {
+        //             key: '/quan-tri/csvc/dat-dai',
+        //             icon: <EnvironmentOutlined />,
+        //             label: <Link href="/quan-tri/csvc/dat-dai">Đất đai</Link>,
+        //         },
+        //         {
+        //             key: '/quan-tri/csvc/toa-nha',
+        //             icon: <BankOutlined />,
+        //             label: <Link href="/quan-tri/csvc/toa-nha">Tòa nhà</Link>,
+        //         },
+        //         {
+        //             key: '/quan-tri/csvc/ly-thuyet',
+        //             icon: <AlertOutlined />,
+        //             label: <Link href="/quan-tri/csvc/ly-thuyet">Lý thuyết</Link>,
+        //         },
+        //         {
+        //             key: '/quan-tri/csvc/hoi-truong',
+        //             icon: <CompassOutlined />,
+        //             label: <Link href="/quan-tri/csvc/hoi-truong">Hội trường</Link>,
+        //         },
+        //         {
+        //             key: '/quan-tri/csvc/da-phuong-tien',
+        //             icon: <CameraOutlined />,
+        //             label: <Link href="/quan-tri/csvc/da-phuong-tien">Đa phương tiện</Link>,
+        //         },
+        //         {
+        //             key: '/quan-tri/csvc/thuc-hanh',
+        //             icon: <ToolOutlined />,
+        //             label: <Link href="/quan-tri/csvc/thuc-hanh">Thực hành</Link>,
+        //         },
+        //         {
+        //             key: '/quan-tri/csvc/thi-nghiem',
+        //             icon: <ExperimentOutlined />,
+        //             label: <Link href="/quan-tri/csvc/thi-nghiem">Thí nghiệm</Link>,
+        //         },
+        //         {
+        //             key: '/quan-tri/csvc/nghien-cuu',
+        //             icon: <NodeIndexOutlined />,
+        //             label: <Link href="/quan-tri/csvc/nghien-cuu">Nghiên cứu</Link>,
+        //         },
+        //         {
+        //             key: '/quan-tri/csvc/pgs-gs',
+        //             icon: <FireOutlined />,
+        //             label: <Link href="/quan-tri/csvc/pgs-gs">PGS-GS</Link>,
+        //         },
+        //         {
+        //             key: '/quan-tri/csvc/cho-lam-viec-cua-giang-vien',
+        //             icon: <BookOutlined />,
+        //             label: <Link href="/quan-tri/csvc/cho-lam-viec-cua-giang-vien">Chỗ làm việc của GV</Link>,
+        //         },
+        //         {
+        //             key: '/quan-tri/csvc/thu-vien',
+        //             icon: <ReadOutlined />,
+        //             label: <Link href="/quan-tri/csvc/thu-vien">Thư viện</Link>,
+        //         },
+        //         {
+        //             key: '/quan-tri/csvc/ktx',
+        //             icon: <HomeOutlined />,
+        //             label: <Link href="/quan-tri/csvc/ktx">Ký túc xá</Link>,
+        //         },
+        //         {
+        //             key: '/quan-tri/csvc/nha-xuong',
+        //             icon: <DeploymentUnitOutlined />,
+        //             label: <Link href="/quan-tri/csvc/nha-xuong">Nhà xưởng</Link>,
+        //         },
 
-                {
-                    key: '/quan-tri/csvc/danh-sach-may-toan-truong',
-                    icon: <LaptopOutlined />,
-                    label: <Link href="/quan-tri/csvc/danh-sach-may-toan-truong">Danh sách máy toàn trường</Link>,
-                },
-                {
-                    key: '/quan-tri/csvc/phong-chucnang',
-                    icon: <CoffeeOutlined />,
-                    label: <Link href="/quan-tri/csvc/phong-chucnang">Phòng chức năng</Link>,
-                },
-                {
-                    key: '/quan-tri/csvc/thiet-bi-tren-500-trieu',
-                    icon: <DollarOutlined />,
-                    label: <Link href="/quan-tri/csvc/thiet-bi-tren-500-trieu">Thiết bị trên 500 triệu</Link>,
-                },
-            ],
-        },
+        //         {
+        //             key: '/quan-tri/csvc/danh-sach-may-toan-truong',
+        //             icon: <LaptopOutlined />,
+        //             label: <Link href="/quan-tri/csvc/danh-sach-may-toan-truong">Danh sách máy toàn trường</Link>,
+        //         },
+        //         {
+        //             key: '/quan-tri/csvc/phong-chucnang',
+        //             icon: <CoffeeOutlined />,
+        //             label: <Link href="/quan-tri/csvc/phong-chucnang">Phòng chức năng</Link>,
+        //         },
+        //         {
+        //             key: '/quan-tri/csvc/thiet-bi-tren-500-trieu',
+        //             icon: <DollarOutlined />,
+        //             label: <Link href="/quan-tri/csvc/thiet-bi-tren-500-trieu">Thiết bị trên 500 triệu</Link>,
+        //         },
+        //     ],
+        // },
         {
             key: 'chungtu-group',
             icon: <PushpinOutlined />,

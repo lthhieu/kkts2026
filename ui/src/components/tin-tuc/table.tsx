@@ -17,10 +17,6 @@ interface IProps {
     meta: IMeta,
     user: IUser | null
 }
-export const categoryArr = [
-    { value: 'Tuyển sinh', label: 'Tuyển sinh' },
-    { value: 'Hợp tác - Nghiên cứu khoa học', label: 'Hợp tác - Nghiên cứu khoa học' },
-]
 
 const Context = React.createContext({ name: 'Default' });
 
@@ -38,7 +34,7 @@ const TableNews = (props: IProps) => {
     const screens = useBreakpoint();
     const isMobile = !screens.md;  // < 768px
     const [selectedTitle, setSelectedTitle] = useState<string | undefined>(undefined);
-    const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined);
+    // const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined);
 
     const showModal = () => {
         setStatus("CREATE")
@@ -84,7 +80,7 @@ const TableNews = (props: IProps) => {
             title: 'Tên tin tức',
             dataIndex: 'name',
             key: 'name',
-            render: (_, record) => <Space style={{ maxWidth: 300 }}>
+            render: (_, record) => <Space style={{ maxWidth: 600 }}>
                 <Typography.Text ellipsis copyable={{ text: record._id, tooltips: 'Sao chép' }}>
                     {record.title}
                 </Typography.Text>
@@ -122,11 +118,6 @@ const TableNews = (props: IProps) => {
             </Space>
         },
         {
-            title: 'Thể loại',
-            dataIndex: 'category',
-            key: 'category',
-        },
-        {
             title: 'Tác giả',
             dataIndex: ['author', 'name'],
             key: 'author',
@@ -136,7 +127,6 @@ const TableNews = (props: IProps) => {
         const params = new URLSearchParams()
 
         if (selectedTitle) params.set('title', selectedTitle)
-        if (selectedCategory) params.set('category', selectedCategory)
 
         params.set('current', current.toString())
         params.set('pageSize', pageSize.toString())
@@ -163,22 +153,16 @@ const TableNews = (props: IProps) => {
     // Hàm xóa bộ lọc
     const handleClear = () => {
         setSelectedTitle(undefined)
-        setSelectedCategory(undefined)
     };
     const handleFilter = () => {
         const params = new URLSearchParams()
         if (selectedTitle) params.set('title', selectedTitle)
-        if (selectedCategory) params.set('category', selectedCategory)
 
         params.set('current', '1')
         params.set('pageSize', meta.pageSize.toString())
 
         router.push(`/quan-tri/tin-tuc?${params.toString()}`)
     }
-    // Hàm xử lý khi chọn category
-    const onChangeCategory = (value: string) => {
-        setSelectedCategory(value);
-    };
     return (
         <Context.Provider value={contextValue}>
             {contextHolder}{contextHolderNotification}
@@ -195,7 +179,7 @@ const TableNews = (props: IProps) => {
             {canReadNews(user ?? {} as IUser) && (<Space style={{ marginBottom: 16, flexWrap: 'wrap' }}>
                 <Input allowClear placeholder="Tìm theo tên tin tức"
                     onChange={(e) => setSelectedTitle(e.target.value)} value={selectedTitle} />
-                <Select
+                {/* <Select
                     style={{ width: '100%' }}
                     showSearch={{ optionFilterProp: 'label' }}
                     placeholder="Vui lòng chọn loại tin tức"
@@ -203,7 +187,7 @@ const TableNews = (props: IProps) => {
                     onChange={onChangeCategory}
                     allowClear
                     options={categoryArr}
-                />
+                /> */}
 
                 <Button icon={<ClearOutlined />} onClick={handleClear}>Xóa bộ lọc</Button>
                 <Button icon={<SearchOutlined />} type='primary' onClick={handleFilter}>Lọc</Button>

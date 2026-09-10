@@ -3,7 +3,6 @@ import { Modal, Form, Input, message, notification, Select } from 'antd';
 import React, { useEffect, useMemo } from 'react';
 import slugify from 'slugify';
 import { handleCreateOrUpdateNews } from '@/app/(main)/quan-tri/tin-tuc/actions';
-import { categoryArr } from '@/components/tin-tuc/table';
 
 interface IProps {
     access_token?: string,
@@ -46,7 +45,7 @@ const NewsModal = (props: IProps) => {
                 slug: dataUpdate.slug,
                 content: dataUpdate.content,
                 thumbnail: dataUpdate.thumbnail,
-                category: dataUpdate.category,
+                // category: dataUpdate.category,
             })
         }
     }, [dataUpdate])
@@ -63,8 +62,8 @@ const NewsModal = (props: IProps) => {
     };
 
     const onFinish = async (values: INews) => {
-        const { title, slug, content, category, thumbnail } = values
-        const data = { title, slug, content, category, thumbnail }
+        const { title, slug, content, thumbnail } = values
+        const data = { title, slug, content, thumbnail }
         const response = await handleCreateOrUpdateNews(data, access_token ?? '', status, dataUpdate)
 
         if (response.data) {
@@ -147,7 +146,7 @@ const NewsModal = (props: IProps) => {
                         <Input.TextArea autoSize />
                     </Form.Item>
 
-                    <Form.Item
+                    {/* <Form.Item
                         label="Loại tin tức"
                         name="category"
                         rules={[{ required: true }]}
@@ -158,7 +157,7 @@ const NewsModal = (props: IProps) => {
                             placeholder="Vui lòng chọn loại tin tức"
                             options={categoryArr}
                         />
-                    </Form.Item>
+                    </Form.Item> */}
                 </Form>
             </Modal>
         </Context.Provider>
