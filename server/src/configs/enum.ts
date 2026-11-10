@@ -43,6 +43,9 @@ export class RequestSubject {
 export class SnapshotSubject {
     '_id': string;
 }
+export class DocumentNumbersSubject {
+    _id: string;
+}
 
 export class CsvcSubject { _id: string; }
 // Danhmuc Subject (16 modules trong csvc/danhmuc/)

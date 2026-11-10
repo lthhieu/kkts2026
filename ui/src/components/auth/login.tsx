@@ -80,7 +80,7 @@ export default function LoginComponent() {
                                 width={44}
                                 height={44}
                                 alt='logo'
-                                src="/logo.png" />
+                                src="/logo vlute-01.png" />
                         </div>
                         <Title style={{ ...styles.title, textAlign: 'center' }}>Đăng nhập</Title>
                     </div>

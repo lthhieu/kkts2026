@@ -27,7 +27,7 @@ const MyHeader = ({ items, selectedKey }: { items: MenuItem[], selectedKey: stri
                     width={44}
                     height={44}
                     alt='logo'
-                    src="/logo.png"
+                    src="/logo vlute-01.png"
                 />
                 <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.25 }}>
                     <span style={{ fontWeight: 600, fontSize: 15, color: '#1f1f1f' }}>

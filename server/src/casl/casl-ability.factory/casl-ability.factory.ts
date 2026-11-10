@@ -1,8 +1,8 @@
 import { AbilityBuilder, createMongoAbility, ExtractSubjectType, InferSubjects, MongoAbility } from "@casl/ability";
 import { Injectable } from "@nestjs/common";
-import { Action, DeviceSubject, NewsSubject, RequestSubject, RoomSubject, SnapshotSubject, UnitSubject, UploadSubject, UserSubject, CsvcSubject, DanhmucSubject, ChungtuSubject } from "src/configs/enum";
+import { Action, DeviceSubject, NewsSubject, RequestSubject, RoomSubject, SnapshotSubject, UnitSubject, UploadSubject, UserSubject, CsvcSubject, DanhmucSubject, ChungtuSubject, DocumentNumbersSubject } from "src/configs/enum";
 
-type Subjects = InferSubjects<typeof DeviceSubject | typeof UserSubject | typeof RoomSubject | typeof UnitSubject | typeof NewsSubject | typeof UploadSubject | typeof RequestSubject | typeof SnapshotSubject | typeof CsvcSubject | typeof DanhmucSubject> | typeof ChungtuSubject | 'all';
+type Subjects = InferSubjects<typeof DeviceSubject | typeof UserSubject | typeof RoomSubject | typeof UnitSubject | typeof NewsSubject | typeof UploadSubject | typeof RequestSubject | typeof SnapshotSubject | typeof CsvcSubject | typeof DanhmucSubject> | typeof ChungtuSubject | typeof DocumentNumbersSubject | 'all';
 
 export type AppAbility = MongoAbility<[Action, Subjects]>;
 
@@ -25,6 +25,7 @@ export class CaslAbilityFactory {
             can(Action.Read, CsvcSubject);        // CSVC: read only
             can(Action.Read, DanhmucSubject);     // Danhmuc: read only
             can(Action.Read, ChungtuSubject);
+            can(Action.Manage, DocumentNumbersSubject); // DocumentNumbers: full manage
         } else if (user.role === 'thukho') {
             cannot(Action.Manage, UserSubject);
             cannot(Action.Manage, NewsSubject);
@@ -37,6 +38,7 @@ export class CaslAbilityFactory {
             can(Action.Manage, CsvcSubject);      // CSVC: full manage
             cannot(Action.Manage, DanhmucSubject); // Danhmuc: deny
             can(Action.Manage, ChungtuSubject);
+            can(Action.Read, DocumentNumbersSubject);
         } else if (user.role === 'truongdv') {
             can(Action.Read, UserSubject);
             cannot(Action.Manage, NewsSubject);
@@ -51,6 +53,7 @@ export class CaslAbilityFactory {
             cannot(Action.Manage, CsvcSubject);   // CSVC: deny
             cannot(Action.Manage, DanhmucSubject); // Danhmuc: deny
             cannot(Action.Manage, ChungtuSubject);
+            cannot(Action.Manage, DocumentNumbersSubject);
         } else if (user.role === 'gv') {
             can(Action.Read, DeviceSubject);
             can(Action.Read, UnitSubject);
@@ -65,6 +68,7 @@ export class CaslAbilityFactory {
             cannot(Action.Manage, CsvcSubject);   // CSVC: deny
             cannot(Action.Manage, DanhmucSubject); // Danhmuc: deny
             cannot(Action.Manage, ChungtuSubject);
+            cannot(Action.Manage, DocumentNumbersSubject);
         } else if (user.role === 'qttb') {
             can(Action.Read, DeviceSubject);
             can(Action.Read, UnitSubject);
@@ -79,6 +83,7 @@ export class CaslAbilityFactory {
             can(Action.Read, CsvcSubject);   // CSVC: deny
             can(Action.Manage, DanhmucSubject); // Danhmuc: deny
             can(Action.Manage, ChungtuSubject);
+            cannot(Action.Read, DocumentNumbersSubject);
         } else if (user.role === 'guest') {
             cannot(Action.Manage, UserSubject);
             cannot(Action.Manage, DeviceSubject);
@@ -91,6 +96,7 @@ export class CaslAbilityFactory {
             cannot(Action.Manage, CsvcSubject);   // CSVC: deny
             cannot(Action.Manage, DanhmucSubject); // Danhmuc: deny
             cannot(Action.Manage, ChungtuSubject);
+            cannot(Action.Manage, DocumentNumbersSubject);
         }
 
         return build({

@@ -19,7 +19,7 @@ const MySider = ({ items, collapsed, setCollapsed, selectedKey }: { items: MenuI
                     width={44}
                     height={44}
                     alt='logo'
-                    src="/logo.png" />
+                    src="/logo vlute-01.png" />
             </div>
             <Menu
                 style={{}}

@@ -36,6 +36,7 @@ import { Tbtren500trModule } from './csvc/tbtren500tr/tbtren500tr.module';
 import { DevicesV2Module } from './devices-v2/devices-v2.module';
 import { ChungtuModule } from './qlchungtu/chungtu/chungtu.module';
 import { NccsModule } from 'src/qlchungtu/ncc/ncc.module';
+import { DocumentNumbersModule } from './document_numbers/document_numbers.module';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true, }),
@@ -71,7 +72,8 @@ import { NccsModule } from 'src/qlchungtu/ncc/ncc.module';
     Tbtren500trModule,
     DevicesV2Module,
     ChungtuModule,
-    NccsModule
+    NccsModule,
+    DocumentNumbersModule
   ],
   controllers: [AppController],
   providers: [AppService],
