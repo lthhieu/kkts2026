@@ -35,6 +35,14 @@ a {
   text-decoration: none;
 }
 
+hr {
+  margin: 1rem 0;
+  color: inherit;
+  border: 0;
+  border-top: var(--bs-border-width) solid;
+  opacity: .25;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

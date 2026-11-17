@@ -31,6 +31,21 @@ export class DocumentNumbersService {
     }
   }
 
+  async createMany(createDocumentNumberDto: CreateDocumentNumberDto[]) {
+    try {
+      // insertMany accepts an array of plain JavaScript objects
+      const createdDocumentNumbers = await this.documentNumberModel.insertMany(createDocumentNumberDto, { ordered: true });
+      return createdDocumentNumbers;
+    } catch (error: any) {
+      if (error.code === 11000) {
+        throw new ConflictException(
+          `Một hoặc nhiều số trong danh sách đã tồn tại trong hệ thống (vi phạm Unique Index). Vui lòng kiểm tra lại!`
+        );
+      }
+      throw error;
+    }
+  }
+
   findAll() {
     return `This action returns all documentNumbers`;
   }
