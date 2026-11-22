@@ -37,7 +37,7 @@ import Link from 'next/link';
 import { handleSignOut } from '@/app/(auth)/dang-nhap/actions';
 import { usePathname, useRouter } from 'next/navigation';
 import { getUserPermission, AppAbility } from '@/libs/getUserPermission';
-import { Action, ChungtuSubject, CsvcSubject, DanhmucSubject, DeviceSubject, NewsSubject, UserSubject } from '@/libs/enum';
+import { Action, ChungtuSubject, CsvcSubject, DanhmucSubject, DeviceSubject, documentNumberSubject, NewsSubject, UserSubject } from '@/libs/enum';
 import ChangePasswordModal from '@/components/dashboard/change-password-modal';
 import Image from 'next/image';
 import UpdateModal from '@/components/dashboard/update.info';
@@ -282,6 +282,12 @@ const Dashboard = ({
                     label: <Link href="/quan-tri/tin-tuc">Tin tức</Link>,
                 },
             ],
+        },
+        {
+            key: '/quan-tri/so-van-ban',
+            icon: <BookOutlined />,
+            label: <Link href="/quan-tri/so-van-ban">Số văn bản</Link>,
+            permission: { action: Action.Read, subject: new documentNumberSubject() },
         },
         {
             key: '/quan-tri/tai-khoan',

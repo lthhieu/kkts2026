@@ -52,3 +52,6 @@ export class DanhmucSubject {
 export class ChungtuSubject {
     '_id': string;
 }
+export class documentNumberSubject {
+    '_id': string;
+}

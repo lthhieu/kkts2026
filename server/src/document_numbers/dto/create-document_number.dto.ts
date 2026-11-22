@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty } from "class-validator";
+import { IsEnum, IsNotEmpty, IsOptional } from "class-validator";
 import { TypeDocumentNumber } from "src/document_numbers/schemas/document_number.schema";
 
 export class CreateDocumentNumberDto {
@@ -17,4 +17,7 @@ export class CreateDocumentNumberDto {
 
     @IsNotEmpty({ message: "Ngày cấp số không được để trống" })
     issue_date: any;
+
+    @IsOptional()
+    money: number;
 }

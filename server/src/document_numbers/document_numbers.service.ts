@@ -4,6 +4,8 @@ import { UpdateDocumentNumberDto } from './dto/update-document_number.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { DocumentNumber } from 'src/document_numbers/schemas/document_number.schema';
 import { Model } from 'mongoose';
+import aqp from 'api-query-params';
+import { isEmpty } from 'class-validator';
 
 @Injectable()
 export class DocumentNumbersService {
@@ -46,19 +48,54 @@ export class DocumentNumbersService {
     }
   }
 
-  findAll() {
-    return `This action returns all documentNumbers`;
+  async findAll(current: number, pageSize: number, queryString: string) {
+    let { filter, population } = aqp(queryString)
+    let { sort }: { sort: any } = aqp(queryString)
+    delete filter.current
+    delete filter.pageSize
+    let defaultLimit = +pageSize ? +pageSize : 10
+    let defaultCurrent = +current ? +current : 1
+    let offset = (+defaultCurrent - 1) * (+defaultLimit)
+    const totalItems = await this.documentNumberModel.countDocuments(filter)
+    const totalPages = Math.ceil(totalItems / defaultLimit)
+    if (isEmpty(sort)) {
+      sort = "issue_date"
+    }
+    let documentsNumber = await this.documentNumberModel.find(filter)
+      .skip(offset)
+      .limit(defaultLimit)
+      .sort(sort)
+      .populate(population)
+      .exec()
+    return {
+      meta: {
+        current: defaultCurrent, //trang hiện tại
+        pageSize: defaultLimit, //số lượng bản ghi đã lấy
+        pages: totalPages, //tổng số trang với điều kiện query
+        total: totalItems // tổng số phần tử (số bản ghi)
+      },
+      result: documentsNumber
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} documentNumber`;
+  async findOne(id: string) {
+    return await this.documentNumberModel.findOne({ _id: id });
   }
 
-  update(id: number, updateDocumentNumberDto: UpdateDocumentNumberDto) {
-    return `This action updates a #${id} documentNumber`;
+  async update(id: string, updateDocumentNumberDto: UpdateDocumentNumberDto) {
+    return await this.documentNumberModel.updateOne({ _id: id }, updateDocumentNumberDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} documentNumber`;
+  async remove(id: string) {
+    // throw new Error('Method not implemented.');
+    return await this.documentNumberModel.deleteOne({ _id: id });
+  }
+
+  async removeMany(ids: any[]) {
+    return await this.documentNumberModel.deleteMany({ _id: { $in: ids } });
+  }
+
+  async exportAll() {
+    return await this.documentNumberModel.find().lean();
   }
 }
